@@ -1,15 +1,12 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 
-import { db, storage } from "../config/firebaseConfig";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { addDoc, collection } from "firebase/firestore";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShirt } from "@fortawesome/free-solid-svg-icons/faShirt";
 
 import Wardrobe from "../assets/wardrobe-empty-comic.jpeg";
 import { getDominantColorFromImage } from "../utils/colorThiefUtils.ts";
+import { handleUpload } from "../utils/imageUploadUtils.ts";
 
 
 export const Upload: React.FC<{ hasClothes: boolean; onNext: () => void }> = ({
@@ -35,35 +32,18 @@ export const Upload: React.FC<{ hasClothes: boolean; onNext: () => void }> = ({
         }
     };
 
-    const handleUpload = async () => {
-        if (!images.length || !user) {
-            alert("You must be logged in and select at least one image to upload.");
-            return;
-        }
+    const handleUploadSuccess = () => {
+        setImages([]);
+        setDominantColors([]);
+        onNext();
+    };
 
-        try {
-            for (let i = 0; i < images.length; i++) {
-                const file = images[i];
-                const storageRef = ref(storage, `clothes/${user.uid}/${file.name}`);
-                await uploadBytes(storageRef, file);
-                const imageUrl = await getDownloadURL(storageRef);
+    const handleUploadError = (error: Error) => {
+        console.error(error);
+    };
 
-                await addDoc(collection(db, "clothes"), {
-                    userId: user.uid,
-                    imageUrl,
-                    dominantColor: dominantColors[i],
-                    uploadedAt: new Date(),
-                });
-            }
-
-            alert("Images uploaded successfully!");
-            setImages([]);
-            setDominantColors([]);
-            onNext();
-        } catch (error) {
-            console.error("Error uploading images:", error);
-            alert("Error uploading images. Please try again.");
-        }
+    const uploadImages = () => {
+        handleUpload(images, user, dominantColors, handleUploadSuccess, handleUploadError);
     };
 
     return (
@@ -116,7 +96,7 @@ export const Upload: React.FC<{ hasClothes: boolean; onNext: () => void }> = ({
                         </div>
 
                         <button
-                            onClick={handleUpload}
+                            onClick={uploadImages}
                             disabled={!images.length}
                             className="mt-4 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded disabled:opacity-50"
                         >
