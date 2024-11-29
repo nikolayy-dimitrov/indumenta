@@ -2,6 +2,8 @@ import { db, storage } from "../config/firebaseConfig";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { addDoc, collection } from "firebase/firestore";
 
+import { fetchPredictionData } from "./dragoneyeUtils.ts";
+
 export const handleUpload = async (
     images: File[],
     user: { uid: string } | null,
@@ -14,6 +16,8 @@ export const handleUpload = async (
         return;
     }
 
+    const apiUrl = "http://localhost:3001/api/predict";
+
     try {
         for (let i = 0; i < images.length; i++) {
             const file = images[i];
@@ -21,10 +25,16 @@ export const handleUpload = async (
             await uploadBytes(storageRef, file);
             const imageUrl = await getDownloadURL(storageRef);
 
+            const predictionData = await fetchPredictionData(apiUrl, imageUrl, "dragoneye/fashion");
+            const { category, vibe, season  } = predictionData[0];
+
             await addDoc(collection(db, "clothes"), {
                 userId: user.uid,
                 imageUrl,
                 dominantColor: dominantColors[i],
+                category,
+                vibe,
+                season,
                 uploadedAt: new Date(),
             });
         }

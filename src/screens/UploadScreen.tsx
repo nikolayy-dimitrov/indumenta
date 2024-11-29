@@ -1,13 +1,13 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 
+import { getDominantColorFromImage } from "../utils/colorThiefUtils.ts";
+import { handleUpload } from "../utils/imageUploadUtils.ts";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShirt } from "@fortawesome/free-solid-svg-icons/faShirt";
 
 import Wardrobe from "../assets/wardrobe-empty-comic.jpeg";
-import { getDominantColorFromImage } from "../utils/colorThiefUtils.ts";
-import { handleUpload } from "../utils/imageUploadUtils.ts";
-
 
 export const Upload: React.FC<{ hasClothes: boolean; onNext: () => void }> = ({
     hasClothes,
@@ -71,18 +71,6 @@ export const Upload: React.FC<{ hasClothes: boolean; onNext: () => void }> = ({
                                                 alt={`Uploaded file ${index + 1}`}
                                                 className="lg:w-40 lg:h-40 max-lg:w-24 max-lg:h-24 object-contain p-2 rounded-lg border-2 border-gray-400"
                                             />
-                                            {dominantColors[index] && (
-                                                <div
-                                                    className="absolute bottom-0 left-0 right-0 flex items-center justify-center gap-2 bg-black bg-opacity-50 text-white p-1"
-                                                >
-                                                    <div
-                                                        className="w-4 h-4 rounded-full"
-                                                        style={{backgroundColor: dominantColors[index]}}
-                                                    />
-                                                    {/* TODO: {Type} */}
-                                                    <span className="text-xs">Type</span>
-                                                </div>
-                                            )}
                                         </div>
                                     ))}
                                 </div>

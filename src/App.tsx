@@ -6,6 +6,7 @@ import { Login } from "./pages/LoginPage.tsx";
 import { Register } from "./pages/RegisterPage.tsx";
 import { StylistPage } from "./pages/StylistPage.tsx";
 import { WardrobePage } from "./pages/WardrobePage.tsx";
+import DragoneyeAPIRequest from "./components/ImagePrediction.tsx";
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
               <Navbar />
               <>
                 <Routes>
+                    <Route path="/" element={<DragoneyeAPIRequest />} />
                     <Route path="/stylist" element={<StylistPage />} />
                     <Route path="/wardrobe" element={<WardrobePage />} />
                     <Route path="/login" element={<Login />} />

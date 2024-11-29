@@ -3,7 +3,7 @@ import { collection, query, where, getDocs, Timestamp } from "firebase/firestore
 import { db } from "../config/firebaseConfig";
 import { AuthContext } from "../context/AuthContext";
 import {faX} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface ClothingItem {
     id: string;
