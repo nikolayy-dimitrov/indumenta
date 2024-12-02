@@ -69,8 +69,9 @@ export const StylistPage = () => {
                 id: doc.id,
                 imageUrl: doc.data().imageUrl,
                 dominantColor: doc.data().dominantColor,
-                clothingType: doc.data().clothingType || "Unknown",
-                clothingSubtype: doc.data().clothingSubtype || "Unknown",
+                category: doc.data().category || "Unknown",
+                vibe: doc.data().vibe || "Unknown",
+                season: doc.data().season || "Unknown",
             });
         });
 
@@ -86,12 +87,21 @@ export const StylistPage = () => {
             You are an assistant that helps generate outfits in JSON format from wardrobe items based on user preferences and metadata.
             
             ### User Preferences:
-            - **Color Preference:** ${stylePreferences.color}
-            - **Occasion:** ${stylePreferences.occasion}
+            ${stylePreferences.color ? `- **Color Preference:** ${stylePreferences.color}` : ''}
+            ${stylePreferences.occasion ? `- **Occasion:** ${stylePreferences.occasion}` : ''}
             
             ### Wardrobe Metadata:
+            Each item in the wardrobe is represented as follows:
+            
+            - Category: The type of item ("Top" - Shirt, Jacket, T-shirt, Top, Blouse, etc.; "Bottom" - Pants, Joggers, Skirt, Trousers, etc; "Shoes").
+            - Vibe: The item's style or mood (e.g., "Casual", "Formal").
+            - Season: The item's suitability for a season ("Winter", "Summer", "Autumn"/"Fall", "Spring", "Seasonless").
+            - Color: The dominant color of the item.
+            - ImageURL: A URL pointing to the item's image.
+            
+            ### Wardrobe Items:
             ${wardrobe.map((item) =>
-                        `- Item ${item.id}: { Type: ${item.clothingType}, Subtype: ${item.clothingSubtype}, Color: ${item.dominantColor}, ImageURL: ${item.imageUrl} }`
+                        `- Item ${item.id}: { Category: ${item.category}, Vibe: ${item.vibe}, Season: ${item.season} , Color: ${item.dominantColor}, ImageURL: ${item.imageUrl} }`
                     ).join("\n")}
             
             ### Task:
@@ -139,6 +149,7 @@ export const StylistPage = () => {
             Make sure the recommendations align with the user's preferences and explain if exact matches are not available.
 `;
 
+        console.log(prefilterPrompt);
 
         const prefilterResponse = await openai.chat.completions.create({
             model: "gpt-3.5-turbo",
@@ -146,11 +157,12 @@ export const StylistPage = () => {
                 {role: "system", content: "You are a helpful wardrobe assistant."},
                 {role: "user", content: prefilterPrompt},
             ],
-            max_tokens: 400,
+            max_tokens: 500,
             temperature: 0.7,
         });
 
         const responseText = prefilterResponse.choices[0]?.message?.content;
+        console.log(responseText);
 
         if (!responseText) {
             throw new Error("OpenAI response content is missing");
