@@ -101,7 +101,7 @@ export const StylistPage = () => {
             
             ### Wardrobe Items:
             ${wardrobe.map((item) =>
-                        `- Item ${item.id}: { Category: ${item.category}, Vibe: ${item.vibe}, Season: ${item.season} , Color: ${item.dominantColor}, ImageURL: ${item.imageUrl} }`
+                        `- Item ${item.id}: { Category: ${item.category}, ${item.vibe ? `Vibe: ${item.vibe},` : ''} Season: ${item.season ? item.season : `Seasonless`} , Color: ${item.dominantColor}, ImageURL: ${item.imageUrl} }`
                     ).join("\n")}
             
             ### Task:
@@ -146,7 +146,6 @@ export const StylistPage = () => {
                 ]
             }
             \`\`\`
-            Make sure the recommendations align with the user's preferences and explain if exact matches are not available.
 `;
 
         console.log(prefilterPrompt);
