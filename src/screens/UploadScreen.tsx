@@ -8,42 +8,86 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShirt } from "@fortawesome/free-solid-svg-icons/faShirt";
 
 import Wardrobe from "../assets/wardrobe-empty-comic.jpeg";
+import {collection, getDocs, query, where} from "firebase/firestore";
+import {db} from "../config/firebaseConfig.ts";
 
 export const Upload: React.FC<{ hasClothes: boolean; onNext: () => void }> = ({
     hasClothes,
     onNext
                                                                               }) => {
-    const [images, setImages] = useState<File[]>([]);
-    const [dominantColors, setDominantColors] = useState<string[]>([]);
+    const [image, setImage] = useState<File | null>(null);
+    const [dominantColor, setDominantColor] = useState<string[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const { user } = useContext(AuthContext);
 
     const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files) {
-            const newFiles = Array.from(e.target.files);
-            setImages(prevImages => [...prevImages, ...newFiles]);
-
-            for (const file of newFiles) {
-                try {
-                    await getDominantColorFromImage(file, setDominantColors);
-                } catch (error) {
-                    console.error("Error processing image:", error);
-                }
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            setImage(file);
+            try {
+                await getDominantColorFromImage(file, setDominantColor);
+            } catch (error) {
+                console.error("Error processing image:", error);
             }
         }
     };
 
-    const handleUploadSuccess = () => {
-        setImages([]);
-        setDominantColors([]);
-        onNext();
+    const handleUploadSuccess = async () => {
+        setImage(null);
+        setDominantColor([]);
+
+        try {
+            if (!user) return;
+
+            const clothesRef = collection(db, "clothes");
+            const q = query(clothesRef, where("userId", "==", user.uid));
+            const querySnapshot = await getDocs(q);
+
+            if (querySnapshot.size < 3) {
+                window.location.reload(); // Reload if less than 3 items
+            } else {
+                onNext(); // Navigate to the next step if 3 or more items
+            }
+        } catch (error) {
+            console.error("Error checking item count:", error);
+        }
     };
 
     const handleUploadError = (error: Error) => {
         console.error(error);
+        setIsLoading(false);
     };
 
-    const uploadImages = () => {
-        handleUpload(images, user, dominantColors, handleUploadSuccess, handleUploadError);
+    const uploadImage = async () => {
+        if (!image || !dominantColor.length) return;
+
+        const firstDominantColor = dominantColor[0] || null; // Extract the first dominant color
+        setIsLoading(true);
+
+        try {
+            await handleUpload([image], user, [firstDominantColor!], handleUploadSuccess, handleUploadError);
+        } catch (error) {
+            console.error("Error during upload:", error);
+            setIsLoading(false);
+        }
+    };
+
+    const checkClothesCount = async (): Promise<number> => {
+        if (!user) return 0;
+
+        const clothesRef = collection(db, "clothes");
+        const q = query(clothesRef, where("userId", "==", user.uid));
+        const querySnapshot = await getDocs(q);
+        return querySnapshot.size;
+    };
+
+    const handleNext = async () => {
+        const clothesCount = await checkClothesCount();
+        if (clothesCount < 3) {
+            // window.location.reload(); // Reload if less than 3 items
+        } else {
+            onNext(); // Navigate to the next step if 3 or more items
+        }
     };
 
     return (
@@ -62,39 +106,32 @@ export const Upload: React.FC<{ hasClothes: boolean; onNext: () => void }> = ({
                         />
 
                         <label htmlFor="file-upload" className="cursor-pointer">
-                            {images.length > 0 ? (
-                                <div className={`grid ${images.length === 1 ? 'grid-cols-1' : 'grid-cols-2 gap-4'}`}>
-                                    {images.slice(-4).map((image, index) => (
-                                        <div key={images.length > 4 ? index + (images.length - 4) : index} className="relative">
-                                            <img
-                                                src={URL.createObjectURL(image)}
-                                                alt={`Uploaded file ${index + 1}`}
-                                                className="lg:w-40 lg:h-40 max-lg:w-24 max-lg:h-24 object-contain p-2 rounded-lg border-2 border-gray-400"
-                                            />
-                                        </div>
-                                    ))}
+                            {image ? (
+                                <div>
+                                    <img
+                                        src={URL.createObjectURL(image)}
+                                        alt={`Uploaded file image`}
+                                        className="lg:w-40 lg:h-40 max-lg:w-24 max-lg:h-24 object-contain p-2 rounded-lg border-2 border-gray-400"
+                                    />
                                 </div>
+
                             ) : (
                                 <FontAwesomeIcon icon={faShirt} className="text-gray-400" size="4x" />
                             )}
                         </label>
 
-                        <div className="mt-2 text-sm text-gray-600">
-                            {images.length} file(s) selected
-                        </div>
-
                         <button
-                            onClick={uploadImages}
-                            disabled={!images.length}
+                            onClick={uploadImage}
+                            disabled={!image || isLoading}
                             className="mt-4 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded disabled:opacity-50"
                         >
-                            Upload
+                            {isLoading ? "Uploading..." : "Upload"}
                         </button>
                     </>
 
                 {hasClothes && (
                     <button
-                        onClick={onNext}
+                        onClick={handleNext}
                         className="mt-6 bg-primary/90 hover:bg-primary/95 text-white font-bold py-3 px-8 rounded"
                     >
                         Select Style Preferences

@@ -11,7 +11,7 @@ interface ClothingItem {
     dominantColor: string;
     uploadedAt: Timestamp;
     userId: string;
-    clothingType: string;
+    category: string;
 }
 
 type SortOption = "newest" | "oldest" | "color";
@@ -47,7 +47,7 @@ export const WardrobePage = () => {
                         dominantColor: data.dominantColor,
                         uploadedAt: data.uploadedAt,
                         userId: data.userId,
-                        clothingType: data.clothingType
+                        category: data.category
                     };
                 });
 
@@ -191,7 +191,8 @@ export const WardrobePage = () => {
                                     className="w-4 h-4 rounded-full"
                                     style={{ backgroundColor: selectedImage.dominantColor }}
                                 />
-                                <span>{selectedImage.clothingType}</span>
+                                {/* TODO:CHANGE TO CATEGORY */}
+                                <span>{selectedImage.category}</span>
                                 <span className="ml-auto">
                                     {selectedImage.uploadedAt.toDate().toLocaleDateString()}
                                 </span>
