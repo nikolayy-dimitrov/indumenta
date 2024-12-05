@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { WardrobeContext } from "../context/WardrobeContext.tsx";
 
 import { getDominantColorFromImage } from "../utils/colorThiefUtils.ts";
 import { handleUpload } from "../utils/imageUploadUtils.ts";
@@ -7,9 +8,8 @@ import { handleUpload } from "../utils/imageUploadUtils.ts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShirt } from "@fortawesome/free-solid-svg-icons/faShirt";
 
-import Wardrobe from "../assets/wardrobe-empty-comic.jpeg";
-import {collection, getDocs, query, where} from "firebase/firestore";
-import {db} from "../config/firebaseConfig.ts";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../config/firebaseConfig.ts";
 
 export const Upload: React.FC<{ hasClothes: boolean; onNext: () => void }> = ({
     hasClothes,
@@ -17,8 +17,9 @@ export const Upload: React.FC<{ hasClothes: boolean; onNext: () => void }> = ({
                                                                               }) => {
     const [image, setImage] = useState<File | null>(null);
     const [dominantColor, setDominantColor] = useState<string[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+
     const { user } = useContext(AuthContext);
+    const { isLoading, setIsLoading } = useContext(WardrobeContext);
 
     const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
@@ -62,12 +63,14 @@ export const Upload: React.FC<{ hasClothes: boolean; onNext: () => void }> = ({
         if (!image || !dominantColor.length) return;
 
         const firstDominantColor = dominantColor[0] || null; // Extract the first dominant color
-        setIsLoading(true);
 
+        setIsLoading(true);
         try {
             await handleUpload([image], user, [firstDominantColor!], handleUploadSuccess, handleUploadError);
         } catch (error) {
             console.error("Error during upload:", error);
+            setIsLoading(false);
+        } finally {
             setIsLoading(false);
         }
     };
@@ -92,9 +95,7 @@ export const Upload: React.FC<{ hasClothes: boolean; onNext: () => void }> = ({
 
     return (
         <section id="upload" className="relative flex items-center justify-center md:w-10/12 mx-auto font-Josefin">
-            <img src={Wardrobe} alt="wardrobe" className="w-full h-auto rounded-xl" />
-
-            <div className="absolute inset-0 flex flex-col items-center justify-center md:mb-2">
+            <div className="flex flex-col items-center justify-center h-screen">
                     <>
                         <input
                             type="file"
@@ -116,14 +117,14 @@ export const Upload: React.FC<{ hasClothes: boolean; onNext: () => void }> = ({
                                 </div>
 
                             ) : (
-                                <FontAwesomeIcon icon={faShirt} className="text-gray-400" size="4x" />
+                                <FontAwesomeIcon icon={faShirt} className="text-priamry" size="4x" />
                             )}
                         </label>
 
                         <button
                             onClick={uploadImage}
                             disabled={!image || isLoading}
-                            className="mt-4 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded disabled:opacity-50"
+                            className="mt-4 bg-primary hover:bg-primary/95 text-secondary px-4 py-2 rounded disabled:opacity-50"
                         >
                             {isLoading ? "Uploading..." : "Upload"}
                         </button>
@@ -132,7 +133,7 @@ export const Upload: React.FC<{ hasClothes: boolean; onNext: () => void }> = ({
                 {hasClothes && (
                     <button
                         onClick={handleNext}
-                        className="mt-6 bg-primary/90 hover:bg-primary/95 text-white font-bold py-3 px-8 rounded"
+                        className="mt-6 bg-primary/90 hover:bg-primary/95 text-secondary font-semibold py-3 px-8 rounded"
                     >
                         Select Style Preferences
                     </button>

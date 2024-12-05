@@ -2,6 +2,7 @@ export interface PredictionResponse {
     category: string | null;
     vibe: string | null;
     season: string | null;
+    color: string | null;
 }
 
 /**
