@@ -3,6 +3,7 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{html,js,ts,jsx,tsx}",
+    "./node_modules/swiper/swiper.esm.js",
   ],
   theme: {
     extend: {

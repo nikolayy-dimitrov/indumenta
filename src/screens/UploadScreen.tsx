@@ -21,6 +21,10 @@ export const Upload: React.FC<{ hasClothes: boolean; onNext: () => void }> = ({
     const { user } = useContext(AuthContext);
     const { isLoading, setIsLoading } = useContext(WardrobeContext);
 
+    const setLoadingWithDelay = (value: boolean, delayMs: number) => {
+        setTimeout(() => setIsLoading(value), delayMs);
+    };
+
     const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
@@ -64,14 +68,13 @@ export const Upload: React.FC<{ hasClothes: boolean; onNext: () => void }> = ({
 
         const firstDominantColor = dominantColor[0] || null; // Extract the first dominant color
 
-        setIsLoading(true);
         try {
             await handleUpload([image], user, [firstDominantColor!], handleUploadSuccess, handleUploadError);
         } catch (error) {
             console.error("Error during upload:", error);
             setIsLoading(false);
         } finally {
-            setIsLoading(false);
+            setLoadingWithDelay(false, 3000);
         }
     };
 

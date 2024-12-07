@@ -13,3 +13,22 @@ body,
     background-color: #181819;
     @apply text-primary;
 }
+
+@layer utilities {
+    .swiper-hidden-cards .swiper-slide-prev,
+    .swiper-hidden-cards .swiper-slide-next {
+        @apply opacity-0 pointer-events-none transition-all duration-1000;
+    }
+
+    .swiper-hidden-cards .swiper-slide {
+        @apply transition-all duration-1000 ease-in-out;
+    }
+
+    .swiper-hidden-cards .swiper-slide {
+        @apply opacity-0 scale-90 pointer-events-none transition-all duration-500 ease-in-out;
+    }
+
+    .swiper-hidden-cards .swiper-slide-active {
+        @apply opacity-100 scale-100 pointer-events-auto;
+    }
+}

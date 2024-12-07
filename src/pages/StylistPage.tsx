@@ -26,8 +26,8 @@ interface OutfitRecommendation {
 }
 
 export const StylistPage = () => {
-    const {user} = useContext(AuthContext);
-    const { isLoading, setIsLoading } = useContext(WardrobeContext);
+    const { user } = useContext(AuthContext);
+    const { isLoading , setIsLoading } = useContext(WardrobeContext);
 
     const [step, setStep] = useState<'upload' | 'style' | 'outfit'>('upload');
     const [stylePreferences, setStylePreferences] = useState<StylePreferences>({

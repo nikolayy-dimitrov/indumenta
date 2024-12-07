@@ -1,8 +1,12 @@
 import { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
 import { collection, query, where, getDocs, Timestamp } from "firebase/firestore";
 import { db } from "../config/firebaseConfig";
+
 import { AuthContext } from "../context/AuthContext";
-import {faX} from "@fortawesome/free-solid-svg-icons";
+
+import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface ClothingItem {
@@ -116,14 +120,14 @@ export const WardrobePage = () => {
             <div className="flex justify-between items-center mb-8">
                 <h1 className="text-2xl font-bold">Your Wardrobe</h1>
                 <div className="flex items-center gap-4">
-                    <label htmlFor="sort" className="text-sm">
+                    <label htmlFor="sort">
                         Sort by:
                     </label>
                     <select
                         id="sort"
                         value={sortBy}
                         onChange={(e) => setSortBy(e.target.value as SortOption)}
-                        className="border rounded-md px-2 py-1"
+                        className="border rounded-md px-2 py-1 text-secondary"
                     >
                         <option value="newest">Newest First</option>
                         <option value="oldest">Oldest First</option>
@@ -134,8 +138,9 @@ export const WardrobePage = () => {
 
             {clothes.length === 0 ? (
                 <div className="text-center py-12">
-                    <p className="text-gray-500">
-                        Your wardrobe is empty. Start by adding some clothes!
+                    <p className="text-primary/90">
+                        Your wardrobe is empty. <br />
+                        <Link to="/stylist" className="font-semibold">Start by adding some clothes!</Link>
                     </p>
                 </div>
             ) : (

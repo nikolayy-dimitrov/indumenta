@@ -6,7 +6,7 @@ type WardrobeProviderProps = {
 
 interface WardrobeContextType {
     isLoading: boolean;
-    setIsLoading: (value: boolean, delay?: number) => void;
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const WardrobeContext = createContext<WardrobeContextType>({
