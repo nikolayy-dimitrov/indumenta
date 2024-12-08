@@ -14,9 +14,9 @@ import "swiper/css/pagination";
 
 export const TestimonialScreen = () => {
     return (
-        <section id="testimonials" className="relative bg-primary text-secondary py-16">
+        <section id="testimonials" className="relative bg-primary text-secondary py-16 font-Josefin">
             <div className="w-11/12 mx-auto">
-                <h2 className="text-4xl mb-8 md:text-left max-md:text-center">What Our Users Say</h2>
+                <h2 className="text-4xl mb-8 md:text-left max-md:text-center">What Our Users Say.</h2>
 
                 {/* Swiper Carousel */}
                 <Swiper

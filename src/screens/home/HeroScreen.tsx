@@ -5,9 +5,9 @@ import AppMockUp from "../../assets/iphone-mockup-perspective.png";
 
 export const HeroScreen = () => {
     return (
-        <section id="hero-screen" className="h-screen flex max-md:mt-12">
+        <section id="hero-screen" className="h-screen flex max-md:mt-12 font-Josefin">
             <AnimatedBackground />
-            <div className="md:flex items-center justify-between z-10 font-Josefin w-11/12 mx-auto">
+            <div className="md:flex items-center justify-between z-10 w-11/12 mx-auto">
                 <div className="z-10">
                     <h1 className="font-extrabold text-6xl leading-tight">
                         Your Virtual Wardrobe,<br />

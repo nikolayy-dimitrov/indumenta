@@ -3,9 +3,9 @@ import { featuresData } from "../../data/HomePageData.ts";
 
 export const Features = () => {
     return (
-        <section id="features" className="w-full bg-primary md:-mt-16 max-md:-mt-28 p-16">
-            <h2 className="text-secondary text-5xl text-center mb-12">
-                Features
+        <section id="features" className="w-full bg-primary md:-mt-16 max-md:-mt-28 p-16 font-Josefin">
+            <h2 className="text-secondary text-5xl md:text-right max-md:text-center mb-12">
+                Features.
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
                 {featuresData.map((card, index) => (

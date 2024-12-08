@@ -43,7 +43,7 @@ export const OutfitDisplayScreen: React.FC<OutfitDisplayScreenProps> = ({ outfit
 
     return (
         <section className="relative max-w-2xl mx-auto space-y-6 font-Josefin">
-            <div className="flex flex-col justify-center h-screen">
+            <div className="flex flex-col justify-center h-screen max-md:w-10/12 max-md:mx-auto">
                 <div className="flex justify-between items-center py-2">
                     <h2 className="text-3xl font-bold">{currentOutfit.outfit_id}</h2>
                     <span className="text-gray-500">
