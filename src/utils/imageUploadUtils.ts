@@ -46,7 +46,7 @@ export const handleUpload = async (
             });
         }
 
-        toast.success("Images uploaded successfully!", {
+        toast.success("Item uploaded successfully!", {
             position: "top-center",
             closeOnClick: true,
             theme: "dark",
@@ -54,7 +54,7 @@ export const handleUpload = async (
         onUploadSuccess();
     } catch (error) {
         console.error("Error uploading images:", error);
-        toast.error("Error uploading images. Please try again.", {
+        toast.error("Error uploading item. Please try again.", {
             position: "top-center",
             closeOnClick: true,
             theme: "dark",
