@@ -30,7 +30,7 @@ export const StyleSelectionScreen: React.FC<StyleSelectionScreenProps> = ({
     }
 
     return (
-        <section className="relative max-w-2xl mx-auto space-y-6 rounded-lg shadow-lg font-Josefin">
+        <section className="relative md:max-w-2xl max-md:w-10/12 mx-auto space-y-6 rounded-lg shadow-lg font-Josefin">
             <div className="flex flex-col justify-center h-screen">
                 <h2 className="text-3xl font-bold mb-4">Style Preferences</h2>
 
