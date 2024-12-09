@@ -18,7 +18,7 @@ export const Features = () => {
                     >
                         <div
                             className="bg-primary text-secondary w-16 h-16 flex items-center justify-center rounded-full mb-4 transition-colors duration-300 group-hover:bg-secondary group-hover:text-primary">
-                            <FontAwesomeIcon icon={card.icon} size="2x"/>
+                            <FontAwesomeIcon icon={card.icon!} size="2x"/>
                         </div>
                         <h3 className="text-xl font-semibold mb-2 transition-colors duration-300 group-hover:text-secondary">
                             {card.title}
