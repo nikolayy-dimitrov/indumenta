@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { AuthContext } from "../context/AuthContext";
 import { WardrobeContext } from "../context/WardrobeContext.tsx";
 
@@ -34,29 +34,9 @@ export const StylistPage = () => {
         color: '',
         occasion: ''
     });
-    const [hasClothes, setHasClothes] = useState(false);
     const [outfit, setOutfit] = useState<OutfitRecommendation[]>([]);
 
     const apiUrl = import.meta.env.VITE_BACKEND_URL + '/api/generate-outfit';
-
-    useEffect(() => {
-        const checkExistingClothes = async () => {
-            if (!user) return;
-            try {
-                setIsLoading(true);
-                const clothesRef = collection(db, "clothes");
-                const q = query(clothesRef, where("userId", "==", user.uid));
-                const querySnapshot = await getDocs(q);
-                setHasClothes(!querySnapshot.empty);
-            } catch {
-                throw new Error("Error checking clothes.")
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        checkExistingClothes();
-    }, [user, setIsLoading]);
 
     const handleStylePreferenceChange = (
         field: keyof StylePreferences,
@@ -132,7 +112,7 @@ export const StylistPage = () => {
             </div>
             <div className={`z-20 relative ${isLoading ? 'hidden' : ''}`}>
                 {step === 'upload' ? (
-                    <Upload hasClothes={hasClothes} onNext={() => setStep('style')} />
+                    <Upload onNext={() => setStep('style')} />
                 ) : step === 'style' ? (
                     <StyleSelectionScreen
                         stylePreferences={stylePreferences}
