@@ -13,7 +13,7 @@ import { Register } from "./pages/RegisterPage.tsx";
 import { StylistPage } from "./pages/StylistPage.tsx";
 import { WardrobePage } from "./pages/WardrobePage.tsx";
 import { ContactPage } from "./pages/ContactPage.tsx";
-import { NotFound } from "./pages/404.tsx";
+import { NotFoundPage } from "./pages/404.tsx";
 
 function App() {
 
@@ -29,7 +29,7 @@ function App() {
                         <Route path="/contact" element={<ContactPage />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
-                        <Route path="*" element={<NotFound />} />
+                        <Route path="*" element={<NotFoundPage />} />
                     </Routes>
                   <ToastContainer />
               </AuthProvider>

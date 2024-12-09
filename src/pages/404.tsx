@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
-export const NotFound = () => {
+export const NotFoundPage = () => {
     return (
         <section id="not-found" className="h-screen flex items-center justify-center bg-secondary font-Josefin">
             <motion.div
