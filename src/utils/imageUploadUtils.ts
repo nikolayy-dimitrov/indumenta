@@ -4,6 +4,8 @@ import { addDoc, collection } from "firebase/firestore";
 
 import { fetchPredictionData } from "./dragoneyeUtils.ts";
 
+import { toast } from "react-toastify";
+
 export const handleUpload = async (
     images: File[],
     user: { uid: string } | null,
@@ -12,7 +14,11 @@ export const handleUpload = async (
     onError: (error: Error) => void
 ) => {
     if (!images.length || !user) {
-        alert("You must be logged in and select at least one image to upload.");
+        toast.error("You must be logged in and select at least one image to upload.", {
+            position: "top-center",
+            closeOnClick: true,
+            theme: "dark",
+        });
         return;
     }
 
@@ -40,11 +46,19 @@ export const handleUpload = async (
             });
         }
 
-        alert("Images uploaded successfully!");
+        toast.success("Images uploaded successfully!", {
+            position: "top-center",
+            closeOnClick: true,
+            theme: "dark",
+        });
         onUploadSuccess();
     } catch (error) {
         console.error("Error uploading images:", error);
-        alert("Error uploading images. Please try again.");
+        toast.error("Error uploading images. Please try again.", {
+            position: "top-center",
+            closeOnClick: true,
+            theme: "dark",
+        });
         onError(error as Error);
     }
 };

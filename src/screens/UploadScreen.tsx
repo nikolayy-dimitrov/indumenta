@@ -66,6 +66,8 @@ export const Upload: React.FC<{ hasClothes: boolean; onNext: () => void }> = ({
     const uploadImage = async () => {
         if (!image || !dominantColor.length) return;
 
+        setIsLoading(true);
+
         const firstDominantColor = dominantColor[0] || null; // Extract the first dominant color
 
         try {

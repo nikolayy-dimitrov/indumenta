@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 export const ContactPage = () => {
     return (
         <section id="contact" className="bg-secondary text-primary font-Josefin py-16">
@@ -15,7 +17,11 @@ export const ContactPage = () => {
                         className="bg-primary text-secondary text-primary p-6 rounded-xl w-full"
                         onSubmit={(e) => {
                             e.preventDefault();
-                            alert("Form submitted!");
+                            toast.success("Form submitted successfully!", {
+                                position: "top-center",
+                                closeOnClick: true,
+                                theme: "dark",
+                            })
                         }}
                     >
                         <div className="mb-4">

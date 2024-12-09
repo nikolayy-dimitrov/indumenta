@@ -2,6 +2,9 @@ import { Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { WardrobeProvider } from "./context/WardrobeContext.tsx";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import { Navbar } from "./components/Navbar.tsx";
 
 import { Home } from "./pages/HomePage.tsx";
@@ -20,7 +23,6 @@ function App() {
           <WardrobeProvider>
               <AuthProvider>
                   <Navbar />
-                  <>
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/stylist" element={<StylistPage />} />
@@ -30,7 +32,7 @@ function App() {
                         <Route path="/register" element={<Register />} />
                         <Route path="/test" element={<WardrobeScene />} />
                     </Routes>
-                  </>
+                  <ToastContainer />
               </AuthProvider>
           </WardrobeProvider>
       </div>
