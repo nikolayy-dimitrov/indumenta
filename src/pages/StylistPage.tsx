@@ -37,6 +37,8 @@ export const StylistPage = () => {
     const [hasClothes, setHasClothes] = useState(false);
     const [outfit, setOutfit] = useState<OutfitRecommendation[]>([]);
 
+    const apiUrl = import.meta.env.VITE_BACKEND_URL + '/api/generate-outfit';
+
     useEffect(() => {
         const checkExistingClothes = async () => {
             if (!user) return;
@@ -90,7 +92,7 @@ export const StylistPage = () => {
         const wardrobe = Array.from(wardrobeMap.values());
 
         try {
-            const response = await fetch('http://localhost:3001/api/generate-outfit', {
+            const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
