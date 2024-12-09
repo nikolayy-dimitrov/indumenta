@@ -1,13 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { collection, query, where, getDocs, Timestamp } from "firebase/firestore";
+import { collection, query, where, getDocs, deleteDoc, doc, Timestamp } from "firebase/firestore";
 import { db } from "../config/firebaseConfig";
 
 import { AuthContext } from "../context/AuthContext";
 
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {toast} from "react-toastify";
 
 interface ClothingItem {
     id: string;
@@ -66,6 +67,27 @@ export const WardrobePage = () => {
         fetchClothes();
     }, [user]);
 
+    const deleteClothingItem = async (itemId: string) => {
+        if (!user) return;
+        try {
+            await deleteDoc(doc(db, "clothes", itemId));
+            setClothes((prev) => prev.filter((item) => item.id !== itemId)); // Update the state
+            setSelectedImage(null); // Close the modal
+            toast.success("Item successfully removed.", {
+                position: "top-center",
+                closeOnClick: true,
+                theme: "dark",
+            });
+        } catch (error) {
+            console.error("Error deleting item:", error);
+            toast.error("Failed to delete item. Please try again.", {
+                position: "top-center",
+                closeOnClick: true,
+                theme: "dark",
+            });
+        }
+    };
+
     const sortClothes = (items: ClothingItem[]): ClothingItem[] => {
         switch (sortBy) {
             case "newest":
@@ -102,7 +124,7 @@ export const WardrobePage = () => {
     if (!user) {
         return (
             <div className="flex justify-center items-center h-screen font-Josefin">
-                Please log in to view your wardrobe.
+                <Link to="/login">Please log in to view your wardrobe.</Link>
             </div>
         );
     }
@@ -172,14 +194,14 @@ export const WardrobePage = () => {
             {/* Full-screen Image Modal */}
             {selectedImage && (
                 <div
-                    className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center"
+                    className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center"
                     onClick={() => setSelectedImage(null)}
                 >
                     <button
                         className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors"
                         onClick={() => setSelectedImage(null)}
                     >
-                        <FontAwesomeIcon icon={faX} size="1x" />
+                        <FontAwesomeIcon icon={faX} size="1x"/>
                     </button>
                     <div
                         className="relative max-w-[90vw] max-h-[90vh]"
@@ -194,9 +216,8 @@ export const WardrobePage = () => {
                             <div className="flex items-center gap-2">
                                 <div
                                     className="w-4 h-4 rounded-full"
-                                    style={{ backgroundColor: selectedImage.dominantColor }}
+                                    style={{backgroundColor: selectedImage.dominantColor}}
                                 />
-                                {/* TODO:CHANGE TO CATEGORY */}
                                 <span>{selectedImage.category}</span>
                                 <span className="ml-auto">
                                     {selectedImage.uploadedAt.toDate().toLocaleDateString()}
@@ -204,6 +225,12 @@ export const WardrobePage = () => {
                             </div>
                         </div>
                     </div>
+                    <button
+                        onClick={() => deleteClothingItem(selectedImage.id)}
+                        className="mt-2 w-1/3 rounded-md text-primary bg-secondary/90 hover:opacity-80 py-1 px-2"
+                    >
+                        Remove Item
+                    </button>
                 </div>
             )}
         </div>
