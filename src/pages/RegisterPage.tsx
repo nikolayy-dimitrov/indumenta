@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
-import { getAuth, createUserWithEmailAndPassword, UserCredential } from 'firebase/auth';
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    UserCredential,
+    GoogleAuthProvider,
+    signInWithPopup
+} from 'firebase/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { Link } from "react-router-dom";
 
 export const Register: React.FC = () => {
     const [name, setName] = useState<string>('');
@@ -15,6 +23,17 @@ export const Register: React.FC = () => {
             const userCredential: UserCredential = await createUserWithEmailAndPassword(auth, email, password);
             console.log('User registered:', userCredential.user);
             window.location.href = '/login';
+        } catch (err) {
+            setError((err as Error).message);
+        }
+    };
+
+    const handleGoogleLogin = async () => {
+        try {
+            const auth = getAuth();
+            const provider = new GoogleAuthProvider();
+            await signInWithPopup(auth, provider);
+            window.location.href = '/';
         } catch (err) {
             setError((err as Error).message);
         }
@@ -73,15 +92,29 @@ export const Register: React.FC = () => {
                         />
                     </div>
                 </div>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mb-2">
                     <button
-                        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        className="bg-content hover:bg-content/90 text-secondary font-bold py-2 px-4 rounded transition"
                         type="button"
                         onClick={handleRegister}
                     >
                         Register
                     </button>
+                    <button
+                        className="text-secondary font-bold py-2 px-4"
+                        type="button"
+                        onClick={handleGoogleLogin}
+                    >
+                        Sign Up
+                        <FontAwesomeIcon icon={faGoogle} className="ml-2"/>
+                    </button>
                 </div>
+                <span className="text-secondary text-sm gap-1 flex">
+                    Already have an account?
+                    <Link to="/login" className="underline-offset-2 underline">
+                        Login.
+                    </Link>
+                </span>
             </div>
         </div>
     );
