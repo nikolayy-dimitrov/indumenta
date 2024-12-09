@@ -6,7 +6,7 @@ const DragoneyeAPIRequest: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
 
     const fetchPrediction = async () => {
-        const apiUrl = 'http://localhost:3001/api/predict';
+        const apiUrl = import.meta.env.VITE_BACKEND_URL + "/api/predict";
         const fileUrl =
             'https://firebasestorage.googleapis.com/v0/b/indumenta-be.firebasestorage.app/o/clothes%2FFbAZdeZo0jWaC74xgzKKfIfwmcY2%2F47SMA0060_5T9_01.jpeg?alt=media&token=2e8571dd-d4ff-4b7a-9762-45758abb41e7';
         const modelName = 'dragoneye/fashion';

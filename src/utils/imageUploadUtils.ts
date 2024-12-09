@@ -16,7 +16,7 @@ export const handleUpload = async (
         return;
     }
 
-    const apiUrl = "http://localhost:3001/api/predict";
+    const apiUrl = import.meta.env.VITE_BACKEND_URL + "/api/predict";
 
     try {
         for (let i = 0; i < images.length; i++) {
