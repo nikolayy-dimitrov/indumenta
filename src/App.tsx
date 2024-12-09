@@ -13,7 +13,7 @@ import { Register } from "./pages/RegisterPage.tsx";
 import { StylistPage } from "./pages/StylistPage.tsx";
 import { WardrobePage } from "./pages/WardrobePage.tsx";
 import { ContactPage } from "./pages/ContactPage.tsx";
-import { NotFound } from "./pages/NotFound.tsx";
+import { NotFound } from "./pages/404.tsx";
 
 function App() {
 
