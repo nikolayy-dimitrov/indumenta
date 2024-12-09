@@ -9,6 +9,7 @@ import { Login } from "./pages/LoginPage.tsx";
 import { Register } from "./pages/RegisterPage.tsx";
 import { StylistPage } from "./pages/StylistPage.tsx";
 import { WardrobePage } from "./pages/WardrobePage.tsx";
+import { ContactPage } from "./pages/ContactPage.tsx";
 
 import WardrobeScene from "./components/InteractiveWardrobe.tsx";
 
@@ -24,6 +25,7 @@ function App() {
                         <Route path="/" element={<Home />} />
                         <Route path="/stylist" element={<StylistPage />} />
                         <Route path="/wardrobe" element={<WardrobePage />} />
+                        <Route path="/contact" element={<ContactPage />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
                         <Route path="/test" element={<WardrobeScene />} />

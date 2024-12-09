@@ -45,8 +45,7 @@ export const Navbar = () => {
                     <Link to="/" className="hover:text-primary/90">Home</Link>
                     <Link to="/stylist" className="hover:text-primary/90">Stylist</Link>
                     <Link to="/wardrobe" className="hover:text-primary/90">Wardrobe</Link>
-                    <Link to="/" className="hover:text-primary/90">About</Link>
-                    <Link to="/" className="hover:text-primary/90">Contact</Link>
+                    <Link to="/contact" className="hover:text-primary/90">Contact</Link>
                 </div>
                 {/* User menu */}
                 {user ? (
