@@ -31,13 +31,13 @@ export const Navbar = () => {
     return (
         <nav className="md:w-11/12 mx-auto z-40 py-4 px-8 font-Josefin text-gray-500 flex justify-between items-center">
             {/* Logo */}
-            <a href="/" className="z-40">
+            <Link to="/" className="z-40">
                 {/*<img src={Logo} alt="logo" className="max-w-44 hover:opacity-85" />*/}
 
                 <span className="text-primary/70 transition duration-300 hover:text-primary text-2xl font-extrabold">
                     INDUMENTA
                 </span>
-            </a>
+            </Link>
             {/* Main menu */}
             {isAboveMediumScreens ? (
                 <>
@@ -61,8 +61,8 @@ export const Navbar = () => {
                     </div>
                 ) : (
                     <div className="flex gap-4 z-40 font-light">
-                        <a href="/login" className="hover:text-primary/80">Login</a>
-                        <a href="/register" className="hover:text-primary/80">Register</a>
+                        <Link to="/login" className="hover:text-primary/80">Login</Link>
+                        <Link to="/register" className="hover:text-primary/80">Register</Link>
                     </div>
                 )}
                 </>
