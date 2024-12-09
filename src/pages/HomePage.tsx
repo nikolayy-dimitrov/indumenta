@@ -5,6 +5,8 @@ import { HowItWorksScreen } from "../screens/home/HowItWorksScreen.tsx";
 import { FaqScreen } from "../screens/home/FaqScreen.tsx";
 import { TechnologiesScreen } from "../screens/home/TechnologiesScreen.tsx";
 
+import { Footer } from "../components/Footer.tsx";
+
 export const Home = () => {
     return (
         <section id="home">
@@ -14,6 +16,7 @@ export const Home = () => {
             <HowItWorksScreen />
             <FaqScreen />
             <TechnologiesScreen />
+            <Footer />
         </section>
     );
 };
