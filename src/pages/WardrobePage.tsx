@@ -8,7 +8,7 @@ import { AuthContext } from "../context/AuthContext";
 
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 
 interface ClothingItem {
     id: string;
