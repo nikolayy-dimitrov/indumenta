@@ -1,9 +1,16 @@
+import { motion } from "framer-motion";
+import { containerVariants, textVariants } from "../utils/framerMotionUtils.ts";
 import { toast } from "react-toastify";
 
 export const ContactPage = () => {
     return (
         <section id="contact" className="bg-secondary text-primary font-Josefin py-16">
-            <div className="container mx-auto px-4">
+            <motion.div
+                className="container mx-auto px-4"
+                initial="hidden"
+                animate="visible"
+                variants={containerVariants}
+            >
                 {/* Page Header */}
                 <h2 className="text-4xl font-bold text-left mb-4">Contact Us</h2>
                 <p className="text-lg text-left mb-8">
@@ -14,7 +21,7 @@ export const ContactPage = () => {
                 <div className="grid md:grid-cols-2 gap-8 items-start">
                     {/* Contact Form */}
                     <form
-                        className="bg-primary text-secondary text-primary p-6 rounded-xl w-full"
+                        className="bg-primary text-secondary p-6 rounded-xl w-full"
                         onSubmit={(e) => {
                             e.preventDefault();
                             toast.success("Form submitted successfully!", {
@@ -72,7 +79,12 @@ export const ContactPage = () => {
                     </form>
 
                     {/* Contact Details */}
-                    <div className="flex flex-col items-center md:items-start text-center md:text-left">
+                    <motion.div
+                        className="flex flex-col items-center md:items-start text-center md:text-left"
+                        initial="hidden"
+                        animate="visible"
+                        variants={textVariants}
+                    >
                         <h3 className="text-3xl font-semibold mb-4">Get in Touch</h3>
                         <p className="text-lg mb-6">
                             You can also reach us directly through the following:
@@ -98,9 +110,9 @@ export const ContactPage = () => {
                                 123 Fashion Avenue, Style City, USA
                             </p>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
-            </div>
+            </motion.div>
         </section>
     );
 };

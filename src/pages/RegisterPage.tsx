@@ -11,13 +11,40 @@ import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { Link } from "react-router-dom";
 
+import { motion } from 'framer-motion';
+import { containerVariants } from "../utils/framerMotionUtils.ts";
+
 export const Register: React.FC = () => {
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const [confirmPassword, setConfirmPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
 
+    const validateInputs = (): boolean => {
+        if (!name.trim()) {
+            setError('Name is required.');
+            return false;
+        }
+        if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            setError('A valid email is required.');
+            return false;
+        }
+        if (password.length < 6) {
+            setError('Password must be at least 6 characters long.');
+            return false;
+        }
+        if (password !== confirmPassword) {
+            setError('Passwords do not match.');
+            return false;
+        }
+        return true;
+    };
+
     const handleRegister = async () => {
+        setError('');
+        if (!validateInputs()) return;
+
         try {
             const auth = getAuth();
             const userCredential: UserCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -29,6 +56,7 @@ export const Register: React.FC = () => {
     };
 
     const handleGoogleLogin = async () => {
+        setError('');
         try {
             const auth = getAuth();
             const provider = new GoogleAuthProvider();
@@ -40,7 +68,12 @@ export const Register: React.FC = () => {
     };
 
     return (
-        <div className="flex items-center justify-center h-screen font-Josefin">
+        <motion.div
+            className="flex items-center justify-center h-screen font-Josefin"
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+        >
             <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
                 <h2 className="text-2xl font-bold mb-4 text-secondary">Register for Indumenta</h2>
                 {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">{error}</div>}
@@ -92,6 +125,22 @@ export const Register: React.FC = () => {
                         />
                     </div>
                 </div>
+                <div className="mb-6">
+                    <label htmlFor="password" className="block text-gray-700 font-bold mb-2">
+                        Confirm Password
+                    </label>
+                    <div className="relative">
+                        <FontAwesomeIcon icon={faLock} className="absolute top-1/2 transform -translate-y-1/2 left-3 text-gray-400" />
+                        <input
+                            type="password"
+                            id="password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            className="shadow appearance-none border rounded w-full py-2 pl-10 pr-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            placeholder="Enter your password"
+                        />
+                    </div>
+                </div>
                 <div className="flex items-center justify-between mb-2">
                     <button
                         className="bg-content hover:bg-content/90 text-secondary font-bold py-2 px-4 rounded transition"
@@ -116,6 +165,6 @@ export const Register: React.FC = () => {
                     </Link>
                 </span>
             </div>
-        </div>
+        </motion.div>
     );
 };

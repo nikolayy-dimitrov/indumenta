@@ -1,6 +1,10 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Mousewheel } from "swiper/modules";
 
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import { containerVariants, textVariants } from "../../utils/framerMotionUtils.ts";
+
 import { howItWorksData } from "../../data/HomePageData.ts";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -11,9 +15,19 @@ import "swiper/css";
 import "swiper/css/mousewheel";
 
 export const HowItWorksScreen = () => {
+    const sectionRef = useRef(null);
+    const isInView = useInView(sectionRef, { once: true });
+
     return (
-        <section id="how-it-works" className="font-Josefin text-primary w-11/12 mx-auto py-16">
-            <h2 className="text-4xl md:text-left max-md:text-center mb-8">Take your style to the next level.</h2>
+        <section ref={sectionRef} id="how-it-works" className="font-Josefin text-primary w-11/12 mx-auto py-16">
+            <motion.h2
+                className="text-4xl md:text-left max-md:text-center mb-8"
+                initial="hidden"
+                animate={isInView ? "visible" : "hidden"}
+                variants={textVariants}
+            >
+                Take your style to the next level.
+            </motion.h2>
 
             <Swiper
                 modules={[Mousewheel]}
@@ -26,7 +40,12 @@ export const HowItWorksScreen = () => {
             >
                 {howItWorksData.map((step, index) => (
                     <SwiperSlide key={index} className="flex flex-col items-center">
-                        <div className="grid md:grid-cols-2 items-center gap-8">
+                        <motion.div
+                            className="grid md:grid-cols-2 items-center gap-8"
+                            initial="hidden"
+                            animate={isInView ? "visible" : "hidden"}
+                            variants={containerVariants}
+                        >
                             {/* Step Text */}
                             <div>
                                 <h3 className="mb-2 text-2xl">Step {step.step}</h3>
@@ -42,7 +61,7 @@ export const HowItWorksScreen = () => {
                                     className="w-full max-w-sm rounded-2xl shadow-md"
                                 />
                             </div>
-                        </div>
+                        </motion.div>
                     </SwiperSlide>
                 ))}
             </Swiper>

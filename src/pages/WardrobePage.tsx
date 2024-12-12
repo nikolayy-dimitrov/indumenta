@@ -9,6 +9,7 @@ import { AuthContext } from "../context/AuthContext";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { toast } from "react-toastify";
+import { motion } from "framer-motion";
 
 interface ClothingItem {
     id: string;
@@ -159,7 +160,7 @@ export const WardrobePage = () => {
             </div>
 
             {clothes.length === 0 ? (
-                <div className="text-center py-12">
+                <div className="flex justify-center items-center text-center h-[500px] font-Josefin">
                     <p className="text-primary/90">
                         Your wardrobe is empty. <br />
                         <Link to="/stylist" className="font-semibold">Start by adding some clothes!</Link>
@@ -167,11 +168,18 @@ export const WardrobePage = () => {
                 </div>
             ) : (
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {sortClothes(clothes).map((item) => (
-                        <div
+                    {sortClothes(clothes).map((item, index) => (
+                        <motion.div
                             key={item.id}
                             className="relative group rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
                             onClick={() => setSelectedImage(item)}
+                            initial={{opacity: 0, y: 20}}
+                            animate={{opacity: 1, y: 0}}
+                            transition={{
+                                duration: 0.6,
+                                ease: "easeOut",
+                                delay: index * 0.2,
+                            }}
                         >
                             <img
                                 src={item.imageUrl}
@@ -179,14 +187,15 @@ export const WardrobePage = () => {
                                 className="w-full h-64 object-cover"
                             />
 
-                            <div className="flex items-start absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div
+                                className="flex items-start absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <div
                                     className="w-4 h-4 rounded-full inline-block mr-2"
-                                    style={{ backgroundColor: item.dominantColor }}
+                                    style={{backgroundColor: item.dominantColor}}
                                 />
-                                    <span className="text-sm">{item.uploadedAt.toDate().toLocaleDateString()}</span>
+                                <span className="text-sm">{item.uploadedAt.toDate().toLocaleDateString()}</span>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             )}

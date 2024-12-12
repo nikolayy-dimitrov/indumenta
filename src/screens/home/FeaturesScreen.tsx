@@ -1,13 +1,30 @@
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { containerVariants, textVariants } from "../../utils/framerMotionUtils.ts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { featuresData } from "../../data/HomePageData.ts";
 
+
 export const Features = () => {
+    const sectionRef = useRef(null);
+    const isInView = useInView(sectionRef, { once: false });
+
     return (
-        <section id="features" className="w-full bg-primary md:-mt-16 max-md:-mt-28 p-16 font-Josefin">
-            <h2 className="text-secondary text-5xl md:text-right max-md:text-center mb-12">
+        <section ref={sectionRef} id="features" className="w-full bg-primary md:-mt-16 max-md:-mt-28 p-16 font-Josefin">
+            <motion.h2
+                className="text-secondary text-5xl md:text-right max-md:text-center mb-12"
+                initial="hidden"
+                animate={isInView ? "visible" : "hidden"}
+                variants={textVariants}
+            >
                 Features.
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+            </motion.h2>
+            <motion.div
+                className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto"
+                initial="hidden"
+                animate={isInView ? "visible" : "hidden"}
+                variants={containerVariants}
+            >
                 {featuresData.map((card, index) => (
                     <div
                         key={index}
@@ -28,16 +45,18 @@ export const Features = () => {
                         </p>
                     </div>
                 ))}
-            </div>
-
-            tsx
-            Copy code
-            <div className="mt-16 text-center">
+            </motion.div>
+            <motion.div
+                className="mt-16 text-center"
+                initial="hidden"
+                animate={isInView ? "visible" : "hidden"}
+                variants={textVariants}
+            >
                 <p className="text-lg italic text-secondary/70">
                     "Style is a way to say who you are without having to speak."
                 </p>
                 <p className="text-sm text-secondary/50 mt-2">— Rachel Zoe</p>
-            </div>
+            </motion.div>
         </section>
     );
 };

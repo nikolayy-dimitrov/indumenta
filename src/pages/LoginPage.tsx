@@ -5,12 +5,31 @@ import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { Link } from "react-router-dom";
 
+import { motion } from 'framer-motion';
+import { containerVariants } from "../utils/framerMotionUtils.ts";
+
 export const Login: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
 
+    const validateInputs = (): boolean => {
+        if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            setError('A valid email is required.');
+            return false;
+        }
+        if (password.length < 6) {
+            setError('Invalid password.');
+            return false;
+        }
+
+        return true;
+    };
+
     const handleEmailLogin = async () => {
+        setError('');
+        if (!validateInputs()) return;
+
         try {
             const auth = getAuth();
             await signInWithEmailAndPassword(auth, email, password);
@@ -21,6 +40,7 @@ export const Login: React.FC = () => {
     };
 
     const handleGoogleLogin = async () => {
+        setError('');
         try {
             const auth = getAuth();
             const provider = new GoogleAuthProvider();
@@ -32,7 +52,12 @@ export const Login: React.FC = () => {
     };
 
     return (
-        <div className="flex items-center justify-center h-screen font-Josefin">
+        <motion.div
+            className="flex items-center justify-center h-screen font-Josefin"
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+        >
             <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
                 <h2 className="text-2xl font-bold mb-4 text-secondary">Welcome to Indumenta</h2>
                 {error &&
@@ -95,6 +120,6 @@ export const Login: React.FC = () => {
                     </Link>
                 </span>
             </div>
-        </div>
+        </motion.div>
     );
 };

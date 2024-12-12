@@ -9,7 +9,7 @@ import { auth } from "../config/firebaseConfig";
 import useMediaQuery from "../utils/useMediaQuery.ts";
 
 export const Navbar = () => {
-    const { user} = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
     const isAboveMediumScreens = useMediaQuery("(min-width: 1060px)");
 
@@ -50,7 +50,9 @@ export const Navbar = () => {
                 {/* User menu */}
                 {user ? (
                     <div className="flex items-center gap-4 z-40">
-                        <h3 className="text-primary">Hello, {user.displayName}</h3>
+                        <h3 className="text-primary">
+                            {user.displayName ? `Welcome, ${user.displayName} ` : 'Welcome to INDUMENTA'}
+                        </h3>
                         <button
                             onClick={handleLogout}
                             className="bg-primary hover:bg-transparent text-secondary hover:text-primary
