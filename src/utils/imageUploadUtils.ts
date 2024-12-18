@@ -30,8 +30,10 @@ export const handleUpload = async (
             const storageRef = ref(storage, `clothes/${user.uid}/${file.name}`);
             await uploadBytes(storageRef, file);
             const imageUrl = await getDownloadURL(storageRef);
+            const modelName = 'dragoneye/fashion';
+            const altModelName = 'dragoneye/footwear';
 
-            const predictionData = await fetchPredictionData(apiUrl, imageUrl, "dragoneye/fashion");
+            const predictionData = await fetchPredictionData(apiUrl, imageUrl, modelName, altModelName);
             const { category, vibe, season, color  } = predictionData[0];
 
             await addDoc(collection(db, "clothes"), {
