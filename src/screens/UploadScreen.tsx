@@ -57,6 +57,7 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
 
         try {
             await handleUpload([image], user, [firstDominantColor!], handleUploadSuccess, handleUploadError);
+            await handleNext();
         } catch (error) {
             console.error("Error during upload:", error);
             setIsLoading(false);
