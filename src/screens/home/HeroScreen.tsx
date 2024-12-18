@@ -9,7 +9,7 @@ import { buttonVariants, containerVariants, textVariants } from "../../utils/fra
 
 export const HeroScreen = () => {
     return (
-        <section id="hero-screen" className="h-screen flex max-md:mt-12 font-Josefin">
+        <section id="hero-screen" className="h-screen flex max-md:pt-12 font-Josefin">
             <AnimatedBackground />
             <motion.div
                 className="md:flex items-center justify-between z-10 w-11/12 mx-auto"
@@ -39,7 +39,7 @@ export const HeroScreen = () => {
                         clothes, and discover new styles effortlessly.
                     </motion.p>
                     <motion.div
-                        className="mt-8"
+                        className="mt-8 max-md:mt-20"
                         variants={buttonVariants}
                     >
                         <Link to={"/wardrobe"}>
@@ -52,7 +52,7 @@ export const HeroScreen = () => {
                     </motion.div>
                 </div>
                 <div
-                    className="scale-x-[-1] relative hover:rotate-2 transition-all duration-300"
+                    className="max-md:hidden scale-x-[-1] relative hover:rotate-2 transition-all duration-300"
                 >
                     <img alt="App Mockup" src={AppMockUp} className="h-auto w-72 md:w-96 object-contain mx-auto" />
                 </div>

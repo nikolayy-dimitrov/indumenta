@@ -25,7 +25,6 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
         setTimeout(() => setIsLoading(value), delayMs);
     };
 
-    // TODO: Clean up clothes count logic
     const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
@@ -65,6 +64,7 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
             setLoadingWithDelay(false, 3000);
         }
     };
+
     useEffect(() => {
         const checkClothesCount = async (): Promise<number> => {
             if (!user) return 0;

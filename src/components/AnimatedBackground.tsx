@@ -38,6 +38,7 @@ export const AnimatedBackground = () => {
                 height: "100%",
                 zIndex: 0,
             }}
+            className="max-md:hidden"
         />
     );
 };
