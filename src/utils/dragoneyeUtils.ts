@@ -3,6 +3,7 @@ export interface PredictionResponse {
     vibe: string | null;
     season: string | null;
     color: string | null;
+    subCategory: string | null;
 }
 
 /**

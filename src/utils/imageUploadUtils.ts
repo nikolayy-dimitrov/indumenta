@@ -34,13 +34,14 @@ export const handleUpload = async (
             const altModelName = 'dragoneye/footwear';
 
             const predictionData = await fetchPredictionData(apiUrl, imageUrl, modelName, altModelName);
-            const { category, vibe, season, color  } = predictionData[0];
+            const { category, vibe, season, color, subCategory  } = predictionData[0];
 
             await addDoc(collection(db, "clothes"), {
                 userId: user.uid,
                 imageUrl,
                 dominantColor: dominantColors[i],
                 category,
+                subCategory,
                 vibe,
                 season,
                 color,
