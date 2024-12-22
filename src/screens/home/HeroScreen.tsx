@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import {motion, useScroll, useTransform} from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 import AppMockUp from "../../assets/HomePage/Indumenta Home screen clean-left.png";
 
@@ -50,10 +50,10 @@ export const HeroScreen = () => {
                 </div>
                 <motion.div
                     style={{ y: yOffset }}
-                    className="basis-1/3 relative z-0 mt-4"
+                    className="basis-1/3 relative z-0 mt-4 flex md:items-center justify-center"
                 >
-                    <motion.img
-                        alt="App Mockup" src={AppMockUp} className="h-auto w-72 md:w-96 object-contain md:mx-auto ml-auto" />
+                    <motion.img alt="App Mockup" src={AppMockUp} className="absolute h-auto w-72 md:w-96" />
+                    <motion.img alt="App Mockup" src={AppMockUp} className="z-[-10] opacity-20 absolute h-auto md:w-96 transform scale-x-[-1] -left-1/3 max-md:hidden" />
                 </motion.div>
             </motion.div>
         </section>
