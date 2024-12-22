@@ -10,7 +10,7 @@ export const Features = () => {
     const isInView = useInView(sectionRef, { once: false });
 
     return (
-        <section ref={sectionRef} id="features" className="w-full bg-primary md:-mt-16 max-md:-mt-28 p-16 font-Josefin">
+        <section ref={sectionRef} id="features" className="z-10 absolute w-full bg-primary md:-mt-16 max-md:-mt-28 p-16 font-Josefin">
             <motion.h2
                 className="text-secondary text-5xl md:text-right max-md:text-center mb-12"
                 initial="hidden"

@@ -1,45 +1,42 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import {motion, useScroll, useTransform} from "framer-motion";
 
-import { AnimatedBackground } from "../../components/AnimatedBackground.tsx";
-
-import AppMockUp from "../../assets/iphone-mockup-perspective.png";
+import AppMockUp from "../../assets/HomePage/Indumenta Home screen clean-left.png";
 
 import { buttonVariants, containerVariants, textVariants } from "../../utils/framerMotionUtils.ts";
 
 export const HeroScreen = () => {
+    const { scrollY } = useScroll();
+    const yOffset = useTransform(scrollY, [0, 800], [0, 80]);
+
     return (
-        <section id="hero-screen" className="h-screen flex max-md:pt-12 font-Josefin">
-            <AnimatedBackground />
+        <section id="hero-screen" className="h-screen flex max-md:pt-12 font-Josefin bg-gradient-to-b from-secondary to-black/40">
             <motion.div
-                className="md:flex items-center justify-between z-10 w-11/12 mx-auto"
+                className="md:flex items-center justify-between w-11/12 mx-auto"
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
             >
-                <div className="z-10">
+                <div className="z-10 basis-1/2">
                     <motion.h1
-                        className="font-extrabold text-6xl leading-tight"
+                        className="font-semibold md:text-7xl max-md:text-6xl flex flex-col"
                         variants={textVariants}
                     >
-                        Your Virtual Wardrobe,<br />
-                        <span className="text-content">Redefined.</span>
+                        <span className="text-left">Your</span>
+                        <span className="md:text-center">Virtual Wardrobe,</span>
+                        <div className="flex flex-col">
+                            <span className="text-right text-content font-extrabold transform">Redefined.</span>
+                            <span className="text-right text-content opacity-10 font-extrabold transform scale-y-[-1] -mt-6">Redefined.</span>
+                        </div>
                     </motion.h1>
                     <motion.h2
-                        className="text-lg text-content/70 italic"
+                        className="text-xl text-content/50 italic mt-12 flex items-center max-md:justify-center"
                         variants={textVariants}
                     >
                         Your Personal Wardrobe Assistant.
                     </motion.h2>
-                    <motion.p
-                        className="mt-4 sm:mt-6 text-lg sm:text-xl text-primary max-w-3xl mx-auto"
-                        variants={textVariants}
-                    >
-                        Welcome to <span className="font-bold">Indumenta</span>, the AI-driven wardrobe assistant that helps you plan outfits, organize
-                        clothes, and discover new styles effortlessly.
-                    </motion.p>
                     <motion.div
-                        className="mt-8 max-md:mt-20"
+                        className="mt-8 max-md:mt-20 flex items-center max-md:justify-center"
                         variants={buttonVariants}
                     >
                         <Link to={"/wardrobe"}>
@@ -51,11 +48,13 @@ export const HeroScreen = () => {
                         </Link>
                     </motion.div>
                 </div>
-                <div
-                    className="max-md:hidden scale-x-[-1] relative hover:rotate-2 transition-all duration-300"
+                <motion.div
+                    style={{ y: yOffset }}
+                    className="basis-1/3 relative z-0 mt-4"
                 >
-                    <img alt="App Mockup" src={AppMockUp} className="h-auto w-72 md:w-96 object-contain mx-auto" />
-                </div>
+                    <motion.img
+                        alt="App Mockup" src={AppMockUp} className="h-auto w-72 md:w-96 object-contain md:mx-auto ml-auto" />
+                </motion.div>
             </motion.div>
         </section>
     );
