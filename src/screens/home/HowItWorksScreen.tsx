@@ -45,7 +45,7 @@ export const HowItWorksScreen = () => {
         <section
             ref={sectionRef}
             id="how-it-works"
-            className="font-Josefin text-primary w-11/12 mx-auto py-16 mt-20 max-md:pt-96 max-md:mt-80"
+            className="font-Josefin text-primary w-11/12 mx-auto py-16"
         >
             <motion.h2
                 className="text-4xl md:text-left max-md:text-center mb-8"
