@@ -11,7 +11,6 @@ export const Home = () => {
         <section id="home">
             <HeroScreen />
             <Features />
-            {/*<TestimonialScreen />*/}
             <HowItWorksScreen />
             <FaqScreen />
             <TechnologiesScreen />

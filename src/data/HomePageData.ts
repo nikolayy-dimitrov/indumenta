@@ -1,17 +1,12 @@
 import { CardData } from "./interfaces/common/CardData.ts";
-import { TestimonialScreen } from "./interfaces/screens/TestimonialScreen.ts";
 import { HowItWorksScreen } from "./interfaces/screens/HowItWorksScreen.ts";
 
 import { faShirt } from "@fortawesome/free-solid-svg-icons/faShirt";
 import { faSquareCaretUp, faWandMagicSparkles } from "@fortawesome/free-solid-svg-icons";
 
-import TestimonialOne from "../assets/HomePage/testimonialUserOne.jpg";
-import TestimonialTwo from "../assets/HomePage/testimonialUserTwo.jpg";
-import TestimonialThree from "../assets/HomePage/testimonialUserThree.jpg";
-
-import UploadScreen from "../assets/HomePage/UploadScreen.png";
-import WardrobeImage from "../assets/HomePage/WardrobeImage.jpeg";
-import OutfitDisplayScreen from "../assets/HomePage/OutfitDisplayScreen.png";
+import UploadScreen from "../assets/HomePage/UploadScreenDark-portrait.png";
+import WardrobeImage from "../assets/HomePage/WardrobeScreenDark-portrait.png";
+import OutfitDisplayScreen from "../assets/HomePage/OutfitDisplayDark-portrait.png";
 
 export const featuresData: CardData[] = [
     {
@@ -29,24 +24,6 @@ export const featuresData: CardData[] = [
         description: "Quickly upload photos of your clothes for automatic classification and organization.",
         icon: faSquareCaretUp,
     }
-]
-
-export const testimonialsData: TestimonialScreen[] = [
-    {
-        name: '— Alex Johnson',
-        quote: '"Indumenta revolutionized the way I organize my wardrobe!"',
-        portrait: TestimonialOne,
-    },
-    {
-        name: '— Maria Lopez',
-        quote: '"The AI outfit suggestions are spot on. Love it!"',
-        portrait: TestimonialTwo,
-    },
-    {
-        name: '— Chris Taylor',
-        quote: '"A must-have for anyone who loves fashion."',
-        portrait: TestimonialThree,
-    },
 ]
 
 export const howItWorksData: HowItWorksScreen[] = [

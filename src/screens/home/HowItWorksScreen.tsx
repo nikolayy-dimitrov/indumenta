@@ -63,7 +63,7 @@ export const HowItWorksScreen = () => {
                 {howItWorksData.map((step, index) => (
                     <motion.div
                         key={index}
-                        className="min-h-[650px] max-md:min-h-screen py-8"
+                        className="pt-4"
                         style={{
                             opacity: transformValues[index].opacity,
                             y: transformValues[index].yOffset,
