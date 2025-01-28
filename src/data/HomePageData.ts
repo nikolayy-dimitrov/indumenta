@@ -4,8 +4,8 @@ import { HowItWorksScreen } from "./interfaces/screens/HowItWorksScreen.ts";
 import { faShirt } from "@fortawesome/free-solid-svg-icons/faShirt";
 import { faSquareCaretUp, faWandMagicSparkles } from "@fortawesome/free-solid-svg-icons";
 
-import UploadScreen from "../assets/HomePage/UploadScreenDark-portrait.png";
-import WardrobeImage from "../assets/HomePage/WardrobeScreenDark-portrait.png";
+import UploadScreen from "../assets/HomePage/UploadScreenDarkNewCenter.png";
+import WardrobeImage from "../assets/HomePage/WardrobeClothesDarkCenter.png";
 import OutfitDisplayScreen from "../assets/HomePage/OutfitDisplayDark-portrait.png";
 
 export const featuresData: CardData[] = [

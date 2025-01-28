@@ -29,7 +29,7 @@ export const Features = () => {
                     <div
                         key={index}
                         className="group flex flex-col items-center
-                        text-center bg-secondary text-primary rounded-lg px-8 py-32
+                        text-center bg-secondary text-primary rounded-lg px-8 py-32 max-h-[458px]
                         shadow-xl shadow-secondary rounded-t-[120px]
                         transition-all duration-300 hover:bg-primary hover:text-secondary
                         hover:scale-95 hover:border-2 border-secondary -rotate-12"

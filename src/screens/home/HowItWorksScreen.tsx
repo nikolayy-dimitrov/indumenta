@@ -92,7 +92,7 @@ export const HowItWorksScreen = () => {
                                 <img
                                     src={step.image}
                                     alt={step.stepLabel}
-                                    className="w-full max-w-sm rounded-2xl shadow-md"
+                                    className="w-full max-w-sm"
                                 />
                             </div>
                         </motion.div>
