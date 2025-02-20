@@ -10,9 +10,12 @@ export const Features = () => {
     const isInView = useInView(sectionRef, { once: false });
 
     return (
-        <section ref={sectionRef} id="features" className="z-10 relative w-full bg-primary md:-mt-16 max-md:-mt-28 py-16 px-12 font-Josefin">
+        <section ref={sectionRef}
+                 id="features"
+                 className="z-10 relative w-full md:-mt-16 max-md:-mt-28 py-16 px-12
+                 font-Josefin bg-gradient-to-b from-[#0f0f10] to-secondary">
             <motion.h2
-                className="text-secondary text-5xl md:text-right max-md:text-center mb-12"
+                className="text-primary text-5xl md:text-right max-md:text-center mb-12"
                 initial="hidden"
                 animate={isInView ? "visible" : "hidden"}
                 variants={textVariants}
