@@ -18,7 +18,7 @@ export const HeroScreen = () => {
     return (
         <section id="hero-screen" className="h-screen flex items-center justify-center font-Josefin bg-gradient-to-b from-secondary to-[#0f0f10] px-6">
             <motion.div
-                className="flex flex-col md:flex-row items-center justify-center text-center relative w-full max-w-5xl mx-auto"
+                className="flex flex-col md:flex-row items-center justify-center text-center relative w-10/12 max-w-5xl mx-auto"
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
@@ -58,7 +58,7 @@ export const HeroScreen = () => {
                     style={{y: yOffset}}
                     alt="App Mockup"
                     src={AppMockupCentral}
-                    className="z-20 md:absolute md:w-[30%] max-w-[80%] top-0"
+                    className="z-20 md:absolute md:w-[30%] max-md:w-[80%] top-0"
                 />
                 {/* Mockup Images */}
                 <motion.div
