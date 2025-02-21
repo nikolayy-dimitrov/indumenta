@@ -1,6 +1,6 @@
 import { useRef, useMemo } from "react";
 import { motion, useScroll, useTransform, useInView, MotionValue } from "framer-motion";
-import { containerVariants, textVariants } from "../../utils/framerMotionUtils";
+import { containerVariants } from "../../utils/framerMotionUtils";
 import { howItWorksData } from "../../data/HomePageData";
 
 const useStepAnimation = (scrollYProgress: MotionValue<number>, index: number, totalSteps: number) => {
@@ -45,20 +45,11 @@ export const HowItWorksScreen = () => {
         <section
             ref={sectionRef}
             id="how-it-works"
-            className="font-Josefin text-primary w-11/12 mx-auto py-16"
+            className="bg-gradient-to-t from-transparent from-60% via-primary-blue/20 via-100% to-secondary w-full h-full mx-auto font-Josefin text-primary py-16 mt-12"
         >
-            <motion.h2
-                className="text-4xl md:text-left max-md:text-center mb-8"
-                initial="hidden"
-                animate={isInView ? "visible" : "hidden"}
-                variants={textVariants}
-            >
-                Take your style to the next level.
-            </motion.h2>
-
             <div
                 ref={containerRef}
-                className="relative"
+                className="relative w-11/12 mx-auto"
             >
                 {howItWorksData.map((step, index) => (
                     <motion.div

@@ -1,68 +1,86 @@
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
-import { containerVariants, textVariants } from "../../utils/framerMotionUtils.ts";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import React, { useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { featuresData } from "../../data/HomePageData.ts";
+import { FeatureScreenProps } from "../../data/interfaces/screens/FeatureScreen.ts";
+import useMediaQuery from "../../utils/useMediaQuery.ts";
 
+const FeatureCard: React.FC<FeatureScreenProps> = ({ card, index, scrollY }) => {
+    const isMobile = useMediaQuery("(max-width: 768px)");
 
-export const Features = () => {
-    const sectionRef = useRef(null);
-    const isInView = useInView(sectionRef, { once: false });
+    const start = 500 + index * 50;
+    const end = start + 300;
+    const initialY = index < 1 ? -20 : 20;
+
+    const opacity = useTransform(scrollY, [start, end], [0.1, 1]);
+    const rawY = useTransform(scrollY, [start, end], [initialY, 0]);
+    const y = useSpring(rawY, { stiffness: 60, damping: 30 });
+
+    const gradientDirection = index % 6 < 3 ? "bg-gradient-to-b" : "bg-gradient-to-t";
+    const cardPosition = isMobile
+        ? index % 2 === 1 ? -40 : 40
+        : index % 3 === 1 ? 100 : index % 3 === 0 ? -50 : -100;
 
     return (
-        <section ref={sectionRef}
-                 id="features"
-                 className="z-10 relative w-full md:-mt-16 max-md:-mt-28 py-16 px-12
-                 font-Josefin bg-gradient-to-b from-[#0f0f10] to-secondary">
-            <motion.h2
-                className="text-primary text-5xl md:text-right max-md:text-center mb-12"
-                initial="hidden"
-                animate={isInView ? "visible" : "hidden"}
-                variants={textVariants}
-            >
-                Features.
-            </motion.h2>
-            <motion.div
-                className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto"
-                initial="hidden"
-                animate={isInView ? "visible" : "hidden"}
-                variants={containerVariants}
-            >
-                {featuresData.map((card, index) => (
-                    <div
-                        key={index}
-                        className="group flex flex-col items-center
-                        text-center bg-secondary text-primary rounded-lg px-8 py-32 max-h-[458px]
-                        shadow-xl shadow-secondary rounded-t-[120px]
-                        transition-all duration-300 hover:bg-primary hover:text-secondary
-                        hover:scale-95 hover:border-2 border-secondary -rotate-12"
+        <motion.div
+            style={{ opacity, y, translateY: cardPosition }}
+            className={`${gradientDirection} from-primary-blue/40 to-primary/80 flex flex-col items-center justify-center py-24 rounded-3xl transform`}
+        >
+            <div className="text-secondary">
+                <FontAwesomeIcon icon={card.icon!} size="2x" />
+            </div>
+            <h3 className="text-secondary">{card.title}</h3>
+        </motion.div>
+    );
+};
+
+export const Features = () => {
+    const sectionRef = useRef<HTMLElement>(null);
+
+    const { scrollYProgress } = useScroll({
+        target: sectionRef,
+        offset: ["start end", "end start"],
+    });
+    const { scrollY } = useScroll();
+
+    const topHeadingOpacity = useTransform(scrollYProgress, [0.45, 0.55], [0, 1]);
+    const topHeadingX = useTransform(scrollYProgress, [0.45, 0.55], [-200, -25]);
+
+    const botHeadingOpacity = useTransform(scrollYProgress, [0.55, 0.65], [0, 1]);
+    const botHeadingX = useTransform(scrollYProgress, [0.55, 0.65], [200, 0]);
+
+    return (
+        <section
+            ref={sectionRef}
+            id="features"
+            className="relative min-h-[300vh] bg-gradient-to-b from-[#0f0f10] to-secondary px-12 py-12 font-Josefin"
+        >
+            <div className="absolute left-0 overflow-hidden w-full h-full
+            bg-gradient-to-b from-transparent from-50% via-primary-blue/20 via-100% to-secondary"></div>
+            <div className="sticky top-0 h-screen flex items-center justify-center">
+                {/* Cards grid */}
+                <motion.div className="grid grid-cols-2 md:grid-cols-3 gap-4 lg:w-1/2 max-lg:w-2/3 max-md:w-full mx-auto">
+                    {featuresData.map((card, index) => (
+                        <FeatureCard key={index} card={card} index={index} scrollY={scrollY} />
+                    ))}
+                </motion.div>
+
+                <div className="overflow-hidden absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                    <motion.h1
+                        style={{ opacity: topHeadingOpacity, x: topHeadingX }}
+                        className="text-8xl max-md:text-6xl font-extrabold text-primary text-center"
                     >
-                        <div className="w-4 h-4 bg-primary rounded-full top-4 absolute group-hover:bg-secondary/80"></div>
-                        <div
-                            className="bg-primary text-secondary w-16 h-16 flex items-center justify-center rounded-full mb-4 transition-colors duration-300 group-hover:bg-secondary group-hover:text-primary">
-                            <FontAwesomeIcon icon={card.icon!} size="2x"/>
-                        </div>
-                        <h3 className="text-xl font-semibold mb-2 transition-colors duration-300 group-hover:text-secondary">
-                            {card.title}
-                        </h3>
-                        <span className="w-11/12 bg-primary/80 h-0.5 my-3 group-hover:bg-secondary"></span>
-                        <p className="text-sm text-primary/70 transition-colors duration-300 group-hover:text-secondary/70">
-                            {card.description}
-                        </p>
-                    </div>
-                ))}
-            </motion.div>
-            <motion.div
-                className="mt-16 text-center"
-                initial="hidden"
-                animate={isInView ? "visible" : "hidden"}
-                variants={textVariants}
-            >
-                <p className="text-lg italic text-secondary/70">
-                    "Style is a way to say who you are without having to speak."
-                </p>
-                <p className="text-sm text-secondary/50 mt-2">— Rachel Zoe</p>
-            </motion.div>
+                        Features
+                    </motion.h1>
+                    <motion.h2
+                        style={{ opacity: botHeadingOpacity, x: botHeadingX }}
+                        className="text-8xl max-md:text-6xl font-extrabold text-primary text-center"
+                    >
+                        Features
+                    </motion.h2>
+                </div>
+            </div>
         </section>
     );
 };

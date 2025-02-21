@@ -23,6 +23,21 @@ export const featuresData: CardData[] = [
         title: "Easy Uploads",
         description: "Quickly upload photos of your clothes for automatic classification and organization.",
         icon: faSquareCaretUp,
+    },
+    {
+        title: "Organized Closet",
+        description: "Effortlessly manage your wardrobe with categorized clothing for seasons, styles, and occasions.",
+        icon: faShirt,
+    },
+    {
+        title: "AI Outfit Suggestions",
+        description: "Get personalized outfit ideas tailored to your wardrobe and preferences, powered by AI.",
+        icon: faWandMagicSparkles,
+    },
+    {
+        title: "Easy Uploads",
+        description: "Quickly upload photos of your clothes for automatic classification and organization.",
+        icon: faSquareCaretUp,
     }
 ]
 
