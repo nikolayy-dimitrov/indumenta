@@ -25,13 +25,20 @@ export const FaqScreen = () => {
                     <span>{isOpen ? '−' : '+'}</span>
                 </div>
                 {isOpen && (
-                    <div className="pt-2 md:text-lg max-md:text-sm font-normal col-span-2 text-primary/70">
+                    <motion.div
+                        key="content"
+                        initial={{opacity: 0, height: 0}}
+                        animate={{opacity: 1, height: "auto"}}
+                        exit={{opacity: 0, height: 0}}
+                        transition={{duration: 0.4, ease: "easeInOut"}}
+                        className="pt-2 md:text-lg max-md:text-sm font-normal text-primary/70 overflow-hidden"
+                    >
                         {description}
-                    </div>
+                    </motion.div>
                 )}
             </div>
         )
-    }
+    };
 
     return (
         <section ref={sectionRef} id="faq" className="w-11/12 mx-auto font-Josefin py-16">
