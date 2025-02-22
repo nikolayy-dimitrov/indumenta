@@ -10,7 +10,7 @@ const useStepAnimation = (scrollYProgress: MotionValue<number>, index: number, t
         [0, 1]
     );
 
-    const yOffset = useTransform(stepProgress, [0, 1], [100, 0]);
+    const yOffset = useTransform(stepProgress, [0, 1], [0, 0]);
     const opacity = useTransform(
         stepProgress,
         [0, 0.2, 0.8, 1],
@@ -30,7 +30,6 @@ export const HowItWorksScreen = () => {
         offset: ["start end", "end start"]
     });
 
-    // Create individual hooks for each step
     const step0 = useStepAnimation(scrollYProgress, 0, howItWorksData.length);
     const step1 = useStepAnimation(scrollYProgress, 1, howItWorksData.length);
     const step2 = useStepAnimation(scrollYProgress, 2, howItWorksData.length);
@@ -57,10 +56,8 @@ export const HowItWorksScreen = () => {
                         className="pt-4"
                         style={{
                             opacity: transformValues[index].opacity,
-                            y: transformValues[index].yOffset,
                             position: "sticky",
                             top: "0%",
-                            transform: "translateY(-50%)"
                         }}
                     >
                         <motion.div
@@ -71,11 +68,10 @@ export const HowItWorksScreen = () => {
                         >
                             {/* Step Text */}
                             <div>
-                                <h3 className="mb-2 text-2xl">Step {step.step}</h3>
                                 <h4 className="text-3xl font-semibold md:text-4xl mb-4">
                                     {step.stepLabel}
                                 </h4>
-                                <p className="text-lg">{step.description}</p>
+                                <p className="text-md">{step.description}</p>
                             </div>
 
                             {/* Step Image */}
