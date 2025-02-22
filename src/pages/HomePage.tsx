@@ -2,7 +2,6 @@ import { HeroScreen } from "../screens/home/HeroScreen.tsx";
 import { Features } from "../screens/home/FeaturesScreen.tsx";
 import { HowItWorksScreen } from "../screens/home/HowItWorksScreen.tsx";
 import { FaqScreen } from "../screens/home/FaqScreen.tsx";
-import { TechnologiesScreen } from "../screens/home/TechnologiesScreen.tsx";
 
 import { Footer } from "../components/Footer.tsx";
 
@@ -13,7 +12,7 @@ export const Home = () => {
             <Features />
             <HowItWorksScreen />
             <FaqScreen />
-            <TechnologiesScreen />
+            {/*<TechnologiesScreen />*/}
             <Footer />
         </section>
     );

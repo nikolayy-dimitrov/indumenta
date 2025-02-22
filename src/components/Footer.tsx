@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export const Footer = () => {
     return (
-        <footer className="bg-primary text-secondary py-8 font-Josefin">
+        <footer className="bg-gradient-to-t from-primary/5 to-secondary to-60% text-primary py-12 font-Josefin">
             <div className="container mx-auto px-4">
                 {/* Top Section */}
                 <div className="grid md:grid-cols-3 gap-8 items-center">
@@ -22,7 +22,7 @@ export const Footer = () => {
                     </div>
 
                     {/* Social Media Links */}
-                    <div className="flex justify-center md:justify-end gap-4 text-secondary">
+                    <div className="flex justify-center md:justify-end gap-4 text-primary">
                         <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
                             <FontAwesomeIcon icon={faFacebook} size={"xl"} />
                         </a>
