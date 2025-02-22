@@ -4,4 +4,5 @@ export interface CardData {
     icon?: IconProp;
     title?: string;
     description?: string;
+    backgroundImage?: string;
 }

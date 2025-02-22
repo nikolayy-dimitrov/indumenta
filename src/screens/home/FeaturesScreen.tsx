@@ -11,26 +11,29 @@ const FeatureCard: React.FC<FeatureScreenProps> = ({ card, index, scrollY }) => 
 
     const start = 500 + index * 50;
     const end = start + 300;
-    const initialY = index < 1 ? -20 : 20;
+    const initialY = index < 1 ? -100 : 100;
 
-    const opacity = useTransform(scrollY, [start, end], [0.1, 1]);
+    const opacity = useTransform(scrollY, [start, end], [0, 1]);
     const rawY = useTransform(scrollY, [start, end], [initialY, 0]);
     const y = useSpring(rawY, { stiffness: 60, damping: 30 });
 
-    const gradientDirection = index % 6 < 3 ? "bg-gradient-to-b" : "bg-gradient-to-t";
     const cardPosition = isMobile
         ? index % 2 === 1 ? -40 : 40
         : index % 3 === 1 ? 100 : index % 3 === 0 ? -50 : -100;
 
     return (
         <motion.div
-            style={{ opacity, y, translateY: cardPosition }}
-            className={`${gradientDirection} from-primary-blue/40 to-primary/80 flex flex-col items-center justify-center py-24 rounded-3xl transform`}
+            style={{ opacity, y, translateY: cardPosition, backgroundImage: `linear-gradient(to bottom, rgba(69,182,254,0.4), rgba(248,233,213,0.8)), url(${card.backgroundImage})` }}
+            className={"bg-cover bg-center bg-blend-multiply flex flex-col items-center justify-center py-32 px-1 rounded-3xl transform"}
         >
-            <div className="text-secondary">
-                <FontAwesomeIcon icon={card.icon!} size="2x" />
-            </div>
-            <h3 className="text-secondary">{card.title}</h3>
+            {!card.backgroundImage &&
+                <div className="flex flex-col items-center justify-center">
+                    <div className="text-secondary">
+                        <FontAwesomeIcon icon={card.icon!} size="2x" />
+                    </div>
+                    <h3 className="text-secondary text-center text-sm">{card.title}</h3>
+                </div>
+            }
         </motion.div>
     );
 };
@@ -46,9 +49,11 @@ export const Features = () => {
 
     const topHeadingOpacity = useTransform(scrollYProgress, [0.45, 0.55], [0, 1]);
     const topHeadingX = useTransform(scrollYProgress, [0.45, 0.55], [-200, -25]);
+    const topHeadingBlur = useTransform(scrollYProgress, [0.45, 0.55], ["blur(10px)", "blur(0px)"]);
 
     const botHeadingOpacity = useTransform(scrollYProgress, [0.55, 0.65], [0, 1]);
     const botHeadingX = useTransform(scrollYProgress, [0.55, 0.65], [200, 0]);
+    const botHeadingBlur = useTransform(scrollYProgress, [0.55, 0.65], ["blur(10px)", "blur(0px)"]);
 
     return (
         <section
@@ -66,18 +71,18 @@ export const Features = () => {
                     ))}
                 </motion.div>
 
-                <div className="overflow-hidden absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                <div className="overflow-hidden absolute inset-0 flex flex-col items-center justify-center pointer-events-none drop-shadow-lg">
                     <motion.h1
-                        style={{ opacity: topHeadingOpacity, x: topHeadingX }}
-                        className="text-8xl max-md:text-6xl font-extrabold text-primary text-center"
+                        style={{ opacity: topHeadingOpacity, x: topHeadingX, filter: topHeadingBlur }}
+                        className="text-8xl max-md:text-6xl font-extrabold text-primary text-left ml-8 uppercase -tracking-wider leading-tight"
                     >
-                        Features
+                        Your Closet
                     </motion.h1>
                     <motion.h2
-                        style={{ opacity: botHeadingOpacity, x: botHeadingX }}
-                        className="text-8xl max-md:text-6xl font-extrabold text-primary text-center"
+                        style={{ opacity: botHeadingOpacity, x: botHeadingX, filter: botHeadingBlur }}
+                        className="text-8xl max-md:text-6xl font-extrabold text-primary md:ml-32 max-md:ml-6 uppercase -tracking-wider leading-tight"
                     >
-                        Features
+                        Smarter .
                     </motion.h2>
                 </div>
             </div>

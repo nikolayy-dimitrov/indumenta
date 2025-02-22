@@ -8,36 +8,49 @@ import UploadScreen from "../assets/HomePage/UploadScreenDarkNewCenter.png";
 import WardrobeImage from "../assets/HomePage/WardrobeClothesDarkCenter.png";
 import OutfitDisplayScreen from "../assets/HomePage/OutfitDisplayDark-portrait.png";
 
+import OrganizerImage from "../assets/HomePage/Organizer_Card.jpg";
+import OutfitRecipeImage from "../assets/HomePage/Outfit_recipe.jpg";
+import MatchingColorsImage from "../assets/HomePage/Matching_colors.jpg";
+import WardrobeRoomImage from "../assets/HomePage/Wardrobe_room.jpg";
+import PhoneAccessImage from "../assets/HomePage/Phone_access.jpg";
+import ButtonStoreImage from "../assets/HomePage/Button_store.jpg";
+
 export const featuresData: CardData[] = [
     {
-        title: "Organized Closet",
+        title: "AI Closet Organizer",
         description: "Effortlessly manage your wardrobe with categorized clothing for seasons, styles, and occasions.",
         icon: faShirt,
+        backgroundImage: OrganizerImage,
     },
     {
-        title: "AI Outfit Suggestions",
+        title: "Instant Outfit Recipes",
         description: "Get personalized outfit ideas tailored to your wardrobe and preferences, powered by AI.",
         icon: faWandMagicSparkles,
+        backgroundImage: OutfitRecipeImage,
     },
     {
-        title: "Easy Uploads",
+        title: "Smart Color Matching",
         description: "Quickly upload photos of your clothes for automatic classification and organization.",
         icon: faSquareCaretUp,
+        backgroundImage: MatchingColorsImage,
     },
     {
-        title: "Organized Closet",
+        title: "Seamless Wardrobe Sync",
         description: "Effortlessly manage your wardrobe with categorized clothing for seasons, styles, and occasions.",
         icon: faShirt,
+        backgroundImage: WardrobeRoomImage,
     },
     {
-        title: "AI Outfit Suggestions",
+        title: "Anywhere Style Access",
         description: "Get personalized outfit ideas tailored to your wardrobe and preferences, powered by AI.",
         icon: faWandMagicSparkles,
+        backgroundImage: PhoneAccessImage,
     },
     {
-        title: "Easy Uploads",
+        title: "One-Click Outfit Magic",
         description: "Quickly upload photos of your clothes for automatic classification and organization.",
         icon: faSquareCaretUp,
+        backgroundImage: ButtonStoreImage,
     }
 ]
 
