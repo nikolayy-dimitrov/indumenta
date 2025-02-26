@@ -21,7 +21,7 @@ export const NotFoundPage = () => {
                 </p>
                 <Link
                     to="/">
-                    <span className="bg-content/90 hover:bg-content/60 text-secondary font-bold py-3 px-6 rounded-lg transition duration-300">
+                    <span className="bg-gradient-to-br from-primary-blue to-primary text-secondary font-semibold border border-primary py-2 px-6 rounded-xl transition duration-300 hover:opacity-80 w-full">
                         Go Back Home
                     </span>
                 </Link>
