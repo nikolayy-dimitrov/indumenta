@@ -68,7 +68,7 @@ export const Navbar = () => {
                 )}
                 </>
             ) : (
-                <div className="block cursor-pointer z-40" onClick={toggleMenu}>
+                <div className="block z-40" onClick={toggleMenu}>
                     <div
                         className={`relative w-[30px] h-[20px] z-40 transform transition-transform duration-500 ease-in-out ${
                             isMenuToggled ? "rotate-0" : ""
@@ -92,7 +92,7 @@ export const Navbar = () => {
                     </div>
                 </div>
             )}
-            {/*TODO:FINISH MOBILE MENU MODAL */}
+
             {/* MOBILE MENU */}
             <AnimatePresence>
                 {!isAboveMediumScreens && isMenuToggled && (
@@ -101,11 +101,11 @@ export const Navbar = () => {
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: -100, opacity: 0 }}
                         transition={{ duration: 0.5 }}
-                        className="fixed top-20 z-30 w-10/12 p-8
-            bg-primary/70 backdrop-blur text-primary rounded-xl"
+                        className="fixed top-20 z-30 w-10/12 h-[50vh] flex flex-col items-center justify-center
+            bg-secondary/80 backdrop-blur rounded-3xl"
                     >
-                        <div className="flex flex-col items-center justify-center gap-4
-                         text-secondary text-3xl font-extrabold">
+                        <div className="flex flex-col items-center justify-center gap-16
+                         text-primary text-3xl font-normal">
                             <Link to="/">
                                 <button onClick={toggleMenu}>
                                     Home
@@ -121,23 +121,16 @@ export const Navbar = () => {
                                     Wardrobe
                                 </button>
                             </Link>
-                            <Link to="/">
-                                <button onClick={toggleMenu}>
-                                    Contact
-                                </button>
-                            </Link>
                             {!user ? (
-                                <Link to="/login"
-                                      className="bg-secondary rounded-lg py-1.5 px-12 text-primary font-medium text-lg"
-                                >
+                                <Link to="/sign-in">
                                     <button onClick={toggleMenu}>
-                                        Login
+                                        Sign In
                                     </button>
                                 </Link>
                             ) : (
                                 <span
                                     onClick={handleLogout}
-                                    className="text-content drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                                    className="text-content">
                                     Logout
                                 </span>
                             )}
