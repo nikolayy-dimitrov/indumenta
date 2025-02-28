@@ -32,7 +32,7 @@ export const HeroScreen = () => {
                             to="/sign-up"
                             className="bg-gradient-to-br from-primary-blue to-primary/80 to-80% rounded-xl
                              border border-primary/50
-                             text-secondary font-light tracking-wide py-2 px-4"
+                             text-secondary font-light tracking-wide py-2 px-4 transition duration-300 active:scale-95"
                         >
                             Join Now
                         </Link>
@@ -40,7 +40,7 @@ export const HeroScreen = () => {
                             to="/stylist"
                             className="bg-gradient-to-br from-primary-blue to-primary/80 to-80% rounded-xl
                             border border-primary/50
-                            text-secondary font-light tracking-wide py-2 px-4"
+                            text-secondary font-light tracking-wide py-2 px-4 transition duration-300 active:scale-95"
                         >
                             Get Styled
                         </Link>

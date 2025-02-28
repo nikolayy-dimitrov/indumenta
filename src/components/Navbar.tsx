@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { AuthContext } from "../context/AuthContext";
 import { signOut } from 'firebase/auth';
@@ -29,23 +29,38 @@ export const Navbar = () => {
     };
 
     return (
-        <nav className="md:w-11/12 mx-auto z-40 py-4 px-8 font-Josefin text-gray-500 flex justify-between items-center">
+        <nav className="md:w-11/12 mx-auto relative flex items-center justify-between py-4 px-8 font-Josefin text-gray-200">
             {/* Logo */}
-            <Link to="/" className="z-40">
+            <Link to="/" className="z-40 transition duration-300 active:scale-90">
                 {/*<img src={Logo} alt="logo" className="max-w-44 hover:opacity-85" />*/}
 
-                <span className="text-primary/70 transition duration-300 hover:text-primary text-2xl font-extrabold">
+                <span className="transition duration-300 hover:text-primary text-2xl font-extrabold">
                     INDUMENTA
                 </span>
             </Link>
             {/* Main menu */}
             {isAboveMediumScreens ? (
                 <>
-                <div className="flex gap-4 font-semibold z-40">
-                    <Link to="/" className="hover:text-primary/90">Home</Link>
-                    <Link to="/stylist" className="hover:text-primary/90">Stylist</Link>
-                    <Link to="/wardrobe" className="hover:text-primary/90">Wardrobe</Link>
-                    <Link to="/contact" className="hover:text-primary/90">Contact</Link>
+                <div className="absolute left-1/2 transform -translate-x-1/2 flex gap-8 font-semibold z-40">
+                    <NavLink to="/stylist"
+                             className={({ isActive }) =>
+                        `${isActive && "text-primary/20"} transition duration-300 active:scale-90 hover:text-primary/90 text-sm uppercase tracking-wide`
+                    }>
+                        Stylist
+                    </NavLink>
+                    <NavLink to="/"
+                             className={({ isActive }) =>
+                        `${isActive && "text-primary/20"} transition duration-300 active:scale-90 hover:text-primary/90 text-sm uppercase tracking-wide border-x border-primary/20 px-8`
+                    }>
+                        Home
+                    </NavLink>
+                    <NavLink to="/wardrobe"
+                             className={({ isActive }) =>
+                        `${isActive && "text-primary/20"} transition duration-300 active:scale-90 hover:text-primary/90 text-sm uppercase tracking-wide`
+                    }>
+                        Wardrobe
+                    </NavLink>
+                    {/*<Link to="/contact" className="hover:text-primary/90">Contact</Link>*/}
                 </div>
                 {/* User menu */}
                 {user ? (
