@@ -85,7 +85,7 @@ export const WardrobePage = () => {
     if (!user) {
         return (
             <div className="flex justify-center items-center h-screen font-Josefin">
-                <Link to="/login">Please log in to view your wardrobe.</Link>
+                <Link to="/sign-in">Please log in to view your wardrobe.</Link>
             </div>
         );
     }

@@ -23,4 +23,4 @@ export const handleAnonymousLogin = async () => {
     } catch (err) {
         setError((err as Error).message);
     }
-}
+};

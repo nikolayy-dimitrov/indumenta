@@ -140,7 +140,7 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
                 </div>
             ) : (
                 <div className="flex justify-center items-center h-screen w-9/12">
-                    <Link to="/login" className="text-2xl text-center">
+                    <Link to="/sign-in" className="text-2xl text-center">
                         Login to begin uploading clothes to your wardrobe.
                     </Link>
                 </div>

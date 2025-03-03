@@ -46,7 +46,7 @@ export const EmailSignUp: React.FC = () => {
             const auth = getAuth();
             const userCredential: UserCredential = await createUserWithEmailAndPassword(auth, email, password);
             console.log('User registered:', userCredential.user);
-            window.location.href = '/login';
+            window.location.href = '/sign-in';
         } catch (err) {
             setError((err as Error).message);
         }
