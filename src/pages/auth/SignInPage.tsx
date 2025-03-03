@@ -22,20 +22,22 @@ export const SignIn: React.FC = () => {
                 <h2 className="text-secondary/70 text-center text-md max-md:text-sm font-normal pt-4 px-2">Welcome back to your personalized style hub.</h2>
                 <div className="flex flex-col gap-2 py-4">
                     <Link to="/sign-in/email"
-                          className="flex items-center justify-start gap-4 bg-secondary/40 px-4 py-3 rounded-xl font-light
+                          className="flex items-center justify-between gap-4 bg-secondary/40 px-4 py-3 rounded-xl font-light
                                     transition-transform duration-150 active:scale-95
                           ">
                         <FontAwesomeIcon icon={faAt}/>
                         Continue with Email
+                        <div></div>
                     </Link>
                     <div
-                        className="flex items-center justify-start gap-4 bg-secondary/40 px-4 py-3 rounded-xl font-light cursor-pointer
+                        className="flex items-center justify-between gap-4 bg-secondary/40 px-4 py-3 rounded-xl font-light cursor-pointer
                                     transition-transform duration-150 active:scale-95
                         "
                         onClick={handleGoogleLogin}
                     >
                         <FontAwesomeIcon icon={faGoogle} className="ml-2"/>
                         Continue with Google
+                        <div></div>
                     </div>
                 </div>
                 <div className="border-t border-primary/50 py-4 text-center">
