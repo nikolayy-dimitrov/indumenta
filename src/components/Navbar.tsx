@@ -31,7 +31,7 @@ export const Navbar = () => {
     return (
         <nav className="md:w-11/12 mx-auto relative flex items-center justify-between py-4 px-8 font-Josefin text-gray-200">
             {/* Logo */}
-            <Link to="/" className="z-40 transition duration-300 active:scale-90">
+            <Link to="/" className="mt-2 z-40 transition duration-300 active:scale-90">
                 {/*<img src={Logo} alt="logo" className="max-w-44 hover:opacity-85" />*/}
 
                 <span className="transition duration-300 hover:text-primary text-2xl font-extrabold">
@@ -83,7 +83,8 @@ export const Navbar = () => {
                 )}
                 </>
             ) : (
-                <div className="block z-40" onClick={toggleMenu}>
+                // Hamburger Menu for Mobile
+                <button className="flex items-center z-40" onClick={toggleMenu}>
                     <div
                         className={`relative w-[30px] h-[20px] z-40 transform transition-transform duration-500 ease-in-out ${
                             isMenuToggled ? "rotate-0" : ""
@@ -105,7 +106,7 @@ export const Navbar = () => {
                             }`}
                         ></span>
                     </div>
-                </div>
+                </button>
             )}
 
             {/* MOBILE MENU */}
