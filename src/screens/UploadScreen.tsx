@@ -86,47 +86,14 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
     };
 
     return (
-        <section id="upload" className="relative flex items-center justify-center md:w-10/12 mx-auto font-Josefin">
+        <section id="upload" className="h-[80vh] relative flex items-center justify-center md:w-10/12 mx-auto font-Josefin">
             {!isLoading && user ? (
-                <div className="flex flex-col items-center justify-center h-screen">
-                        <>
-                            <input
-                                type="file"
-                                onChange={handleImageChange}
-                                className="hidden"
-                                id="file-upload"
-                                multiple
-                                accept="image/*"
-                            />
-
-                            <label htmlFor="file-upload" className="cursor-pointer">
-                                {image ? (
-                                    <div>
-                                        <img
-                                            src={URL.createObjectURL(image)}
-                                            alt={`Uploaded file image`}
-                                            className="lg:w-40 lg:h-40 max-lg:w-24 max-lg:h-24 object-contain p-2 rounded-lg border-2 border-gray-400"
-                                        />
-                                    </div>
-
-                                ) : (
-                                    <FontAwesomeIcon icon={faShirt} className="text-priamry" size="4x" />
-                                )}
-                            </label>
-
-                            <button
-                                onClick={uploadImage}
-                                disabled={!image || isLoading}
-                                className="mt-4 bg-primary hover:bg-primary/95 text-secondary px-4 py-2 rounded disabled:opacity-50"
-                            >
-                                {isLoading ? "Uploading..." : "Upload"}
-                            </button>
-                        </>
-
+                <div className="flex flex-col items-center justify-center h-full">
+                    {/* To Style Preferences Screen button */}
                     {clothesCount >= 3 ? (
                         <button
                             onClick={handleNext}
-                            className="mt-6 bg-primary/90 hover:bg-primary/95 text-secondary font-semibold py-3 px-8 rounded"
+                            className="lowercase text-lg m-6 text-primary font-light py-3 px-8 transition duration-300 active:scale-90"
                         >
                             Select Style Preferences
                         </button>
@@ -137,6 +104,46 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
                             </span>
                         </div>
                     )}
+
+                    <>
+                        <input
+                            type="file"
+                            onChange={handleImageChange}
+                            className="hidden"
+                            id="file-upload"
+                            multiple
+                            accept="image/*"
+                        />
+
+                        <label htmlFor="file-upload" className="cursor-pointer">
+                            {image ? (
+                                <div>
+                                    <img
+                                        src={URL.createObjectURL(image)}
+                                        alt={`Uploaded file image`}
+                                        className="lg:w-56 lg:h-56 max-lg:w-40 max-lg:h-40 object-contain p-2 rounded-lg border-2 border-gray-400"
+                                    />
+                                </div>
+
+                            ) : (
+                                <div className="border border-primary p-20 rounded-md
+                                                    transition duration-400 active:border-opacity-50">
+                                    <FontAwesomeIcon icon={faShirt} className="text-priamry" size="4x"/>
+                                </div>
+                            )}
+                        </label>
+                        <button
+                            onClick={uploadImage}
+                            disabled={!image || isLoading}
+                            className="uppercase mt-4
+                                       bg-clip-text bg-gradient-to-t from-secondary from-5% to-primary to-100% text-transparent
+                                       font-light tracking-wide
+                                       px-4 py-2 disabled:opacity-20
+                                       transition duration-300 active:scale-90"
+                        >
+                            {isLoading ? "Uploading..." : "Continue"}
+                        </button>
+                    </>
                 </div>
             ) : (
                 <div className="flex justify-center items-center h-screen w-9/12">

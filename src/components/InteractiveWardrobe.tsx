@@ -137,7 +137,7 @@ const Wardrobe = () => {
 
 const WardrobeScene: React.FC = () => {
     return (
-        <div className="w-11/12 mx-auto h-screen bg-secondary overflow-hidden rounded-3xl">
+        <div className="w-11/12 mx-auto h-[90vh] bg-secondary overflow-hidden rounded-3xl">
             <Canvas
                 className="w-full h-full bg-secondary"
                 gl={{ antialias: true }}

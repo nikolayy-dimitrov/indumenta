@@ -32,9 +32,9 @@ export const StyleSelectionScreen: React.FC<StyleSelectionScreenProps> = ({
     }
 
     return (
-        <section className="relative md:max-w-2xl max-md:w-10/12 mx-auto space-y-6 rounded-lg shadow-lg font-Josefin">
+        <section className="h-[80vh] relative md:max-w-2xl max-md:w-10/12 mx-auto space-y-6 rounded-lg shadow-lg font-Josefin">
             <motion.div
-                className="flex flex-col justify-center h-screen"
+                className="flex flex-col justify-center h-full"
                 initial="hidden"
                 animate="visible"
                 variants={scaleUpVariants}
