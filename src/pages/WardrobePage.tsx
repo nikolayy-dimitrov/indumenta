@@ -99,7 +99,7 @@ export const WardrobePage = () => {
     }
 
     const renderControls = () => (
-        <div className="flex max-md:flex-col justify-between items-center mb-8">
+        <div className="grid md:grid-cols-3 gap-4 justify-items-center items-center mb-8">
             <h1 className="text-2xl font-bold uppercase tracking-wider">
                 {viewMode === 'clothes' ? 'Clothes Collection' : 'Outfit Collection'}
             </h1>
