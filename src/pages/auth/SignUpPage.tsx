@@ -7,7 +7,7 @@ import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { containerVariants } from "../../utils/framerMotionUtils.ts";
-import {handleAnonymousLogin, handleGoogleLogin} from "../../utils/handleLogin.ts";
+import { handleAnonymousLogin, handleGoogleLogin } from "../../utils/handleLogin.ts";
 
 export const SignUp: React.FC = () => {
     return (

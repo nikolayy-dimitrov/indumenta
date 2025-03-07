@@ -1,11 +1,13 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
+
+import { buttonVariants, containerVariants, textVariants } from "../../utils/framerMotionUtils.ts";
+import { AuthContext } from "../../context/AuthContext.tsx";
 
 import AppMockUpLeft from "../../assets/HomePage/Indumenta-Home screen-clean-left-dark.png";
 import AppMockUpInverted from "../../assets/HomePage/Indumenta-Home screen-clean-left-dark-inverted.png";
 import AppMockupCentral from "../../assets/HomePage/Indumenta-Home screen-clean-portrait-dark.png"
-
-import { buttonVariants, containerVariants, textVariants } from "../../utils/framerMotionUtils.ts";
 
 export const HeroScreen = () => {
     const { scrollY } = useScroll();
@@ -14,6 +16,7 @@ export const HeroScreen = () => {
     const xOffsetLeft = useTransform(scrollY, [0, 800], [0, -50]);
     const xOffsetRight = useTransform(scrollY, [0, 800], [0, 50]);
 
+    const { user } = useContext(AuthContext);
 
     return (
         <section id="hero-screen" className="h-screen flex items-center justify-center font-Josefin bg-gradient-to-b from-secondary to-[#0f0f10] px-6">
@@ -29,12 +32,12 @@ export const HeroScreen = () => {
                         variants={buttonVariants}
                         className="flex justify-between items-center gap-12">
                         <Link
-                            to="/sign-up"
+                            to={!user ? "/sign-up" : "/wardrobe"}
                             className="bg-gradient-to-br from-primary-blue to-primary/80 to-80% rounded-xl
                              border border-primary/50
                              text-secondary font-light tracking-wide py-2 px-4 transition duration-300 active:scale-95"
                         >
-                            Join Now
+                            {!user ? "Join Now" : "Wardrobe"}
                         </Link>
                         <Link
                             to="/stylist"

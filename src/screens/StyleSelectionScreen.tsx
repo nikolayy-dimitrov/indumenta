@@ -74,13 +74,17 @@ export const StyleSelectionScreen: React.FC<StyleSelectionScreenProps> = ({
                 <div className="flex flex-col gap-4 pt-10">
                     <button
                         onClick={onSubmit}
-                        className="flex-1 bg-primary/90 hover:bg-primary transition transform duration-150 active:scale-95 text-secondary font-bold py-2 px-4 rounded-lg shadow-md"
+                        className="uppercase
+                                   bg-clip-text bg-gradient-to-t from-secondary from-5% to-primary to-100% text-transparent
+                                   font-light tracking-wide
+                                   px-4 py-2
+                                   transition duration-300 active:scale-90"
                     >
                         Generate Outfit
                     </button>
                     <button
                         onClick={onBack}
-                        className="flex-1 bg-secondary hover:brightness-150 text-priamry/10 font-medium py-2 px-4 rounded"
+                        className="w-full py-2 mt-2 text-primary font-light tracking-wider lowercase"
                     >
                         Back
                     </button>
