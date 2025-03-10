@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { deleteDoc, doc } from "firebase/firestore";
-import { faUserTie, faX } from "@fortawesome/free-solid-svg-icons";
+import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+import { faCircleCheck, faUserTie, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShirt } from "@fortawesome/free-solid-svg-icons/faShirt";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 
-import { OutfitFilter, ClothingItem, SortOption, ViewMode } from "../types/wardrobe.ts";
+import { OutfitFilter, OutfitItem, ClothingItem, SortOption, ViewMode } from "../types/wardrobe.ts";
 import { useClothes, useOutfits } from "../hooks/useWardrobe.ts";
 import { db } from "../config/firebaseConfig";
 import { AuthContext } from "../context/AuthContext";
@@ -17,13 +17,23 @@ export const WardrobePage = () => {
     const { user } = useContext(AuthContext);
     const [viewMode, setViewMode] = useState<ViewMode>('clothes');
     const [isColorPickerOpen, setIsColorPickerOpen] = useState<boolean>(false);
+    const [editLabel, setEditLabel] = useState<boolean>(false);
 
     const [selectedImage, setSelectedImage] = useState<ClothingItem | null>(null);
+    const [selectedOutfit, setSelectedOutfit] = useState<OutfitItem | null>(null);
+
     const [sortBy, setSortBy] = useState<SortOption>("newest");
     const [outfitFilter, setOutfitFilter] = useState<OutfitFilter>("owned");
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_scheduledDate, setScheduledDate] = useState<Date | null>(null);
+    const [date, setDate] = useState(new Date());
+    const [newLabel, setNewLabel] = useState<string>(selectedOutfit?.label || "");
+
     const { clothes, isLoading: isClothesLoading, setClothes } = useClothes(user?.uid);
     const { outfits, isLoading: isOutfitsLoading, setOutfits } = useOutfits(user?.uid, outfitFilter);
+
+    const isOwner = user?.uid === selectedOutfit?.userId;
 
     useEffect(() => {
         setViewMode('clothes');
@@ -33,6 +43,7 @@ export const WardrobePage = () => {
         const handleEscKey = (event: KeyboardEvent) => {
             if (event.key === 'Escape') {
                 setSelectedImage(null);
+                setSelectedOutfit(null);
                 setIsColorPickerOpen(false);
             }
         };
@@ -42,6 +53,61 @@ export const WardrobePage = () => {
             window.removeEventListener('keydown', handleEscKey);
         };
     }, []);
+
+    useEffect(() => {
+        const fetchScheduledDate = async () => {
+            if (!selectedOutfit) return;
+            try {
+                const outfitRef = doc(db, "outfits", selectedOutfit.id);
+                const outfitDoc = await getDoc(outfitRef);
+                const scheduleData = outfitDoc.data()?.scheduledDate;
+                if (scheduleData) {
+                    const fetchedDate = scheduleData.toDate();
+                    setScheduledDate(fetchedDate);
+                    setDate(fetchedDate);
+                }
+            } catch (error) {
+                console.error("Error fetching scheduled date:", error);
+            }
+        };
+        fetchScheduledDate();
+    }, [selectedOutfit]);
+
+    const onDateChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newDate = new Date(e.target.value);
+        setDate(newDate);
+
+        if (selectedOutfit) {
+            try {
+                const outfitRef = doc(db, "outfits", selectedOutfit.id);
+                await updateDoc(outfitRef, { scheduledDate: newDate });
+                toast.success("Scheduled date updated successfully!");
+            } catch (error) {
+                console.error("Error updating scheduled date:", error);
+                toast.error("Failed to update scheduled date.");
+            }
+        }
+    };
+
+    const toggleEditLabel = (label: boolean) => {
+        setEditLabel(!label);
+    }
+
+    const handleLabelChange = async () => {
+        if (!selectedOutfit) return;
+
+        if (newLabel !== selectedOutfit?.label) {
+            try {
+                const outfitRef = doc(db, "outfits", selectedOutfit.id);
+                await updateDoc(outfitRef, { label: newLabel });
+                setEditLabel(false);
+            } catch (error) {
+                console.error("Error updating label:", error);
+            }
+        } else {
+            setEditLabel(false);
+        }
+    };
 
     const handleToggleView = (mode: ViewMode) => {
         setViewMode(mode);
@@ -126,15 +192,15 @@ export const WardrobePage = () => {
 
     const renderControls = () => (
         <div className="grid md:grid-cols-3 gap-4 justify-items-center items-center mb-8">
-            <h1 className="text-2xl font-bold uppercase tracking-wider">
+            <h1 className="text-2xl font-bold uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-b from-primary to-primary-blue/60">
                 {viewMode === 'clothes' ? 'Clothes Collection' : 'Outfit Collection'}
             </h1>
             <div
-                className="relative w-20 h-10 bg-primary/70 rounded-full flex items-center p-1 cursor-pointer max-md:my-2"
+                className="relative w-20 h-10 bg-gradient-to-br from-primary to-primary-blue/60 rounded-full flex items-center p-1 cursor-pointer max-md:my-2"
                 onClick={() => handleToggleView(viewMode === "clothes" ? "outfits" : "clothes")}
             >
                 <motion.div
-                    className="absolute w-8 h-8 bg-primary rounded-full shadow-md"
+                    className="absolute w-8 h-8 bg-gradient-to-tl from-primary to-primary-blue border-2 rounded-full shadow-md"
                     layout
                     initial={{x: viewMode === "clothes" ? 2 : 37}}
                     animate={{x: viewMode === "clothes" ? 2 : 37}}
@@ -238,6 +304,7 @@ export const WardrobePage = () => {
                 {outfits.map((item, index) => (
                     <motion.div
                         key={item.id}
+                        onClick={() => setSelectedOutfit(item)}
                         className="relative group rounded-sm overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
                         initial={{opacity: 0, y: 20}}
                         animate={{opacity: 1, y: 0}}
@@ -286,7 +353,7 @@ export const WardrobePage = () => {
                 className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center"
                 onClick={() => setSelectedImage(null)}
             >
-            <button
+                <button
                     className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors"
                     onClick={() => setSelectedImage(null)}
                 >
@@ -319,11 +386,94 @@ export const WardrobePage = () => {
         )
     );
 
+    const renderOutfitModal = () => (
+        selectedOutfit && (
+            <div
+                className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center"
+                onClick={() => setSelectedOutfit(null)}
+            >
+                <button
+                    className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors"
+                    onClick={() => setSelectedOutfit(null)}
+                >
+                    <FontAwesomeIcon icon={faX} size="1x"/>
+                </button>
+                <div
+                    className="relative max-w-[90vw] max-h-[90vh]"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <div className="w-full h-full flex gap-1 overflow-hidden">
+                        <div className="w-1/3 h-full">
+                            <img
+                                src={selectedOutfit.outfitPieces.Top}
+                                alt="Clothing item"
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
+                        <div className="w-2/3 h-full flex flex-col gap-1">
+                            <div className="w-full h-1/2">
+                                <img
+                                    src={selectedOutfit.outfitPieces.Bottom}
+                                    alt="Clothing item"
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                            <div className="w-full h-1/2">
+                                <img
+                                    src={selectedOutfit.outfitPieces.Shoes}
+                                    alt="Clothing item"
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-4">
+                        <div className="flex items-center gap-2">
+                            <div className="flex items-center justify-between w-full px-2">
+                                <input
+                                    id="scheduledDate"
+                                    type="date"
+                                    value={date.toISOString().slice(0, 10)}
+                                    onChange={onDateChange}
+                                    className="border rounded-md px-2 py-1 text-secondary"
+                                />
+                                {!editLabel ?
+                                    <button
+                                        onClick={() => toggleEditLabel(editLabel)}
+                                    >
+                                        {selectedOutfit.label || 'OUTFIT LABEL'}
+                                    </button>
+                                    :
+                                    <div className="flex items-center gap-2">
+                                        <input
+                                            value={newLabel}
+                                            onChange={(e) => setNewLabel(e.target.value)}
+                                            className="text-secondary px-2 py-1 rounded"
+                                        />
+                                        <button onClick={handleLabelChange}>
+                                            <FontAwesomeIcon icon={faCircleCheck} />
+                                        </button>
+                                    </div>
+                                }
+                                {isOwner ? (
+                                    <span>
+                                        {selectedOutfit.createdAt.toDate().toLocaleDateString()}
+                                    </span>
+                                ) : null}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    )
+
     return (
         <section className="container mx-auto px-4 py-8 font-Josefin">
             {renderControls()}
             {viewMode === 'clothes' ? renderClothesGrid() : renderOutfitsGrid()}
             {renderImageModal()}
+            {renderOutfitModal()}
         </section>
     );
 };
