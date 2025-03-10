@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { toast } from "react-toastify";
 
 interface OutfitRecommendation {
     outfit_id: string;
@@ -15,11 +16,20 @@ interface OutfitRecommendation {
 interface OutfitDisplayScreenProps {
     outfit: OutfitRecommendation[];
     onBack: () => void;
+    onSaveOutfit: (outfit: OutfitRecommendation) => Promise<void>;
+    checkIfOutfitSaved: (outfitId: string) => Promise<boolean>;
 }
 
-export const OutfitDisplayScreen: React.FC<OutfitDisplayScreenProps> = ({ outfit, onBack }) => {
+export const OutfitDisplayScreen: React.FC<OutfitDisplayScreenProps> = ({
+                                                                            outfit,
+                                                                            onBack,
+                                                                            onSaveOutfit,
+                                                                            checkIfOutfitSaved,
+}) => {
     const [currentOutfitIndex, setCurrentOutfitIndex] = useState(0);
     const currentOutfit = outfit[currentOutfitIndex];
+    const [isSaving, setIsSaving] = useState(false);
+    const [isOutfitSaved, setIsOutfitSaved] = useState(false);
 
     const handleNext = () => {
         setCurrentOutfitIndex((prev) => (prev + 1) % outfit.length);
@@ -27,6 +37,31 @@ export const OutfitDisplayScreen: React.FC<OutfitDisplayScreenProps> = ({ outfit
 
     const handlePrevious = () => {
         setCurrentOutfitIndex((prev) => (prev - 1 + outfit.length) % outfit.length);
+    };
+
+    useEffect(() => {
+        checkCurrentOutfitSaved();
+    }, [currentOutfitIndex]);
+
+    const checkCurrentOutfitSaved = async () => {
+        if (currentOutfit) {
+            const saved = await checkIfOutfitSaved(currentOutfit.outfit_id);
+            setIsOutfitSaved(saved);
+        }
+    };
+
+    const handleSaveOutfit = async () => {
+        try {
+            setIsSaving(true);
+            await onSaveOutfit(currentOutfit);
+            setIsOutfitSaved(true);
+            toast.success("Outfit saved to your wardrobe!");
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to save outfit. Please try again.");
+        } finally {
+            setIsSaving(false);
+        }
     };
 
     if (!currentOutfit) {
@@ -86,6 +121,20 @@ export const OutfitDisplayScreen: React.FC<OutfitDisplayScreenProps> = ({ outfit
                         disabled={outfit.length <= 1}
                     >
                         <FontAwesomeIcon icon={faArrowRight} />
+                    </button>
+                </div>
+
+                <div className="flex items-center justify-center py-2 mt-6 disabled:opacity-50">
+                    <button
+                        onClick={handleSaveOutfit}
+                        disabled={isSaving || isOutfitSaved}
+                    >
+                        {isOutfitSaved
+                            ? "Added to Wardrobe"
+                            : isSaving
+                                ? "Adding..."
+                                : "Add to Wardrobe"
+                        }
                     </button>
                 </div>
 

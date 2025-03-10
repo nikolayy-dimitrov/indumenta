@@ -2,7 +2,7 @@ import { useState, useContext } from 'react';
 import { AuthContext } from "../context/AuthContext";
 import { WardrobeContext } from "../context/WardrobeContext.tsx";
 
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
 import { db } from "../config/firebaseConfig";
 
 import { Upload } from "../screens/UploadScreen";
@@ -104,6 +104,53 @@ export const StylistPage = () => {
         }
     };
 
+    // Check whether the outfit is already in the firebase collection
+    const checkIfOutfitSaved = async (outfitId: string) => {
+        if (!user) return false;
+
+        try {
+            const outfitsRef = collection(db, "outfits");
+            const q = query(
+                outfitsRef,
+                where("userId", "==", user.uid),
+                where("outfit_id", "==", outfitId)
+            );
+            const querySnapshot = await getDocs(q);
+
+            return !querySnapshot.empty;
+        } catch (error) {
+            console.error("Error checking saved outfit:", error);
+            return false;
+        }
+    };
+
+    // Save generate outfit function
+    const saveOutfit = async (outfitToSave: OutfitRecommendation) => {
+        if (!user) return;
+
+        const currentDate = new Date();
+        const formattedDate = currentDate.toISOString().split('T')[0];
+
+        try {
+            const outfitsRef = collection(db, "outfits");
+            const outfitData = {
+                userId: user.uid,
+                createdAt: new Date(),
+                outfit_id: formattedDate + stylePreferences.color + '-' + stylePreferences.occasion,
+                outfit_pieces: outfitToSave.outfit_pieces,
+                match: outfitToSave.match,
+                stylePreferences: {
+                    color: stylePreferences.color,
+                    occasion: stylePreferences.occasion,
+                }
+            };
+
+            await addDoc(outfitsRef, outfitData);
+        } catch (error) {
+            console.error("Error saving outfit:", error);
+            throw error;
+        }
+    };
 
     return (
         <section id="stylist" className="relative">
@@ -121,7 +168,12 @@ export const StylistPage = () => {
                         onSubmit={generateOutfit}
                     />
                 ) : (
-                    <OutfitDisplayScreen outfit={outfit} onBack={() => setStep('style')} />
+                    <OutfitDisplayScreen
+                        outfit={outfit}
+                        onSaveOutfit={saveOutfit}
+                        checkIfOutfitSaved={checkIfOutfitSaved}
+                        onBack={() => setStep('style')}
+                    />
                 )}
             </div>
         </section>

@@ -1,25 +1,29 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { deleteDoc, doc } from "firebase/firestore";
-import { db } from "../config/firebaseConfig";
-import { AuthContext } from "../context/AuthContext";
-import {faUserTie, faX} from "@fortawesome/free-solid-svg-icons";
+import { faUserTie, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShirt } from "@fortawesome/free-solid-svg-icons/faShirt";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
+
 import { OutfitFilter, ClothingItem, SortOption, ViewMode } from "../types/wardrobe.ts";
 import { useClothes, useOutfits } from "../hooks/useWardrobe.ts";
-import {faShirt} from "@fortawesome/free-solid-svg-icons/faShirt";
+import { db } from "../config/firebaseConfig";
+import { AuthContext } from "../context/AuthContext";
+import { ColorPicker } from "../components/ColorPicker.tsx";
 
 export const WardrobePage = () => {
     const { user } = useContext(AuthContext);
     const [viewMode, setViewMode] = useState<ViewMode>('clothes');
+    const [isColorPickerOpen, setIsColorPickerOpen] = useState<boolean>(false);
+
     const [selectedImage, setSelectedImage] = useState<ClothingItem | null>(null);
     const [sortBy, setSortBy] = useState<SortOption>("newest");
     const [outfitFilter, setOutfitFilter] = useState<OutfitFilter>("owned");
 
     const { clothes, isLoading: isClothesLoading, setClothes } = useClothes(user?.uid);
-    const { outfits, isLoading: isOutfitsLoading } = useOutfits(user?.uid, outfitFilter);
+    const { outfits, isLoading: isOutfitsLoading, setOutfits } = useOutfits(user?.uid, outfitFilter);
 
     useEffect(() => {
         setViewMode('clothes');
@@ -29,6 +33,7 @@ export const WardrobePage = () => {
         const handleEscKey = (event: KeyboardEvent) => {
             if (event.key === 'Escape') {
                 setSelectedImage(null);
+                setIsColorPickerOpen(false);
             }
         };
 
@@ -56,6 +61,27 @@ export const WardrobePage = () => {
         } catch (error) {
             console.error("Error deleting item:", error);
             toast.error("Failed to delete item. Please try again.", {
+                position: "top-center",
+                closeOnClick: true,
+                theme: "dark",
+            });
+        }
+    };
+
+    const deleteOutfit = async (outfitId: string) => {
+        if (!user) return;
+        try {
+            await deleteDoc(doc(db, "outfits", outfitId));
+            setOutfits((prev) => prev.filter((item) => item.id !== outfitId));
+            setSelectedImage(null);
+            toast.success("Outfit successfully removed.", {
+                position: "top-center",
+                closeOnClick: true,
+                theme: "dark",
+            });
+        } catch (error) {
+            console.error("Error deleting outfit: ", error);
+            toast.error("Failed to delete outfit. Please try again.", {
                 position: "top-center",
                 closeOnClick: true,
                 theme: "dark",
@@ -178,12 +204,14 @@ export const WardrobePage = () => {
                             className="w-full h-64 object-cover"
                         />
                         <div
-                            className="flex items-start absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <div
-                                className="w-4 h-4 rounded-full inline-block mr-2"
-                                style={{backgroundColor: item.dominantColor}}
+                            className="flex items-center justify-start absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <ColorPicker
+                                itemId={item.id}
+                                initialColor={item.dominantColor}
+                                isOpen={isColorPickerOpen}
+                                setIsOpen={setIsColorPickerOpen}
                             />
-                            <span className="text-sm">{item.uploadedAt.toDate().toLocaleDateString()}</span>
+                            <span className={`text-sm ${isColorPickerOpen && 'hidden'}`}>{item.uploadedAt.toDate().toLocaleDateString()}</span>
                         </div>
                         <button
                             onClick={() => deleteClothingItem(item.id)}
@@ -240,6 +268,12 @@ export const WardrobePage = () => {
                                 </div>
                             </div>
                         </div>
+                        <button
+                            onClick={() => deleteOutfit(item.id)}
+                            className="absolute top-0 right-0 py-2 px-3 transition duration-400 text-red-800 hover:text-red-600"
+                        >
+                            <FontAwesomeIcon icon={faX}/>
+                        </button>
                     </motion.div>
                 ))}
             </div>
@@ -252,7 +286,7 @@ export const WardrobePage = () => {
                 className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center"
                 onClick={() => setSelectedImage(null)}
             >
-                <button
+            <button
                     className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors"
                     onClick={() => setSelectedImage(null)}
                 >
@@ -269,9 +303,10 @@ export const WardrobePage = () => {
                     />
                     <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-4">
                         <div className="flex items-center gap-2">
-                            <div
-                                className="w-4 h-4 rounded-full"
-                                style={{backgroundColor: selectedImage.dominantColor}}
+                            <ColorPicker itemId={selectedImage.id}
+                                         initialColor={selectedImage.dominantColor}
+                                         isOpen={isColorPickerOpen}
+                                         setIsOpen={setIsColorPickerOpen}
                             />
                             <span>{selectedImage.category}</span>
                             <span className="ml-auto">
