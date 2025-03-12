@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
-import {Link, NavLink} from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { AuthContext } from "../context/AuthContext";
 
-// import Logo from "../assets/logo-no-background.png";
+import Logo from "../assets/indumenta-logo-primary.png";
 import useMediaQuery from "../utils/useMediaQuery.ts";
 
 export const Navbar = () => {
@@ -20,12 +20,14 @@ export const Navbar = () => {
     return (
         <nav className="md:w-11/12 mx-auto relative flex items-center justify-between py-4 px-8 font-Josefin text-gray-200">
             {/* Logo */}
-            <Link to="/" className="mt-2 z-40 transition duration-300 active:scale-90">
-                {/*<img src={Logo} alt="logo" className="max-w-44 hover:opacity-85" />*/}
-
-                <span className="transition duration-300 hover:text-primary text-2xl font-extrabold">
-                    INDUMENTA
-                </span>
+            <Link to="/" className="flex items-center justify-center z-40 transition duration-300 active:scale-90 group-hover:opacity-85">
+                {!isAboveMediumScreens ?
+                    <img src={Logo} alt="logo" className="max-w-8" />
+                :
+                    <span className="transition duration-300 hover:text-primary text-2xl font-extrabold">
+                        INDUMENTA
+                    </span>
+                }
             </Link>
             {/* Main menu */}
             {isAboveMediumScreens ? (
