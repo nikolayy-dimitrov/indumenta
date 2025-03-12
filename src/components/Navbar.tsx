@@ -2,8 +2,6 @@ import { useContext, useState } from "react";
 import {Link, NavLink} from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { AuthContext } from "../context/AuthContext";
-import { signOut } from 'firebase/auth';
-import { auth } from "../config/firebaseConfig";
 
 // import Logo from "../assets/logo-no-background.png";
 import useMediaQuery from "../utils/useMediaQuery.ts";
@@ -17,15 +15,6 @@ export const Navbar = () => {
 
     const toggleMenu = () => {
         setIsMenuToggled(!isMenuToggled);
-    };
-
-    const handleLogout = async () => {
-        try {
-            await signOut(auth);
-            window.location.href = '/';
-        } catch (error) {
-            console.error(error);
-        }
     };
 
     return (
@@ -65,16 +54,9 @@ export const Navbar = () => {
                 {/* User menu */}
                 {user ? (
                     <div className="flex items-center gap-4 z-40">
-                        <h3 className="text-primary">
+                        <Link to="/profile">
                             {user.displayName ? `Welcome, ${user.displayName} ` : 'Welcome to INDUMENTA'}
-                        </h3>
-                        <button
-                            onClick={handleLogout}
-                            className="bg-primary hover:bg-transparent text-secondary hover:text-primary
-                             px-4 py-1 rounded"
-                        >
-                            Logout
-                        </button>
+                        </Link>
                     </div>
                 ) : (
                     <div className="flex gap-4 z-40 font-light">
@@ -118,10 +100,10 @@ export const Navbar = () => {
                         exit={{ y: -100, opacity: 0 }}
                         transition={{ duration: 0.5 }}
                         className="fixed top-20 z-30 w-10/12 h-[50vh] flex flex-col items-center justify-center
-            bg-secondary/80 backdrop-blur rounded-3xl"
+                        bg-secondary/80 backdrop-blur rounded-3xl"
                     >
                         <div className="flex flex-col items-center justify-center gap-16
-                         text-primary text-3xl font-normal">
+                        text-primary text-3xl font-normal">
                             <Link to="/">
                                 <button onClick={toggleMenu}>
                                     Home
@@ -144,11 +126,11 @@ export const Navbar = () => {
                                     </button>
                                 </Link>
                             ) : (
-                                <span
-                                    onClick={handleLogout}
+                                <Link
+                                    to="/profile"
                                     className="text-content">
-                                    Logout
-                                </span>
+                                    Profile
+                                </Link>
                             )}
                         </div>
                     </motion.div>
