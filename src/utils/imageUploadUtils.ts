@@ -2,7 +2,7 @@ import { db, storage } from "../config/firebaseConfig";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { addDoc, collection } from "firebase/firestore";
 
-import { fetchPredictionData } from "./dragoneyeUtils.ts";
+import { analyzeImageWithRekognition } from "./rekognitionUtils.ts";
 
 import { toast } from "react-toastify";
 
@@ -22,7 +22,7 @@ export const handleUpload = async (
         return;
     }
 
-    const apiUrl = import.meta.env.VITE_BACKEND_URL + "/api/predict";
+    const rekognitionApiUrl = import.meta.env.VITE_BACKEND_URL + "/api/images/analyze";
 
     try {
         for (let i = 0; i < images.length; i++) {
@@ -30,21 +30,32 @@ export const handleUpload = async (
             const storageRef = ref(storage, `clothes/${user.uid}/${file.name}`);
             await uploadBytes(storageRef, file);
             const imageUrl = await getDownloadURL(storageRef);
-            const modelName = 'dragoneye/fashion';
-            const altModelName = 'dragoneye/footwear';
 
-            const predictionData = await fetchPredictionData(apiUrl, imageUrl, modelName, altModelName);
-            const { category, vibe, season, color, subCategory  } = predictionData[0];
+            // Request from aws
+            const [rekognitionData] = await Promise.all([
+                analyzeImageWithRekognition(rekognitionApiUrl, file)
+            ]);
+
+
+            const rekognitionResult = {
+                category: rekognitionData.category,
+                subCategory: rekognitionData.subCategory,
+                vibe: rekognitionData.vibe,
+                season: rekognitionData.season,
+                color: rekognitionData.color || dominantColors[i],
+                allLabels: rekognitionData.allLabels || []
+            };
 
             await addDoc(collection(db, "clothes"), {
                 userId: user.uid,
                 imageUrl,
                 dominantColor: dominantColors[i],
-                category,
-                subCategory,
-                vibe,
-                season,
-                color,
+                category: rekognitionResult.category,
+                subCategory: rekognitionResult.subCategory,
+                vibe: rekognitionResult.vibe,
+                season: rekognitionResult.season,
+                color: rekognitionResult.color,
+                labels: rekognitionResult.allLabels,
                 uploadedAt: new Date(),
             });
         }

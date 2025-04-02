@@ -8,15 +8,17 @@ import { getDominantColorFromImage } from "../utils/colorThiefUtils.ts";
 import { handleUpload } from "../utils/imageUploadUtils.ts";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShirt } from "@fortawesome/free-solid-svg-icons/faShirt";
+import { faShirt, faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../config/firebaseConfig.ts";
+import { toast } from "react-toastify";
 
 export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
     const [image, setImage] = useState<File | null>(null);
     const [dominantColor, setDominantColor] = useState<string[]>([]);
     const [clothesCount, setClothesCount] = useState<number>(0);
+    const [uploadProgress, setUploadProgress] = useState<string>("");
 
     const { user } = useContext(AuthContext);
     const { isLoading, setIsLoading } = useContext(WardrobeContext);
@@ -30,9 +32,13 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
             const file = e.target.files[0];
             setImage(file);
             try {
+                setUploadProgress("Analyzing image colors...");
                 await getDominantColorFromImage(file, setDominantColor);
+                setUploadProgress("");
             } catch (error) {
                 console.error("Error processing image:", error);
+                toast.error("Error analyzing image colors. Please try another image.");
+                setUploadProgress("");
             }
         }
     };
@@ -41,19 +47,22 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
         setImage(null);
         setDominantColor([]);
         setIsLoading(false);
+        setUploadProgress("");
     };
 
     const handleUploadError = (error: Error) => {
         console.error(error);
         setIsLoading(false);
+        setUploadProgress("");
     };
 
     const uploadImage = async () => {
         if (!image || !dominantColor.length) return;
 
         setIsLoading(true);
+        setUploadProgress("Uploading image and analyzing with AI...");
 
-        const firstDominantColor = dominantColor[0] || null; // Extract the first dominant color
+        const firstDominantColor = dominantColor[0] || null;
 
         try {
             await handleUpload([image], user, [firstDominantColor!], handleUploadSuccess, handleUploadError);
@@ -61,6 +70,7 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
         } catch (error) {
             console.error("Error during upload:", error);
             setIsLoading(false);
+            setUploadProgress("");
         } finally {
             setLoadingWithDelay(false, 3000);
         }
@@ -111,7 +121,6 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
                             onChange={handleImageChange}
                             className="hidden"
                             id="file-upload"
-                            multiple
                             accept="image/*"
                         />
 
@@ -128,10 +137,18 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
                             ) : (
                                 <div className="border border-primary p-20 rounded-md
                                                     transition duration-400 active:border-opacity-50">
-                                    <FontAwesomeIcon icon={faShirt} className="text-priamry" size="4x"/>
+                                    <FontAwesomeIcon icon={faShirt} className="text-primary" size="4x"/>
                                 </div>
                             )}
                         </label>
+
+                        {uploadProgress && (
+                            <div className="mt-2 text-primary flex items-center">
+                                <FontAwesomeIcon icon={faSpinner} spin className="mr-2" />
+                                <span>{uploadProgress}</span>
+                            </div>
+                        )}
+
                         <button
                             onClick={uploadImage}
                             disabled={!image || isLoading}
