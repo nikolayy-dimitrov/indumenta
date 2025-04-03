@@ -1,5 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShirt, faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 import { AuthContext } from "../context/AuthContext";
 import { WardrobeContext } from "../context/WardrobeContext.tsx";
@@ -7,12 +11,7 @@ import { WardrobeContext } from "../context/WardrobeContext.tsx";
 import { getDominantColorFromImage } from "../utils/colorThiefUtils.ts";
 import { handleUpload } from "../utils/imageUploadUtils.ts";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShirt, faSpinner } from "@fortawesome/free-solid-svg-icons";
-
-import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../config/firebaseConfig.ts";
-import { toast } from "react-toastify";
 
 export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
     const [image, setImage] = useState<File | null>(null);
@@ -153,9 +152,9 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
                             onClick={uploadImage}
                             disabled={!image || isLoading}
                             className="uppercase mt-4
-                                       bg-clip-text bg-gradient-to-t from-secondary from-5% to-primary to-100% text-transparent
+                                       text-primary disabled:opacity-0
                                        font-light tracking-wide
-                                       px-4 py-2 disabled:opacity-20
+                                       px-4 py-2
                                        transition duration-300 active:scale-90"
                         >
                             {isLoading ? "Uploading..." : "Continue"}
