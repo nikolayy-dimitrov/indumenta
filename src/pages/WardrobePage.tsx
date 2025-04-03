@@ -12,6 +12,7 @@ import { useClothes, useOutfits } from "../hooks/useWardrobe.ts";
 import { db } from "../config/firebaseConfig";
 import { AuthContext } from "../context/AuthContext";
 import { ColorPicker } from "../components/ColorPicker.tsx";
+import { ConfirmModal } from "../components/ConfirmModal.tsx";
 
 export const WardrobePage = () => {
     const { user } = useContext(AuthContext);
@@ -21,6 +22,10 @@ export const WardrobePage = () => {
 
     const [selectedImage, setSelectedImage] = useState<ClothingItem | null>(null);
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitItem | null>(null);
+
+    const [showConfirm, setShowConfirm] = useState<boolean>(false);
+    const [itemToDelete, setItemToDelete] = useState<string | null>(null);
+    const [outfitToDelete, setOutfitToDelete] = useState<string | null>(null);
 
     const [sortBy, setSortBy] = useState<SortOption>("newest");
     const [outfitFilter, setOutfitFilter] = useState<OutfitFilter>("owned");
@@ -45,6 +50,7 @@ export const WardrobePage = () => {
                 setSelectedImage(null);
                 setSelectedOutfit(null);
                 setIsColorPickerOpen(false);
+                setShowConfirm(false);
             }
         };
 
@@ -113,11 +119,17 @@ export const WardrobePage = () => {
         setViewMode(mode);
     };
 
-    const deleteClothingItem = async (itemId: string) => {
-        if (!user) return;
+    const handleDeleteItem = (itemId: string) => {
+        setItemToDelete(itemId);
+        setShowConfirm(true);
+    };
+
+    const confirmDeleteItem = async () => {
+        if (!itemToDelete) return;
+
         try {
-            await deleteDoc(doc(db, "clothes", itemId));
-            setClothes((prev) => prev.filter((item) => item.id !== itemId));
+            await deleteDoc(doc(db, "clothes", itemToDelete));
+            setClothes((prev) => prev.filter((item) => item.id !== itemToDelete));
             setSelectedImage(null);
             toast.success("Item successfully removed.", {
                 position: "top-center",
@@ -132,13 +144,26 @@ export const WardrobePage = () => {
                 theme: "dark",
             });
         }
+        setShowConfirm(false);
+        setItemToDelete(null);
     };
 
-    const deleteOutfit = async (outfitId: string) => {
-        if (!user) return;
+    const cancelDeleteItem = () => {
+        setShowConfirm(false);
+        setItemToDelete(null);
+    };
+
+    const handleDeleteOutfit = (itemId: string) => {
+        setOutfitToDelete(itemId);
+        setShowConfirm(true);
+    };
+
+    const confirmDeleteOutfit = async () => {
+        if (!outfitToDelete) return;
+
         try {
-            await deleteDoc(doc(db, "outfits", outfitId));
-            setOutfits((prev) => prev.filter((item) => item.id !== outfitId));
+            await deleteDoc(doc(db, "outfits", outfitToDelete));
+            setOutfits((prev) => prev.filter((item) => item.id !== outfitToDelete));
             setSelectedImage(null);
             toast.success("Outfit successfully removed.", {
                 position: "top-center",
@@ -153,6 +178,13 @@ export const WardrobePage = () => {
                 theme: "dark",
             });
         }
+        setShowConfirm(false);
+        setOutfitToDelete(null);
+    };
+
+    const cancelDeleteOutfit = () => {
+        setShowConfirm(false);
+        setOutfitToDelete(null);
     };
 
     const sortClothes = (items: ClothingItem[]): ClothingItem[] => {
@@ -280,11 +312,21 @@ export const WardrobePage = () => {
                             <span className={`text-sm ${isColorPickerOpen && 'hidden'}`}>{item.uploadedAt.toDate().toLocaleDateString()}</span>
                         </div>
                         <button
-                            onClick={() => deleteClothingItem(item.id)}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteItem(item.id);
+                            }}
                             className="absolute top-0 right-0 py-2 px-3 transition duration-400 text-red-800 hover:text-red-600"
                         >
                             <FontAwesomeIcon icon={faX} />
                         </button>
+                        {showConfirm && (
+                            <ConfirmModal
+                                message="Are you sure you want to delete this item?"
+                                onConfirm={confirmDeleteItem}
+                                onCancel={cancelDeleteItem}
+                            />
+                        )}
                     </motion.div>
                 ))}
             </div>
@@ -336,11 +378,21 @@ export const WardrobePage = () => {
                             </div>
                         </div>
                         <button
-                            onClick={() => deleteOutfit(item.id)}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteOutfit(item.id);
+                            }}
                             className="absolute top-0 right-0 py-2 px-3 transition duration-400 text-red-800 hover:text-red-600"
                         >
                             <FontAwesomeIcon icon={faX}/>
                         </button>
+                        {showConfirm && (
+                            <ConfirmModal
+                                message="Are you sure you want to delete this outfit?"
+                                onConfirm={confirmDeleteOutfit}
+                                onCancel={cancelDeleteOutfit}
+                            />
+                        )}
                     </motion.div>
                 ))}
             </div>
