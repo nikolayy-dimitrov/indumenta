@@ -50,7 +50,11 @@ export const Profile: React.FC = () => {
             const photoURL = await getDownloadURL(storageRef);
             await updateProfile(user, { photoURL });
             setUserPhoto(photoURL);
-            toast.success("Profile photo updated!");
+            toast.success("Profile photo updated!", {
+                position: "top-center",
+                closeOnClick: true,
+                theme: "dark",
+            });
         } catch (error) {
             console.error("Error updating photo:", error);
             toast.error("Failed to update the photo. Please try again.");

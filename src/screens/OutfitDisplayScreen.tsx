@@ -55,7 +55,11 @@ export const OutfitDisplayScreen: React.FC<OutfitDisplayScreenProps> = ({
             setIsSaving(true);
             await onSaveOutfit(currentOutfit);
             setIsOutfitSaved(true);
-            toast.success("Outfit saved to your wardrobe!");
+            toast.success("Outfit saved to your wardrobe!", {
+                position: "top-center",
+                closeOnClick: true,
+                theme: "dark",
+            });
         } catch (error) {
             console.error(error);
             toast.error("Failed to save outfit. Please try again.");

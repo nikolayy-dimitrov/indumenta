@@ -42,7 +42,6 @@ export const handleUpload = async (
                 subCategory: rekognitionData.subCategory,
                 vibe: rekognitionData.vibe,
                 season: rekognitionData.season,
-                color: rekognitionData.color || dominantColors[i],
                 allLabels: rekognitionData.allLabels || []
             };
 
@@ -54,7 +53,6 @@ export const handleUpload = async (
                 subCategory: rekognitionResult.subCategory,
                 vibe: rekognitionResult.vibe,
                 season: rekognitionResult.season,
-                color: rekognitionResult.color,
                 labels: rekognitionResult.allLabels,
                 uploadedAt: new Date(),
             });

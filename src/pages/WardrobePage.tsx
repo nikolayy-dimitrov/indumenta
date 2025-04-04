@@ -88,7 +88,11 @@ export const WardrobePage = () => {
             try {
                 const outfitRef = doc(db, "outfits", selectedOutfit.id);
                 await updateDoc(outfitRef, { scheduledDate: newDate });
-                toast.success("Scheduled date updated successfully!");
+                toast.success("Scheduled date updated successfully!", {
+                    position: "top-center",
+                    closeOnClick: true,
+                    theme: "dark",
+                });
             } catch (error) {
                 console.error("Error updating scheduled date:", error);
                 toast.error("Failed to update scheduled date.");
