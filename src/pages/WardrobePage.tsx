@@ -13,6 +13,7 @@ import { db } from "../config/firebaseConfig";
 import { AuthContext } from "../context/AuthContext";
 import { ColorPicker } from "../components/ColorPicker.tsx";
 import { ConfirmModal } from "../components/ConfirmModal.tsx";
+import { LoadingIndicator } from "../components/LoadingIndicator.tsx";
 
 export const WardrobePage = () => {
     const { user } = useContext(AuthContext);
@@ -215,11 +216,7 @@ export const WardrobePage = () => {
     }
 
     if (isOutfitsLoading || isClothesLoading) {
-        return (
-            <div className="flex justify-center items-center h-screen font-Josefin">
-                Loading your wardrobe...
-            </div>
-        );
+        return <LoadingIndicator />
     }
 
     const renderControls = () => (
