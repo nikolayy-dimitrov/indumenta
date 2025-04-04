@@ -220,26 +220,28 @@ export const WardrobePage = () => {
     }
 
     const renderControls = () => (
-        <div className="grid md:grid-cols-3 gap-4 justify-items-center items-center mb-8">
-            <h1 className="text-2xl font-bold uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-b from-primary to-primary-blue/60">
+        <div className="grid md:grid-cols-3 gap-x-40 max-lg:gap-x-8 gap-y-1 justify-items-center items-center mb-8">
+            <h1
+                className="text-2xl font-bold uppercase tracking-wider text-secondary [-webkit-text-stroke:0.8px_#F8E9D5]"
+            >
                 {viewMode === 'clothes' ? 'Clothes Collection' : 'Outfit Collection'}
             </h1>
             <div
-                className="relative w-20 h-10 bg-gradient-to-br from-primary to-primary-blue/60 rounded-full flex items-center p-1 cursor-pointer max-md:my-2"
+                className="relative w-20 h-10 bg-secondary border-2 border-primary rounded-full flex items-center p-1 cursor-pointer max-md:my-2"
                 onClick={() => handleToggleView(viewMode === "clothes" ? "outfits" : "clothes")}
             >
                 <motion.div
-                    className="absolute w-8 h-8 bg-gradient-to-tl from-primary to-primary-blue border-2 rounded-full shadow-md"
+                    className="absolute w-7 h-7 bg-secondary border-2 border-primary rounded-full shadow-md"
                     layout
                     initial={{x: viewMode === "clothes" ? 2 : 37}}
                     animate={{x: viewMode === "clothes" ? 2 : 37}}
                     transition={{type: "spring", stiffness: 200, damping: 30}}
                 />
-                <div className="flex justify-between items-center w-full px-3">
-                    <span className={`text-sm font-medium ${viewMode === "clothes" ? "text-primary/80" : "text-secondary"}`}>
+                <div className="flex justify-between items-center h-full my-auto w-full px-3">
+                    <span className={`max-h-4 text-sm font-medium ${viewMode === "clothes" ? "text-secondary" : "text-primary"}`}>
                         <FontAwesomeIcon icon={faShirt} />
                     </span>
-                    <span className={`text-sm font-medium ${viewMode === "outfits" ? "text-primary/80" : "text-secondary"}`}>
+                    <span className={`max-h-4 text-sm font-medium ${viewMode === "outfits" ? "text-secondary" : "text-primary"}`}>
                         <FontAwesomeIcon icon={faUserTie} />
                     </span>
                 </div>

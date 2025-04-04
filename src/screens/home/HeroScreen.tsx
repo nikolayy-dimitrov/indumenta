@@ -52,7 +52,7 @@ export const HeroScreen = () => {
 
                 {/* Title */}
                 <motion.h1
-                    className="absolute top-0 z-20 font-extrabold text-6xl md:text-9xl"
+                    className="absolute top-0 z-20 font-extrabold text-5xl md:text-9xl"
                     variants={textVariants}
                 >
                     INDUMENTA

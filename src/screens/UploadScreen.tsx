@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShirt, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 import { AuthContext } from "../context/AuthContext";
 import { WardrobeContext } from "../context/WardrobeContext.tsx";
@@ -11,7 +11,12 @@ import { WardrobeContext } from "../context/WardrobeContext.tsx";
 import { getDominantColorFromImage } from "../utils/colorThiefUtils.ts";
 import { handleUpload } from "../utils/imageUploadUtils.ts";
 
+import { IconPlayer } from "../components/IconPlayer";
 import { db } from "../config/firebaseConfig.ts";
+import useMediaQuery from "../utils/useMediaQuery.ts";
+
+import PhotoAnimatedIcon from "../assets/photo-animated-lottie.json";
+import CameraAnimatedIcon from "../assets/camera-animated-lottie.json";
 
 export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
     const [image, setImage] = useState<File | null>(null);
@@ -21,6 +26,8 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
 
     const { user } = useContext(AuthContext);
     const { isLoading, setIsLoading } = useContext(WardrobeContext);
+
+    const isAboveMediumScreens = useMediaQuery("(min-width: 1060px)");
 
     const setLoadingWithDelay = (value: boolean, delayMs: number) => {
         setTimeout(() => setIsLoading(value), delayMs);
@@ -123,23 +130,46 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
                             accept="image/*"
                         />
 
-                        <label htmlFor="file-upload" className="cursor-pointer">
-                            {image ? (
-                                <div>
-                                    <img
-                                        src={URL.createObjectURL(image)}
-                                        alt={`Uploaded file image`}
-                                        className="lg:w-56 lg:h-56 max-lg:w-40 max-lg:h-40 object-contain p-2 rounded-lg border-2 border-gray-400"
-                                    />
-                                </div>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            capture="environment"
+                            onChange={handleImageChange}
+                            id="camera-upload"
+                            className="hidden"
+                        />
+                        <div className="flex items-center justify-center gap-2">
+                            <label htmlFor="file-upload" className="cursor-pointer">
+                                {image ? (
+                                    <div>
+                                        <img
+                                            src={URL.createObjectURL(image)}
+                                            alt={`Uploaded file image`}
+                                            className="lg:w-56 lg:h-56 max-lg:w-40 max-lg:h-40 object-contain p-2 rounded-lg border-2 border-gray-400"
+                                        />
+                                    </div>
 
-                            ) : (
-                                <div className="border border-primary p-20 rounded-md
-                                                    transition duration-400 active:border-opacity-50">
-                                    <FontAwesomeIcon icon={faShirt} className="text-primary" size="4x"/>
-                                </div>
-                            )}
-                        </label>
+                                ) : (
+                                    <div className="transition-all tranform duration-[400ms] active:opacity-60 hover:scale-95">
+                                        <IconPlayer
+                                            iconSrc={PhotoAnimatedIcon}
+                                            iconSize={isAboveMediumScreens ? 120 : 80}
+                                        />
+                                    </div>
+                                )}
+                            </label>
+
+                            <label htmlFor="camera-upload" className="cursor-pointer">
+                                {!isAboveMediumScreens && !image && (
+                                    <div>
+                                        <IconPlayer
+                                            iconSrc={CameraAnimatedIcon}
+                                            iconSize={isAboveMediumScreens ? 120 : 80}
+                                        />
+                                    </div>
+                                )}
+                            </label>
+                        </div>
 
                         {uploadProgress && (
                             <div className="mt-2 text-primary flex items-center">

@@ -77,7 +77,7 @@ export const StyleSelectionScreen: React.FC<StyleSelectionScreenProps> = ({
                                 key={option.value}
                                 onClick={() => onStyleChange('color', option.value)}
                                 title={option.label}
-                                className={`p-4 rounded-md border transition duration-200 focus:outline-none ${
+                                className={`w-14 h-14 flex items-center justify-center rounded-md border transition duration-200 focus:outline-none ${
                                     stylePreferences.color === option.value
                                         ? 'border-primary bg-secondary/90'
                                         : 'border-gray-700 bg-secondary/50'
@@ -98,7 +98,7 @@ export const StyleSelectionScreen: React.FC<StyleSelectionScreenProps> = ({
                                 key={option.value}
                                 onClick={() => onStyleChange('occasion', option.value)}
                                 title={option.label}
-                                className={`p-4 rounded-md border transition duration-200 focus:outline-none ${
+                                className={`w-14 h-14 flex items-center justify-center rounded-md border transition duration-200 focus:outline-none ${
                                     stylePreferences.occasion === option.value
                                         ? 'border-primary bg-secondary/90'
                                         : 'border-gray-700 bg-secondary/50'

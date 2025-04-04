@@ -130,7 +130,9 @@ export const Navbar = () => {
                             ) : (
                                 <Link
                                     to="/profile"
-                                    className="text-content">
+                                    className="text-content"
+                                    onClick={toggleMenu}
+                                >
                                     Profile
                                 </Link>
                             )}
