@@ -46,7 +46,7 @@ export const EmailSignUp: React.FC = () => {
         try {
             const auth = getAuth();
             const userCredential: UserCredential = await createUserWithEmailAndPassword(auth, email, password);
-            console.log('User registered:', userCredential.user);
+            // console.log('User registered:', userCredential.user);
             const userId = userCredential.user.uid;
 
             await fetch(apiUrl + "/api/subscribe/create-customer", {

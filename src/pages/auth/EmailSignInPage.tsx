@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import {getAuth, signInWithEmailAndPassword, UserCredential} from 'firebase/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
@@ -29,10 +29,19 @@ export const EmailSignIn: React.FC = () => {
         setError('');
         if (!validateInputs()) return;
 
+        const apiUrl = import.meta.env.VITE_BACKEND_URL;
         try {
             const auth = getAuth();
-            await signInWithEmailAndPassword(auth, email, password);
-            window.location.href = '/';
+            const userCredential: UserCredential = await signInWithEmailAndPassword(auth, email, password);
+            const userId = userCredential.user.uid;
+
+            await fetch(apiUrl + "/api/subscribe/create-customer", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ customerEmail: email, userId }),
+            }).then(r => r.json());
+
+            window.location.href = '/profile';
         } catch (err) {
             setError((err as Error).message);
         }
