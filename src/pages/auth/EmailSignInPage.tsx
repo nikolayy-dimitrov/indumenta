@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
-import {getAuth, signInWithEmailAndPassword, UserCredential} from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, UserCredential } from 'firebase/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
@@ -38,7 +38,7 @@ export const EmailSignIn: React.FC = () => {
             await fetch(apiUrl + "/api/subscribe/create-customer", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ customerEmail: email, userId }),
+                body: JSON.stringify({ email, userId }),
             }).then(r => r.json());
 
             window.location.href = '/profile';

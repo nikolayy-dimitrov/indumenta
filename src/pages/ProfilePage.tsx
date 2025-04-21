@@ -134,7 +134,10 @@ export const Profile: React.FC = () => {
                             className="w-32 h-32 border rounded-full border-secondary dark:border-primary object-cover"
                         />
                     ) : (
-                        <FontAwesomeIcon icon={faCameraRetro} />
+                        <FontAwesomeIcon
+                            icon={faCameraRetro}
+                            className="p-12 border rounded-full border-secondary dark:border-primary
+                             transition duration-200 hover:opacity-80" />
                     )}
                     <input
                         type="file"
@@ -169,7 +172,7 @@ export const Profile: React.FC = () => {
                         }
                     </div>
                     {subscriptionStatus === 'active' ? (
-                        <div className="text-green-500 flex items-center gap-2">
+                        <div className="text-green-500 flex items-center justify-center gap-2">
                             <FontAwesomeIcon icon={faCircleCheck} />
                             Active ({periodEndDate})
                         </div>

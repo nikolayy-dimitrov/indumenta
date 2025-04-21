@@ -16,7 +16,7 @@ export const handleGoogleLogin = async () => {
         await fetch(apiUrl + "/api/subscribe/create-customer", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ customerEmail: email, userId }),
+            body: JSON.stringify({ email, userId }),
         }).then(r => r.json());
 
         window.location.href = '/stylist';

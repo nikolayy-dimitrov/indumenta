@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
     getAuth,
     createUserWithEmailAndPassword,
-    UserCredential,
+    UserCredential, updateProfile,
 } from 'firebase/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
@@ -18,6 +18,36 @@ export const EmailSignUp: React.FC = () => {
     const [confirmPassword, setConfirmPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
 
+    function validatePassword(password: string): string | null {
+        // 1) Check length
+        if (password.length < 12) {
+            return 'Password must be at least 12 characters long.';
+        }
+
+        // 2) Check for uppercase letter
+        if (!/[A-Z]/.test(password)) {
+            return 'Password must include at least one uppercase letter.';
+        }
+
+        // 3) Check for lowercase letter
+        if (!/[a-z]/.test(password)) {
+            return 'Password must include at least one lowercase letter.';
+        }
+
+        // 4) Check for digit
+        if (!/\d/.test(password)) {
+            return 'Password must include at least one number.';
+        }
+
+        // 5) Check for special character
+        if (!/[!@#$%^&*(),.?":{}|<>_\-\\[\]\/]/.test(password)) {
+            return 'Password must include at least one special character.';
+        }
+
+        // All checks passed
+        return null;
+    }
+
     const validateInputs = (): boolean => {
         if (!name.trim()) {
             setError('Name is required.');
@@ -27,8 +57,9 @@ export const EmailSignUp: React.FC = () => {
             setError('A valid email is required.');
             return false;
         }
-        if (password.length < 6) {
-            setError('Password must be at least 6 characters long.');
+        const pwdError = validatePassword(password);
+        if (pwdError) {
+            setError(pwdError);
             return false;
         }
         if (password !== confirmPassword) {
@@ -49,10 +80,14 @@ export const EmailSignUp: React.FC = () => {
             // console.log('User registered:', userCredential.user);
             const userId = userCredential.user.uid;
 
+            if (name) {
+                await updateProfile(userCredential.user, { displayName: name });
+            }
+
             await fetch(apiUrl + "/api/subscribe/create-customer", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ customerEmail: email, userId }),
+                body: JSON.stringify({ email, userId }),
             }).then(r => r.json());
 
             window.location.href = '/sign-in';
