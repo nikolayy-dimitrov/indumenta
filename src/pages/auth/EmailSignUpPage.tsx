@@ -9,7 +9,7 @@ import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 
 import { motion } from 'framer-motion';
 import { containerVariants } from "../../utils/framerMotionUtils.ts";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const EmailSignUp: React.FC = () => {
     const [name, setName] = useState<string>('');
@@ -42,10 +42,19 @@ export const EmailSignUp: React.FC = () => {
         setError('');
         if (!validateInputs()) return;
 
+        const apiUrl = import.meta.env.VITE_BACKEND_URL;
         try {
             const auth = getAuth();
             const userCredential: UserCredential = await createUserWithEmailAndPassword(auth, email, password);
             console.log('User registered:', userCredential.user);
+            const userId = userCredential.user.uid;
+
+            await fetch(apiUrl + "/api/subscribe/create-customer", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ customerEmail: email, userId }),
+            }).then(r => r.json());
+
             window.location.href = '/sign-in';
         } catch (err) {
             setError((err as Error).message);

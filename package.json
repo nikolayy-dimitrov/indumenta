@@ -20,6 +20,8 @@
     "@react-spring/three": "^9.7.5",
     "@react-three/drei": "^9.119.0",
     "@react-three/fiber": "^8.17.10",
+    "@stripe/react-stripe-js": "^3.6.0",
+    "@stripe/stripe-js": "^7.0.0",
     "colorthief": "^2.6.0",
     "dotenv": "^16.4.5",
     "firebase": "^11.0.1",

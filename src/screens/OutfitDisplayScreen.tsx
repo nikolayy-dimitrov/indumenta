@@ -62,7 +62,11 @@ export const OutfitDisplayScreen: React.FC<OutfitDisplayScreenProps> = ({
             });
         } catch (error) {
             console.error(error);
-            toast.error("Failed to save outfit. Please try again.");
+            toast.error("Failed to save outfit. Please try again.", {
+                position: "top-center",
+                closeOnClick: true,
+                theme: "dark",
+            });
         } finally {
             setIsSaving(false);
         }

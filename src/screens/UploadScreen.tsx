@@ -43,7 +43,11 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
                 setUploadProgress("");
             } catch (error) {
                 console.error("Error processing image:", error);
-                toast.error("Error analyzing image colors. Please try another image.");
+                toast.error("Error analyzing image colors. Please try another image.", {
+                    position: "top-center",
+                    closeOnClick: true,
+                    theme: "dark",
+                });
                 setUploadProgress("");
             }
         }

@@ -95,7 +95,11 @@ export const WardrobePage = () => {
                 });
             } catch (error) {
                 console.error("Error updating scheduled date:", error);
-                toast.error("Failed to update scheduled date.");
+                toast.error("Failed to update scheduled date.", {
+                    position: "top-center",
+                    closeOnClick: true,
+                    theme: "dark",
+                });
             }
         }
     };

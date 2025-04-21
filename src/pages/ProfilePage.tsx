@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
-import { AuthContext } from "../context/AuthContext.tsx";
 import { getDownloadURL, getStorage, ref, uploadBytes, deleteObject } from "firebase/storage";
 import { signOut, updateProfile } from "firebase/auth";
 import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import {
     faBell,
     faCameraRetro,
@@ -13,14 +13,20 @@ import {
     faStar,
     faSwatchbook
 } from "@fortawesome/free-solid-svg-icons";
-import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
+
 import { auth } from "../config/firebaseConfig.ts";
+import { AuthContext } from "../context/AuthContext.tsx";
+import { useSubscription } from "../hooks/useSubscription.ts";
+
+import { SubscriptionPlans } from "../components/subscription/SubscriptionPlans.tsx";
 
 export const Profile: React.FC = () => {
     const { user } = useContext(AuthContext);
     const [userPhoto, setUserPhoto] = useState<string | null>(user?.photoURL || null);
     const [newUsername, setNewUsername] = useState<string>(user?.displayName || '');
     const [editUsername, setEditUsername] = useState<boolean>(false);
+
+    const { subscriptionStatus, periodEndDate } = useSubscription();
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files && e.target.files[0];
@@ -57,7 +63,11 @@ export const Profile: React.FC = () => {
             });
         } catch (error) {
             console.error("Error updating photo:", error);
-            toast.error("Failed to update the photo. Please try again.");
+            toast.error("Failed to update the photo. Please try again.", {
+                position: "top-center",
+                closeOnClick: true,
+                theme: "dark",
+            });
         }
     };
 
@@ -77,7 +87,11 @@ export const Profile: React.FC = () => {
                 setEditUsername(false);
             } catch (error) {
                 console.error("Error updating username:", error);
-                toast.error("Failed to update username. Please try again.");
+                toast.error("Failed to update username. Please try again.", {
+                    position: "top-center",
+                    closeOnClick: true,
+                    theme: "dark",
+                });
                 return;
             }
         }
@@ -154,6 +168,14 @@ export const Profile: React.FC = () => {
                         </button>
                         }
                     </div>
+                    {subscriptionStatus === 'active' ? (
+                        <div className="text-green-500 flex items-center gap-2">
+                            <FontAwesomeIcon icon={faCircleCheck} />
+                            Active ({periodEndDate})
+                        </div>
+                    ) : (
+                        <SubscriptionPlans />
+                    )}
                     <span className="text-center text-secondary/80 dark:text-primary/80 uppercase text-xs tracking-wider">
                         {formattedCreationTime}
                     </span>

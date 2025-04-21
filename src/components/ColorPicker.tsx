@@ -31,7 +31,11 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
             setColor(newColor);
         } catch (error) {
             console.error("Error updating color: ", error);
-            toast.error("Error updating color!");
+            toast.error("Error updating color!", {
+                position: "top-center",
+                closeOnClick: true,
+                theme: "dark",
+            });
         }
         setIsOpen(false);
     };
