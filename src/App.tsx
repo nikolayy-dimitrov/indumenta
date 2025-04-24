@@ -20,6 +20,8 @@ import { ContactPage } from "./pages/ContactPage.tsx";
 import { NotFoundPage } from "./pages/404.tsx";
 import { CheckoutPage } from "./pages/subscription/CheckoutPage.tsx";
 import { PaymentSuccessPageWrapper } from "./pages/subscription/PaymentSuccessPageWrapper.tsx";
+import { SubscriptionManagePage } from "./pages/subscription/SubscriptionManagePage.tsx";
+import { OutfitCalendar } from "./pages/OutfitCalendarPage.tsx";
 
 import AuthGuard from "./guards/AuthGuard.tsx";
 import GuestGuard from "./guards/GuestGuard.tsx";
@@ -35,6 +37,8 @@ function App() {
                             <Route path="/" element={<Home />} />
                             <Route element={<GuestGuard />}>
                                 <Route path="/profile" element={<Profile />} />
+                                <Route path="/profile/calendar" element={<OutfitCalendar />} />
+                                <Route path="/subscription/manage" element={<SubscriptionManagePage />} />
                             </Route>
                             <Route path="/checkout" element={<CheckoutPage />} />
                             <Route path="/payment-success" element={<PaymentSuccessPageWrapper />} />

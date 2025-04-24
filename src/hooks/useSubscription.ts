@@ -6,6 +6,12 @@ import { AuthContext } from "../context/AuthContext.tsx";
 export const useSubscription = () => {
     const [subscriptionStatus, setSubscriptionStatus] = useState<string | null>(null);
     const [periodEndDate, setPeriodEndDate] = useState<string | null>(null);
+    const [subscriptionId, setSubscriptionId] = useState<string | null>(null);
+    const [cancelAtPeriodEnd, setCancelAtPeriodEnd] = useState<boolean | null>(null);
+    const [planAmount, setPlanAmount] = useState<number | null>(null);
+    const [planInterval, setPlanInterval] = useState<string | null>(null);
+    const [priceId, setPriceId] = useState<string | null>(null);
+
     const { user } = useContext(AuthContext);
 
     useEffect(() => {
@@ -16,7 +22,15 @@ export const useSubscription = () => {
         const unsubscribe = onSnapshot(userRef, (docSnapshot) => {
             if (docSnapshot.exists()) {
                 const data = docSnapshot.data();
-                setSubscriptionStatus(data?.subscriptionStatus ?? null);
+
+                if (!data) return;
+
+                setSubscriptionStatus(data.subscriptionStatus ?? null);
+                setSubscriptionId(data.subscriptionId ?? null);
+                setCancelAtPeriodEnd(data.cancelAtPeriodEnd ?? null);
+                setPlanAmount((data.planAmount / 100) || null);
+                setPlanInterval(data.planInterval ?? null);
+                setPriceId(data.priceId ?? null);
 
                 // convert unix to readable time/date
                 const timestamp = data?.currentPeriodEnd;
@@ -35,16 +49,34 @@ export const useSubscription = () => {
                 }
             } else {
                 setSubscriptionStatus(null);
+                setSubscriptionId(null);
                 setPeriodEndDate(null);
+                setCancelAtPeriodEnd(null);
+                setPlanAmount(null);
+                setPlanInterval(null);
+                setPriceId(null);
             }
         }, (error) => {
             console.error("Error fetching subscription details: ", error);
             setSubscriptionStatus(null);
+            setSubscriptionId(null);
             setPeriodEndDate(null);
+            setCancelAtPeriodEnd(null);
+            setPlanAmount(null);
+            setPlanInterval(null);
+            setPriceId(null);
         });
 
         return () => unsubscribe();
     }, [user]);
 
-    return { subscriptionStatus, periodEndDate };
+    return {
+        subscriptionStatus,
+        periodEndDate,
+        subscriptionId,
+        cancelAtPeriodEnd,
+        planAmount,
+        planInterval,
+        priceId
+    };
 };

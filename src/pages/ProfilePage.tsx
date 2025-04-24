@@ -1,17 +1,17 @@
 import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import { getDownloadURL, getStorage, ref, uploadBytes, deleteObject } from "firebase/storage";
 import { signOut, updateProfile } from "firebase/auth";
 import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import {
-    faBell,
+    faCalendarDays,
     faCameraRetro,
-    faCircleCheck,
+    faCircleCheck, faCreditCard,
     faHeadset,
     faRightFromBracket,
-    faStar,
-    faSwatchbook
+    faStar
 } from "@fortawesome/free-solid-svg-icons";
 
 import { auth } from "../config/firebaseConfig.ts";
@@ -171,6 +171,10 @@ export const Profile: React.FC = () => {
                         </button>
                         }
                     </div>
+                    <p className="text-xs text-center opacity-80">
+                        {user.email}
+                    </p>
+                    {/* Subscriptions */}
                     {subscriptionStatus === 'active' ? (
                         <div className="text-green-500 flex items-center justify-center gap-2">
                             <FontAwesomeIcon icon={faCircleCheck} />
@@ -187,24 +191,27 @@ export const Profile: React.FC = () => {
 
             {/* Profile Settings */}
             <div className="w-11/12 mx-auto gap-2 flex flex-col mt-8">
-                {/* Preferences Section */}
+                {/* User Dashboard Section */}
                 <div className="border-b border-secondary/20 dark:border-primary/20">
                     <p className="text-secondary/60 dark:text-primary/60 text-xs uppercase tracking-wider">
-                        Preferences
+                        Dashboard
                     </p>
                     <div className="px-1">
-                        <button type="button" className="py-4 w-full flex flex-row items-center gap-4">
-                            <FontAwesomeIcon icon={faBell} />
+                        <Link to="/subscription/manage"
+                              className="py-4 max-md:w-full md:w-1/3 px-2 flex flex-row items-center gap-4 active:bg-primary/10 rounded-2xl">
+                            <FontAwesomeIcon icon={faCreditCard} />
                             <span className="text-secondary dark:text-primary lowercase tracking-wide text-xl">
-                                Notifications
+                                Subscription
                             </span>
-                        </button>
-                        <button type="button" className="py-4 w-full flex flex-row items-center gap-4">
-                            <FontAwesomeIcon icon={faSwatchbook} />
+                        </Link>
+                        <Link
+                            to="/profile/calendar"
+                            className="py-4 max-md:w-full md:w-1/3 px-2 flex flex-row items-center gap-4 active:bg-primary/10 rounded-2xl">
+                            <FontAwesomeIcon icon={faCalendarDays} />
                             <span className="text-secondary dark:text-primary lowercase tracking-wide text-xl">
-                                Appearance
+                                Outfit Calendar
                             </span>
-                        </button>
+                        </Link>
                     </div>
                 </div>
 

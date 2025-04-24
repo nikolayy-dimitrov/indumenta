@@ -1,4 +1,6 @@
-export interface RekognitionResponse {
+import { auth } from "../config/firebaseConfig.ts";
+
+interface RekognitionResponse {
     success: boolean;
     category: string;
     subCategory: string | null;
@@ -16,14 +18,21 @@ export interface RekognitionResponse {
  */
 export const analyzeImageWithRekognition = async (
     apiUrl: string,
-    file: File
+    file: File,
 ): Promise<RekognitionResponse> => {
     const formData = new FormData();
     formData.append('image', file);
 
+    const user = auth.currentUser;
+
+    const token = await user?.getIdToken();
+
     const response = await fetch(apiUrl, {
         method: 'POST',
         body: formData,
+        headers: {
+            "Authorization": `Bearer ${token}`
+        },
     });
 
     if (!response.ok) {

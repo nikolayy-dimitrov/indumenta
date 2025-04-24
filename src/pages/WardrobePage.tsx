@@ -355,9 +355,10 @@ export const WardrobePage = () => {
                         key={item.id}
                         onClick={() => setSelectedOutfit(item)}
                         className="relative group rounded-sm overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-                        initial={{opacity: 0, y: 20}}
-                        animate={{opacity: 1, y: 0}}
-                        transition={{duration: 0.6, ease: "easeOut", delay: index * 0.2}}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        whileHover={{ scale: 1.04, y: -10, transition: {stiffness: 300, damping: 20} }}
+                        transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.2 }}
                     >
                         <div className="w-full h-full flex gap-1 overflow-hidden">
                             <div className="w-1/3 h-full">

@@ -28,9 +28,10 @@ export const SubscriptionPlans: React.FC = () => {
 
     const createSubscription = async (priceId: string) => {
         setIsLoading(true);
-        const token = await user?.getIdToken();
 
         if (!user) return;
+
+        const token = await user.getIdToken();
 
         console.log(stripeCustomerId);
 
@@ -74,7 +75,7 @@ export const SubscriptionPlans: React.FC = () => {
         {
             id: import.meta.env.VITE_STRIPE_PRICE_ID_PREMIUM,
             name: "Premium Tier",
-            price: 4,
+            price: 10,
             features: [
                 "All Premium features",
                 "Team access",

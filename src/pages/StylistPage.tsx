@@ -71,11 +71,14 @@ export const StylistPage = () => {
 
         const wardrobe = Array.from(wardrobeMap.values());
 
+        const token = await user.getIdToken();
+
         try {
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify({ wardrobe, stylePreferences }),
             });

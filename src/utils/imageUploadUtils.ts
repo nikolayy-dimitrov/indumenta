@@ -1,10 +1,10 @@
-import { db, storage } from "../config/firebaseConfig";
+import * as crypto from "crypto"
+import { toast } from "react-toastify";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { addDoc, collection } from "firebase/firestore";
 
+import { db, storage } from "../config/firebaseConfig";
 import { analyzeImageWithRekognition } from "./rekognitionUtils.ts";
-
-import { toast } from "react-toastify";
 
 export const handleUpload = async (
     images: File[],
@@ -27,7 +27,8 @@ export const handleUpload = async (
     try {
         for (let i = 0; i < images.length; i++) {
             const file = images[i];
-            const storageRef = ref(storage, `clothes/${user.uid}/${file.name}`);
+            const randomId = crypto.randomBytes(4).toString('hex');
+            const storageRef = ref(storage, `clothes/${user.uid}/${file.name}_${randomId}`);
             await uploadBytes(storageRef, file);
             const imageUrl = await getDownloadURL(storageRef);
 
@@ -35,7 +36,6 @@ export const handleUpload = async (
             const [rekognitionData] = await Promise.all([
                 analyzeImageWithRekognition(rekognitionApiUrl, file)
             ]);
-
 
             const rekognitionResult = {
                 category: rekognitionData.category,
