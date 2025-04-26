@@ -1,4 +1,3 @@
-import * as crypto from "crypto"
 import { toast } from "react-toastify";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { addDoc, collection } from "firebase/firestore";
@@ -27,8 +26,8 @@ export const handleUpload = async (
     try {
         for (let i = 0; i < images.length; i++) {
             const file = images[i];
-            const randomId = crypto.randomBytes(4).toString('hex');
-            const storageRef = ref(storage, `clothes/${user.uid}/${file.name}_${randomId}`);
+            const hex = Math.random().toString(16).substring(2, 10);
+            const storageRef = ref(storage, `clothes/${user.uid}/${file.name}_${hex}`);
             await uploadBytes(storageRef, file);
             const imageUrl = await getDownloadURL(storageRef);
 

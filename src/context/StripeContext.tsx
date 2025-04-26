@@ -34,7 +34,6 @@ export const StripeProvider = ({ children }: StripeProviderProps) => {
         setIsLoading(true);
 
         const token = await user?.getIdToken();
-        console.log(token);
 
         try {
             const response = await fetch(apiUrl, {

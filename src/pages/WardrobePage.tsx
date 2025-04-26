@@ -15,6 +15,7 @@ import { ColorPicker } from "../components/ColorPicker.tsx";
 import { ConfirmModal } from "../components/ConfirmModal.tsx";
 import { LoadingIndicator } from "../components/LoadingIndicator.tsx";
 
+// TODO: Add total outfits and clothes count
 export const WardrobePage = () => {
     const { user } = useContext(AuthContext);
     const [viewMode, setViewMode] = useState<ViewMode>('clothes');

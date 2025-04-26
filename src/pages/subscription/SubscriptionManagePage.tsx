@@ -1,7 +1,9 @@
-import { AuthContext } from "../../context/AuthContext.tsx";
 import { useContext } from "react";
+
+import { AuthContext } from "../../context/AuthContext.tsx";
 import { useSubscription } from "../../hooks/useSubscription.ts";
 import { SubscriptionPlans } from "../../components/subscription/SubscriptionPlans.tsx";
+import { UsageDisplay } from "../../components/UsageDisplay.tsx";
 
 export const SubscriptionManagePage = () => {
     const { user } = useContext(AuthContext);
@@ -71,29 +73,19 @@ export const SubscriptionManagePage = () => {
                             Renews at: {periodEndDate}
                         </p>
                     )}
-                    {subscriptionStatus === 'active' && !cancelAtPeriodEnd ? (
+                    {subscriptionStatus === 'active' && (
                         <button
                             onClick={handleCancelResume}
-                            className="border border-primary rounded-xl px-2 py-1
+                            className="border border-primary rounded-xl px-2 py-1 lg:w-[15vw] max-lg:w-[25vw] max-md:w-[45vw] mx-auto
                             shadow shadow-primary/60
                             transition-all duration-400 hover:brightness-125 active:bg-primary/10 active:brightness-90">
                             <span className="font-light">
-                                Cancel subscription
-                            </span>
-                        </button>
-                    ) : subscriptionStatus === 'active' && cancelAtPeriodEnd && (
-                        <button
-                            onClick={handleCancelResume}
-                            className="border border-primary rounded-xl px-2 py-1
-                            shadow shadow-primary/60
-                            transition-all duration-400 hover:brightness-125 active:bg-primary/10 active:brightness-90">
-                            <span className="font-light">
-                                Resume subscription
+                                {cancelAtPeriodEnd ? 'Resume subscription' : 'Cancel subscription'}
                             </span>
                         </button>
                     )}
                     <div className="mt-4">
-                        <h3 className="font-bold text-lg uppercase">Current plan</h3>
+                        <h3 className="font-bold text-lg uppercase tracking-widest">Current plan</h3>
                         <h4 className="font-semibold border-b border-t my-2">{planAmount}$ / {planInterval}</h4>
                         {priceId === import.meta.env.VITE_STRIPE_PRICE_ID_BASIC ? (
                             <div>
@@ -120,10 +112,10 @@ export const SubscriptionManagePage = () => {
                         </button>
                     </div>
                     <div>
-                        <h3 className="font-bold text-lg uppercase my-2">
+                        <h3 className="font-bold text-lg uppercase my-2 tracking-wider">
                             Usage
                         </h3>
-                        {/* TODO: Implement usage tracking via tracked values in firebase */}
+                        <UsageDisplay />
                     </div>
                 </div>
             </div>
