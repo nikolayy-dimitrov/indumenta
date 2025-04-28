@@ -85,7 +85,7 @@ export const SubscriptionPlans: React.FC = () => {
     ];
 
     return (
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-8 my-2">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {Plans.map(plan => (
                     <div

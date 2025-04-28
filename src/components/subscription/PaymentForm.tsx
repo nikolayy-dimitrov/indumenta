@@ -24,7 +24,6 @@ export const PaymentForm: React.FC = () => {
         });
 
         if (error) {
-            // Display error to the customer
             console.error(error);
         }
 
@@ -34,8 +33,8 @@ export const PaymentForm: React.FC = () => {
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4 my-2">
-            <div className="p-4 border rounded-lg">
-                <PaymentElement />
+            <div className="p-4 rounded-lg bg-primary">
+                <PaymentElement options={{layout: 'tabs'}} />
             </div>
             <button
                 type="submit"

@@ -12,12 +12,12 @@ export const CheckoutPage = () => {
     } = useLocation();
 
     if (!clientSecret) {
-        // Redirect back to subscription page if no client secret is available
+        // Redirect back to profile page if no client secret is available
         return <Navigate to="/profile" />;
     }
 
     return (
-        <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
+        <div className="max-w-md mx-auto p-6">
             <h2 className="text-2xl font-bold mb-6 text-center">Complete Your Subscription</h2>
             <Elements
                 stripe={stripePromise}

@@ -25,6 +25,7 @@ export const Profile: React.FC = () => {
     const [userPhoto, setUserPhoto] = useState<string | null>(user?.photoURL || null);
     const [newUsername, setNewUsername] = useState<string>(user?.displayName || '');
     const [editUsername, setEditUsername] = useState<boolean>(false);
+    const [subscriptionPanel, setSubscriptionPanel] = useState<boolean>(false);
 
     const { subscriptionStatus, periodEndDate } = useSubscription();
 
@@ -181,7 +182,22 @@ export const Profile: React.FC = () => {
                             Active ({periodEndDate})
                         </div>
                     ) : (
-                        <SubscriptionPlans />
+                        <>
+                            {subscriptionPanel ? (
+                                <SubscriptionPlans />
+                                ) : (
+                                    <button
+                                        onClick={() => {setSubscriptionPanel(true)}}
+                                        className="py-2 px-4 rounded-xl my-2
+                                        transition duration-300 hover:bg-primary/20 active:scale-90 active:bg-primary/40"
+                                    >
+                                        <span
+                                            className="text-content uppercase tracking-wide text-lg">
+                                            Unlock INDUMENTA
+                                        </span>
+                                    </button>
+                                )}
+                        </>
                     )}
                     <span className="text-center text-secondary/80 dark:text-primary/80 uppercase text-xs tracking-wider">
                         {formattedCreationTime}
