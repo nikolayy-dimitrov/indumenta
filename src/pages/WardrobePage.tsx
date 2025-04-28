@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
-import { faCircleCheck, faUserTie, faX } from "@fortawesome/free-solid-svg-icons";
+import { deleteDoc, doc } from "firebase/firestore";
+import { faUserTie, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShirt } from "@fortawesome/free-solid-svg-icons/faShirt";
 import { toast } from "react-toastify";
@@ -14,13 +14,13 @@ import { AuthContext } from "../context/AuthContext";
 import { ColorPicker } from "../components/ColorPicker.tsx";
 import { ConfirmModal } from "../components/ConfirmModal.tsx";
 import { LoadingIndicator } from "../components/LoadingIndicator.tsx";
+import { OutfitModal } from "../components/OutfitModal.tsx";
 
 // TODO: Add total outfits and clothes count
 export const WardrobePage = () => {
     const { user } = useContext(AuthContext);
     const [viewMode, setViewMode] = useState<ViewMode>('clothes');
     const [isColorPickerOpen, setIsColorPickerOpen] = useState<boolean>(false);
-    const [editLabel, setEditLabel] = useState<boolean>(false);
 
     const [selectedImage, setSelectedImage] = useState<ClothingItem | null>(null);
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitItem | null>(null);
@@ -31,11 +31,6 @@ export const WardrobePage = () => {
 
     const [sortBy, setSortBy] = useState<SortOption>("newest");
     const [outfitFilter, setOutfitFilter] = useState<OutfitFilter>("owned");
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_scheduledDate, setScheduledDate] = useState<Date | null>(null);
-    const [date, setDate] = useState(new Date());
-    const [newLabel, setNewLabel] = useState<string>(selectedOutfit?.label || "");
 
     const { clothes, isLoading: isClothesLoading, setClothes } = useClothes(user?.uid);
     const { outfits, isLoading: isOutfitsLoading, setOutfits } = useOutfits(user?.uid, outfitFilter);
@@ -61,69 +56,6 @@ export const WardrobePage = () => {
             window.removeEventListener('keydown', handleEscKey);
         };
     }, []);
-
-    useEffect(() => {
-        const fetchScheduledDate = async () => {
-            if (!selectedOutfit) return;
-            try {
-                const outfitRef = doc(db, "outfits", selectedOutfit.id);
-                const outfitDoc = await getDoc(outfitRef);
-                const scheduleData = outfitDoc.data()?.scheduledDate;
-                if (scheduleData) {
-                    const fetchedDate = scheduleData.toDate();
-                    setScheduledDate(fetchedDate);
-                    setDate(fetchedDate);
-                }
-            } catch (error) {
-                console.error("Error fetching scheduled date:", error);
-            }
-        };
-        fetchScheduledDate();
-    }, [selectedOutfit]);
-
-    const onDateChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newDate = new Date(e.target.value);
-        setDate(newDate);
-
-        if (selectedOutfit) {
-            try {
-                const outfitRef = doc(db, "outfits", selectedOutfit.id);
-                await updateDoc(outfitRef, { scheduledDate: newDate });
-                toast.success("Scheduled date updated successfully!", {
-                    position: "top-center",
-                    closeOnClick: true,
-                    theme: "dark",
-                });
-            } catch (error) {
-                console.error("Error updating scheduled date:", error);
-                toast.error("Failed to update scheduled date.", {
-                    position: "top-center",
-                    closeOnClick: true,
-                    theme: "dark",
-                });
-            }
-        }
-    };
-
-    const toggleEditLabel = (label: boolean) => {
-        setEditLabel(!label);
-    }
-
-    const handleLabelChange = async () => {
-        if (!selectedOutfit) return;
-
-        if (newLabel !== selectedOutfit?.label) {
-            try {
-                const outfitRef = doc(db, "outfits", selectedOutfit.id);
-                await updateDoc(outfitRef, { label: newLabel });
-                setEditLabel(false);
-            } catch (error) {
-                console.error("Error updating label:", error);
-            }
-        } else {
-            setEditLabel(false);
-        }
-    };
 
     const handleToggleView = (mode: ViewMode) => {
         setViewMode(mode);
@@ -448,86 +380,12 @@ export const WardrobePage = () => {
     );
 
     const renderOutfitModal = () => (
-        selectedOutfit && (
-            <div
-                className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center"
-                onClick={() => setSelectedOutfit(null)}
-            >
-                <button
-                    className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors"
-                    onClick={() => setSelectedOutfit(null)}
-                >
-                    <FontAwesomeIcon icon={faX} size="1x"/>
-                </button>
-                <div
-                    className="relative max-w-[90vw] max-h-[90vh]"
-                    onClick={(e) => e.stopPropagation()}
-                >
-                    <div className="w-full h-full flex gap-1 overflow-hidden">
-                        <div className="w-1/3 h-full">
-                            <img
-                                src={selectedOutfit.outfitPieces.Top}
-                                alt="Clothing item"
-                                className="w-full h-full object-cover"
-                            />
-                        </div>
-                        <div className="w-2/3 h-full flex flex-col gap-1">
-                            <div className="w-full h-1/2">
-                                <img
-                                    src={selectedOutfit.outfitPieces.Bottom}
-                                    alt="Clothing item"
-                                    className="w-full h-full object-cover"
-                                />
-                            </div>
-                            <div className="w-full h-1/2">
-                                <img
-                                    src={selectedOutfit.outfitPieces.Shoes}
-                                    alt="Clothing item"
-                                    className="w-full h-full object-cover"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-4">
-                        <div className="flex items-center gap-2">
-                            <div className="flex items-center justify-between w-full px-2">
-                                <input
-                                    id="scheduledDate"
-                                    type="date"
-                                    value={date.toISOString().slice(0, 10)}
-                                    onChange={onDateChange}
-                                    className="border rounded-md px-2 py-1 text-secondary"
-                                />
-                                {!editLabel ?
-                                    <button
-                                        onClick={() => toggleEditLabel(editLabel)}
-                                    >
-                                        {selectedOutfit.label || 'OUTFIT LABEL'}
-                                    </button>
-                                    :
-                                    <div className="flex items-center gap-2">
-                                        <input
-                                            value={newLabel}
-                                            onChange={(e) => setNewLabel(e.target.value)}
-                                            className="text-secondary px-2 py-1 rounded"
-                                        />
-                                        <button onClick={handleLabelChange}>
-                                            <FontAwesomeIcon icon={faCircleCheck} />
-                                        </button>
-                                    </div>
-                                }
-                                {isOwner ? (
-                                    <span>
-                                        {selectedOutfit.createdAt.toDate().toLocaleDateString()}
-                                    </span>
-                                ) : null}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
-    )
+        <OutfitModal
+            outfit={selectedOutfit}
+            onClose={() => setSelectedOutfit(null)}
+            isOwner={isOwner}
+        />
+    );
 
     return (
         <section className="container mx-auto px-4 py-8 font-Josefin">

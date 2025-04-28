@@ -207,7 +207,7 @@ export const useScheduledOutfits = (userId: string) => {
             setIsLoading(false);
         });
         return () => unsubscribe();
-    })
+    }, [userId])
 
     return { scheduledOutfits, isLoading, setScheduledOutfits };
 };
