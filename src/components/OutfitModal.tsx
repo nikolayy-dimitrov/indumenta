@@ -20,6 +20,7 @@ export const OutfitModal = ({ outfit, onClose, isOwner = false }: OutfitModalPro
     const [date, setDate] = useState(new Date());
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_scheduledDate, setScheduledDate] = useState<Date | null>(null);
+    // const { isLoading } = useContext(AuthContext);
 
     useEffect(() => {
         if (outfit) {
@@ -158,7 +159,7 @@ export const OutfitModal = ({ outfit, onClose, isOwner = false }: OutfitModalPro
                         </div>
                     </div>
                 </div>
-                <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-4">
+                <div className="absolute bottom-0 left-0 right-0 bg-secondary/80 rounded-xl mx-2 my-2 text-white py-4 px-2">
                     <div className="flex items-center gap-2">
                         <div className="flex items-center justify-between w-full px-2">
                             <input
@@ -166,14 +167,14 @@ export const OutfitModal = ({ outfit, onClose, isOwner = false }: OutfitModalPro
                                 type="date"
                                 value={date.toISOString().slice(0, 10)}
                                 onChange={onDateChange}
-                                className="border rounded-md px-2 py-1 text-secondary"
+                                className={`border rounded-xl px-3 py-1 text-secondary ${editLabel && 'max-md:hidden'}`}
                             />
                             {!editLabel ? (
                                 <button onClick={toggleEditLabel}>
                                     {outfit.label || 'OUTFIT LABEL'}
                                 </button>
                             ) : (
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center mx-auto gap-2">
                                     <input
                                         value={newLabel}
                                         onChange={(e) => setNewLabel(e.target.value)}
@@ -185,9 +186,9 @@ export const OutfitModal = ({ outfit, onClose, isOwner = false }: OutfitModalPro
                                 </div>
                             )}
                             {isOwner ? (
-                                <span>
-                  {outfit.createdAt.toDate().toLocaleDateString()}
-                </span>
+                                <span className="max-md:hidden">
+                                    {outfit.createdAt.toDate().toLocaleDateString()}
+                                </span>
                             ) : null}
                         </div>
                     </div>

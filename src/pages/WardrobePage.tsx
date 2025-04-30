@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { deleteDoc, doc } from "firebase/firestore";
 import { faUserTie, faX } from "@fortawesome/free-solid-svg-icons";
@@ -15,6 +15,8 @@ import { ColorPicker } from "../components/ColorPicker.tsx";
 import { ConfirmModal } from "../components/ConfirmModal.tsx";
 import { LoadingIndicator } from "../components/LoadingIndicator.tsx";
 import { OutfitModal } from "../components/OutfitModal.tsx";
+import { ClothesModal } from "../components/ClothesModal.tsx";
+import { useEscapeKey } from "../hooks/useEscapeKey.ts";
 
 // TODO: Add total outfits and clothes count
 export const WardrobePage = () => {
@@ -41,21 +43,15 @@ export const WardrobePage = () => {
         setViewMode('clothes');
     }, []);
 
-    useEffect(() => {
-        const handleEscKey = (event: KeyboardEvent) => {
-            if (event.key === 'Escape') {
-                setSelectedImage(null);
-                setSelectedOutfit(null);
-                setIsColorPickerOpen(false);
-                setShowConfirm(false);
-            }
-        };
-
-        window.addEventListener('keydown', handleEscKey);
-        return () => {
-            window.removeEventListener('keydown', handleEscKey);
-        };
+    // Callback function to reset all modal/popup states
+    const handleResetStates = useCallback(() => {
+        setSelectedImage(null);
+        setSelectedOutfit(null);
+        setIsColorPickerOpen(false);
+        setShowConfirm(false);
     }, []);
+
+    useEscapeKey(handleResetStates);
 
     const handleToggleView = (mode: ViewMode) => {
         setViewMode(mode);
@@ -341,42 +337,9 @@ export const WardrobePage = () => {
     );
 
     const renderImageModal = () => (
-        selectedImage && (
-            <div
-                className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center"
-                onClick={() => setSelectedImage(null)}
-            >
-                <button
-                    className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors"
-                    onClick={() => setSelectedImage(null)}
-                >
-                    <FontAwesomeIcon icon={faX} size="1x"/>
-                </button>
-                <div
-                    className="relative max-w-[90vw] max-h-[90vh]"
-                    onClick={(e) => e.stopPropagation()}
-                >
-                    <img
-                        src={selectedImage.imageUrl}
-                        alt="Clothing item full view"
-                        className="max-w-full max-h-[90vh] object-contain"
-                    />
-                    <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-4">
-                        <div className="flex items-center gap-2">
-                            <ColorPicker itemId={selectedImage.id}
-                                         initialColor={selectedImage.dominantColor}
-                                         isOpen={isColorPickerOpen}
-                                         setIsOpen={setIsColorPickerOpen}
-                            />
-                            <span>{selectedImage.category}</span>
-                            <span className="ml-auto">
-                                {selectedImage.uploadedAt.toDate().toLocaleDateString()}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
+        <ClothesModal
+            selectedImage={selectedImage}
+            onClose={() => setSelectedImage(null)} />
     );
 
     const renderOutfitModal = () => (
