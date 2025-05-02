@@ -1,5 +1,5 @@
 import { useFetchUsageData } from "../hooks/useFetchUsageData.ts";
-import {CircleMeter} from "./CircleProgressMeter.tsx";
+import { CircleMeter } from "./UI/CircleProgressMeter.tsx";
 
 export const UsageDisplay = () => {
     const { usageStats, loading, error } = useFetchUsageData();
@@ -62,17 +62,6 @@ export const UsageDisplay = () => {
                     title='Outfits'
                 />
             </div>
-
-            {usageStats.subscriptionTier === 'free' && (
-                <div className="mt-6 pt-4 border-t border-gray-200 text-center">
-                    <p className="text-sm text-gray-600">
-                        Need more generations?{' '}
-                        <a href="/pricing" className="text-blue-600 font-medium hover:text-blue-800 transition-colors">
-                            Upgrade your plan
-                        </a>
-                    </p>
-                </div>
-            )}
         </section>
     );
 };

@@ -62,7 +62,7 @@ export const Navbar = () => {
                     </div>
                 ) : (
                     <div className="flex gap-4 z-40 font-light">
-                        <Link to="/sign-up" className="hover:text-primary/80">Sign Up</Link>
+                        <Link to="/authentication" className="hover:text-primary/80">Sign In</Link>
                     </div>
                 )}
                 </>
@@ -122,7 +122,7 @@ export const Navbar = () => {
                                 </button>
                             </Link>
                             {!user ? (
-                                <Link to="/sign-in">
+                                <Link to="/authentication">
                                     <button onClick={toggleMenu}>
                                         Sign In
                                     </button>

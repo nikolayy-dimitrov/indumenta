@@ -11,7 +11,7 @@ import { WardrobeContext } from "../context/WardrobeContext.tsx";
 import { getDominantColorFromImage } from "../utils/colorThiefUtils.ts";
 import { handleUpload } from "../utils/imageUploadUtils.ts";
 
-import { IconPlayer } from "../components/IconPlayer";
+import { IconPlayer } from "../components/UI/IconPlayer.tsx";
 import { db } from "../config/firebaseConfig.ts";
 import useMediaQuery from "../utils/useMediaQuery.ts";
 

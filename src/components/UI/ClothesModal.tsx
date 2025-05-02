@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import { ClothingItem } from "../types/wardrobe.ts";
+import { ClothingItem } from "../../types/wardrobe.ts";
 import { ColorPicker } from "./ColorPicker.tsx";
 
 interface ClothesModalProps {

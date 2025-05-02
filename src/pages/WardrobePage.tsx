@@ -11,11 +11,11 @@ import { OutfitFilter, OutfitItem, ClothingItem, SortOption, ViewMode } from "..
 import { useClothes, useOutfits } from "../hooks/useWardrobe.ts";
 import { db } from "../config/firebaseConfig";
 import { AuthContext } from "../context/AuthContext";
-import { ColorPicker } from "../components/ColorPicker.tsx";
-import { ConfirmModal } from "../components/ConfirmModal.tsx";
-import { LoadingIndicator } from "../components/LoadingIndicator.tsx";
-import { OutfitModal } from "../components/OutfitModal.tsx";
-import { ClothesModal } from "../components/ClothesModal.tsx";
+import { ColorPicker } from "../components/UI/ColorPicker.tsx";
+import { ConfirmModal } from "../components/UI/ConfirmModal.tsx";
+import { LoadingIndicator } from "../components/UI/LoadingIndicator.tsx";
+import { OutfitModal } from "../components/UI/OutfitModal.tsx";
+import { ClothesModal } from "../components/UI/ClothesModal.tsx";
 import { useEscapeKey } from "../hooks/useEscapeKey.ts";
 
 // TODO: Add total outfits and clothes count

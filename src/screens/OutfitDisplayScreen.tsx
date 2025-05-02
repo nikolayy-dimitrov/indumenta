@@ -8,7 +8,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../config/firebaseConfig.ts";
 import { ClothingItem } from "../types/wardrobe.ts";
 import { useEscapeKey } from "../hooks/useEscapeKey.ts";
-import { ClothesModal } from "../components/ClothesModal.tsx";
+import { ClothesModal } from "../components/UI/ClothesModal.tsx";
 
 interface OutfitRecommendation {
     outfit_id: string;

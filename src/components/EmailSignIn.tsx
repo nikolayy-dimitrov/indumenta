@@ -3,9 +3,6 @@ import { Link } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword, UserCredential } from 'firebase/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
-import { motion } from 'framer-motion';
-
-import { containerVariants } from "../../utils/framerMotionUtils.ts";
 
 export const EmailSignIn: React.FC = () => {
     const [email, setEmail] = useState<string>('');
@@ -48,68 +45,69 @@ export const EmailSignIn: React.FC = () => {
     };
 
     return (
-        <motion.div
-            className="w-11/12 mx-auto flex items-center justify-center md:mt-12 max-md:mt-24 font-Josefin"
-            initial="hidden"
-            animate="visible"
-            variants={containerVariants}
-        >
-            <div className="bg-gradient-to-tl from-primary/40 via-primary-blue/60 to-primary/40
-            border-t-2 border-l-2 border-b-4 border-r-4 border-t-primary/50 border-l-primary/50 border-primary-blue/60
-            shadow-lg rounded-3xl p-8 w-full max-w-md">
-                <h2 className="text-2xl font-bold mb-4 text-primary drop-shadow text-center">Sign In</h2>
+            <div>
                 {error &&
-                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">{error}</div>}
+                    <div className="text-red-500 text-center text-sm py-1 mx-2">
+                        {error}
+                    </div>
+                }
                 <div className="mb-4">
-                    <label htmlFor="email" className="block text-primary font-semibold mb-2">
+                    <label htmlFor="email" className="block text-primary font-medium text-sm mb-2">
                         Email
                     </label>
                     <div className="relative">
                         <FontAwesomeIcon icon={faEnvelope}
-                                         className="absolute top-1/2 transform -translate-y-1/2 left-3 text-secondary/60" />
+                                         className="absolute top-1/2 transform -translate-y-1/2 left-3 text-primary/80" />
                         <input
                             type="email"
                             id="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="shadow appearance-none border rounded-xl w-full py-2 pl-10 pr-3 text-secondary placeholder:text-secondary/60 leading-tight focus:outline-none focus:shadow-outline"
-                            placeholder="Enter your email"
+                            className="shadow bg-secondary border border-primary/20 rounded-md w-full py-2 pl-10 pr-3
+                             text-primary placeholder:text-primary/60 leading-tight
+                             focus:outline-primary/10"
+                            placeholder="your@email.com"
+                            required
                         />
                     </div>
                 </div>
                 <div className="mb-6">
-                    <label htmlFor="password" className="block text-primary font-semibold mb-2">
-                        Password
-                    </label>
+                    <div className="flex items-center justify-between">
+                        <label htmlFor="password" className="block text-primary font-medium text-sm mb-2">
+                            Password
+                        </label>
+                        <Link
+                            to='/authentication/forgot-password'
+                            className="block text-primary font-light text-xs mb-2 transition duration-200 hover:underline">
+                            Forgot Password?
+                        </Link>
+                    </div>
                     <div className="relative">
                         <FontAwesomeIcon icon={faLock}
-                                         className="absolute top-1/2 transform -translate-y-1/2 left-3 text-secondary/60" />
+                                         className="absolute top-1/2 transform -translate-y-1/2 left-3 text-primary/80" />
                         <input
                             type="password"
                             id="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="shadow appearance-none border rounded-xl w-full py-2 pl-10 pr-3 text-secondary placeholder:text-secondary/60 leading-tight focus:outline-none focus:shadow-outline"
-                            placeholder="Enter your password"
+                            className="shadow bg-secondary border border-primary/20 rounded-md w-full py-2 pl-10 pr-3
+                             text-primary placeholder:text-primary/60 leading-tight
+                             focus:outline-primary/10"
+                            placeholder="••••••••"
+                            required
                         />
                     </div>
                 </div>
                 <div className="flex items-center justify-between mb-2 py-2">
                     <button
-                        className="bg-gradient-to-br from-primary-blue to-primary text-secondary font-semibold border border-primary py-2 px-4 rounded-xl transition w-full"
+                        className="py-2 px-4 text-secondary font-medium text-sm bg-primary
+                        hover:bg-opacity-80 rounded-md transition duration-300 w-full focus:outline-primary"
                         type="button"
                         onClick={handleEmailLogin}
                     >
-                        Login
+                        Sign In
                     </button>
                 </div>
-                <span className="text-secondary text-sm gap-1 flex">
-                    Don't have an account?
-                    <Link to="/sign-up" className="underline-offset-2 underline">
-                        Sign Up
-                    </Link>
-                </span>
             </div>
-        </motion.div>
     );
 };

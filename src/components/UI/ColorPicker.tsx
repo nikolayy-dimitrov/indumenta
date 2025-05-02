@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ChromePicker, ColorResult } from "react-color";
 import { updateDoc, doc } from "firebase/firestore";
 import { toast } from "react-toastify";
-import { db } from "../config/firebaseConfig";
+import { db } from "../../config/firebaseConfig.ts";
 
 type ColorPickerProps = {
     itemId: string;

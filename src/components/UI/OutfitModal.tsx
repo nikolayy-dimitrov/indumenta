@@ -5,8 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 
-import { OutfitItem } from "../types/wardrobe.ts";
-import { db } from "../config/firebaseConfig";
+import { OutfitItem } from "../../types/wardrobe.ts";
+import { db } from "../../config/firebaseConfig.ts";
 
 interface OutfitModalProps {
     outfit: OutfitItem | null;

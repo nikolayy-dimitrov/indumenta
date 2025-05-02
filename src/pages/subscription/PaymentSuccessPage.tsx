@@ -1,5 +1,5 @@
 import { useStripe } from "@stripe/react-stripe-js";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const PaymentSuccessPage = () => {
     const stripe = useStripe();
