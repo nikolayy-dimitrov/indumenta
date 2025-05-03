@@ -1,6 +1,7 @@
 import { Timestamp } from "firebase/firestore";
 
-export type ViewMode = 'clothes' | 'outfits';
+export type ViewMode = 'grid' | 'list';
+export type ActiveCollection = 'clothes' | 'outfits';
 export type SortOption = 'newest' | 'oldest' | 'color';
 export type OutfitFilter = 'owned' | 'saved';
 
@@ -12,6 +13,8 @@ export interface ClothingItem {
     userId: string;
     category: string;
     subCategory: string;
+    season: string;
+    labels: [];
 }
 
 export interface OutfitItem {

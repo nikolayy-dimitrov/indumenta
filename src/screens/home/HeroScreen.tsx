@@ -32,7 +32,7 @@ export const HeroScreen = () => {
                         variants={buttonVariants}
                         className="flex justify-between items-center gap-12">
                         <Link
-                            to={!user ? "/sign-up" : "/wardrobe"}
+                            to={!user ? "/authentication" : "/wardrobe"}
                             className="bg-gradient-to-br from-primary-blue to-primary/80 to-80% rounded-xl
                              border border-primary/50
                              text-secondary font-light tracking-wide py-2 px-4 transition duration-300 active:scale-95"

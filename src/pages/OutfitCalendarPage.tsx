@@ -160,7 +160,7 @@ export const OutfitCalendar = () => {
     if (!user) {
         return (
             <div className="flex justify-center items-center h-screen font-Josefin">
-                <Link to="/sign-in">Please log in to view your outfit calendar.</Link>
+                <Link to="/authentication">Please log in to view your outfit calendar.</Link>
             </div>
         );
     }
