@@ -207,7 +207,7 @@ export const OutfitsGrid = ({
                                 </div>
                             </div>
 
-                            <div className="flex items-center gap-2">
+                            <div className="max-md:hidden md:flex items-center gap-2">
                                 {/* Item circles display */}
                                 <div className="flex -space-x-2">
                                     {Object.entries(item.outfitPieces)
