@@ -33,23 +33,33 @@ export const Navbar = () => {
             {isAboveMediumScreens ? (
                 <>
                 <div className="absolute left-1/2 transform -translate-x-1/2 flex gap-8 font-semibold z-40">
+                    {!user &&
+                        (<NavLink to="/"
+                              className={({isActive}) =>
+                                  `${isActive && "text-primary/20"} transition duration-300 active:scale-90 hover:text-primary/90 text-sm uppercase tracking-wide`
+                              }>
+                        Home
+                    </NavLink>
+                        )}
                     <NavLink to="/stylist"
                              className={({ isActive }) =>
                         `${isActive && "text-primary/20"} transition duration-300 active:scale-90 hover:text-primary/90 text-sm uppercase tracking-wide`
                     }>
                         Stylist
                     </NavLink>
-                    <NavLink to="/"
+                    {user && (
+                        <NavLink to="/wardrobe"
+                                 className={({ isActive }) =>
+                            `${isActive && "text-primary/20"} transition duration-300 active:scale-90 hover:text-primary/90 text-sm uppercase tracking-wide`
+                        }>
+                            Wardrobe
+                        </NavLink>
+                    )}
+                    <NavLink to="/showroom"
                              className={({ isActive }) =>
-                        `${isActive && "text-primary/20"} transition duration-300 active:scale-90 hover:text-primary/90 text-sm uppercase tracking-wide border-x border-primary/20 px-8`
-                    }>
-                        Home
-                    </NavLink>
-                    <NavLink to="/wardrobe"
-                             className={({ isActive }) =>
-                        `${isActive && "text-primary/20"} transition duration-300 active:scale-90 hover:text-primary/90 text-sm uppercase tracking-wide`
-                    }>
-                        Wardrobe
+                                 `${isActive && "text-primary/20"} transition duration-300 active:scale-90 hover:text-primary/90 text-sm uppercase tracking-wide`
+                             }>
+                        Showroom
                     </NavLink>
                     {/*<Link to="/contact" className="hover:text-primary/90">Contact</Link>*/}
                 </div>

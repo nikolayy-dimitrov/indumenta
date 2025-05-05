@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 
-import { OutfitItem, ViewMode } from "../types/wardrobe.ts";
-import {DeleteHandler} from "./UI/DeleteHandler.tsx";
+import { OutfitFilter, OutfitItem, ViewMode } from "../types/wardrobe.ts";
+import { AuthContext } from "../context/AuthContext.tsx";
+import { DeleteHandler } from "./UI/DeleteHandler.tsx";
+import { LikeOutfitHandler } from "./UI/LikeOutfitHandler.tsx";
+import { useUserPhotos } from "../hooks/useWardrobe.ts";
 
 interface OutfitsGridProps {
     outfits: OutfitItem[];
     viewMode: ViewMode;
+    outfitFilter: OutfitFilter;
     setOutfits: React.Dispatch<React.SetStateAction<OutfitItem[]>>;
     onSelectOutfit: (outfit: OutfitItem) => void;
 }
@@ -17,9 +21,18 @@ interface OutfitsGridProps {
 export const OutfitsGrid = ({
                                 outfits,
                                 viewMode,
+                                outfitFilter,
                                 setOutfits,
                                 onSelectOutfit
                             }: OutfitsGridProps) => {
+    const { user } = useContext(AuthContext);
+
+    // Extract all user IDs from outfits
+    const userIds = outfits.map(outfit => outfit.userId).filter(Boolean) as string[];
+
+    // Fetch user photos for all outfit creators
+    const { userPhotos } = useUserPhotos(userIds);
+
     const handleSuccessfulDelete = (outfitId: string) => {
         setOutfits((prev) => prev.filter((item) => item.id !== outfitId));
     };
@@ -76,26 +89,37 @@ export const OutfitsGrid = ({
                                 </div>
                             </div>
                         </div>
-
-                        {/* Delete Button */}
-                        <DeleteHandler
-                            itemId={item.id}
-                            collectionName="outfits"
-                            onSuccessfulDelete={handleSuccessfulDelete}
-                            confirmMessage="Are you sure you want to delete this outfit?"
-                        >
-                            {(handleDelete) => (
-                                <button
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleDelete(item.id);
-                                    }}
-                                    className="absolute right-2 top-2 h-8 w-8 rounded-full bg-white/50 backdrop-blur-sm flex items-center justify-center text-red-600 hover:bg-white/70 transition-colors"
+                        {/* TODO: Add a like button for when all outfits are displayed */}
+                        {outfitFilter === 'owned' ? (
+                            <>
+                                {/* Delete Button */}
+                                <DeleteHandler
+                                    itemId={item.id}
+                                    collectionName="outfits"
+                                    onSuccessfulDelete={handleSuccessfulDelete}
+                                    confirmMessage="Are you sure you want to delete this outfit?"
                                 >
-                                    <FontAwesomeIcon icon={faX} className="h-3 w-3" />
-                                </button>
-                            )}
-                        </DeleteHandler>
+                                    {(handleDelete) => (
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleDelete(item.id);
+                                            }}
+                                            className="absolute right-2 top-2 h-8 w-8 rounded-full bg-white/50 backdrop-blur-sm flex items-center justify-center text-red-600 hover:bg-white/70 transition-colors"
+                                        >
+                                            <FontAwesomeIcon icon={faX} className="h-3 w-3" />
+                                        </button>
+                                    )}
+                                </DeleteHandler>
+                            </>
+                        ) : (
+                            <>
+                                {/* Like/Save button */}
+                                <div className="absolute right-2 top-2">
+                                    <LikeOutfitHandler outfit={item} currentUserId={user?.uid} />
+                                </div>
+                            </>
+                        )}
                     </div>
 
                     {/* Outfit Info */}
@@ -121,22 +145,42 @@ export const OutfitsGrid = ({
                             )}
                         </div>
 
-                        {/* Item Thumbnails Circle Display */}
                         <div className="mt-3 flex -space-x-2">
-                            {Object.entries(item.outfitPieces).map(
-                                ([pieceType, imageUrl]) =>
-                                    imageUrl && (
-                                        <div
-                                            key={`${item.id}-${pieceType}`}
-                                            className="h-10 w-10 overflow-hidden rounded-full border-2 border-white"
-                                        >
+                            {outfitFilter === 'owned' ? (
+                                <>
+                                    {/* Item Thumbnails Circle Display */}
+                                    {Object.entries(item.outfitPieces).map(
+                                        ([pieceType, imageUrl]) =>
+                                            imageUrl && (
+                                                <div
+                                                    key={`${item.id}-${pieceType}`}
+                                                    className="h-10 w-10 overflow-hidden rounded-full border-2 border-white"
+                                                >
+                                                    <img
+                                                        src={imageUrl}
+                                                        alt={pieceType}
+                                                        className="h-full w-full object-cover"
+                                                    />
+                                                </div>
+                                            )
+                                    )}
+                                </>
+                            ) : (
+                                <div className="flex items-center">
+                                    <div className="w-6 h-6 rounded-full bg-gray-200 overflow-hidden mr-2">
+                                        {item.userId && userPhotos[item.userId] ? (
                                             <img
-                                                src={imageUrl}
-                                                alt={pieceType}
-                                                className="h-full w-full object-cover"
+                                                src={userPhotos[item.userId]}
+                                                alt="User"
+                                                className="w-full h-full object-cover"
                                             />
-                                        </div>
-                                    )
+                                        ) : (
+                                            <div className="w-full h-full bg-gray-300"/>
+                                        )}
+                                    </div>
+                                    <span
+                                        className="text-sm text-gray-600">{item.userId?.slice(0, 8) || "User"}</span>
+                                </div>
                             )}
                         </div>
                     </div>
@@ -208,51 +252,81 @@ export const OutfitsGrid = ({
                             </div>
 
                             <div className="max-md:hidden md:flex items-center gap-2">
-                                {/* Item circles display */}
-                                <div className="flex -space-x-2">
-                                    {Object.entries(item.outfitPieces)
-                                        .slice(0, 3)
-                                        .map(
-                                            ([pieceType, imageUrl]) =>
-                                                imageUrl && (
-                                                    <div
-                                                        key={`${item.id}-${pieceType}`}
-                                                        className="h-8 w-8 overflow-hidden rounded-full border-2 border-white"
-                                                    >
-                                                        <img
-                                                            src={imageUrl}
-                                                            alt={pieceType}
-                                                            className="h-full w-full object-cover"
-                                                        />
-                                                    </div>
-                                                )
-                                        )}
-                                    {Object.keys(item.outfitPieces).length > 3 && (
-                                        <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-gray-200 text-xs">
-                                            +{Object.keys(item.outfitPieces).length - 3}
+                                {outfitFilter === 'owned' ? (
+                                    <>
+                                        {/* Item circles display */}
+                                        <div className="flex -space-x-2">
+                                            {Object.entries(item.outfitPieces)
+                                                .slice(0, 3)
+                                                .map(
+                                                    ([pieceType, imageUrl]) =>
+                                                        imageUrl && (
+                                                            <div
+                                                                key={`${item.id}-${pieceType}`}
+                                                                className="h-8 w-8 overflow-hidden rounded-full border-2 border-white"
+                                                            >
+                                                                <img
+                                                                    src={imageUrl}
+                                                                    alt={pieceType}
+                                                                    className="h-full w-full object-cover"
+                                                                />
+                                                            </div>
+                                                        )
+                                                )}
+                                            {Object.keys(item.outfitPieces).length > 3 && (
+                                                <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-gray-200 text-xs">
+                                                    +{Object.keys(item.outfitPieces).length - 3}
+                                                </div>
+                                            )}
                                         </div>
-                                    )}
-                                </div>
+                                    </>
+                                ) : (
+                                    <div className="flex items-center gap-2">
+                                        <span
+                                            className="text-sm text-gray-600">{item.userId?.slice(0, 8) || "User"}</span>
+                                        <div className="w-6 h-6 rounded-full bg-gray-200 overflow-hidden mr-2">
+                                            {item.userId && userPhotos[item.userId] ? (
+                                                <img
+                                                    src={userPhotos[item.userId]}
+                                                    alt="User"
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            ) : (
+                                                <div className="w-full h-full bg-gray-300"/>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
 
-                                {/* Delete button */}
-                                <DeleteHandler
-                                    itemId={item.id}
-                                    collectionName="outfits"
-                                    onSuccessfulDelete={handleSuccessfulDelete}
-                                    confirmMessage="Are you sure you want to delete this outfit?"
-                                >
-                                    {(handleDelete) => (
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleDelete(item.id);
-                                            }}
-                                            className="h-8 w-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-red-600 transition-colors"
+                                {outfitFilter === 'owned' ? (
+                                    <>
+                                        {/* Delete button */}
+                                        <DeleteHandler
+                                            itemId={item.id}
+                                            collectionName="outfits"
+                                            onSuccessfulDelete={handleSuccessfulDelete}
+                                            confirmMessage="Are you sure you want to delete this outfit?"
                                         >
-                                            <FontAwesomeIcon icon={faX} className="h-3 w-3" />
-                                        </button>
-                                    )}
-                                </DeleteHandler>
+                                            {(handleDelete) => (
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleDelete(item.id);
+                                                    }}
+                                                    className="h-8 w-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-red-600 transition-colors"
+                                                >
+                                                    <FontAwesomeIcon icon={faX} className="h-3 w-3" />
+                                                </button>
+                                            )}
+                                        </DeleteHandler>
+                                    </>
+                                ) : (
+                                    <>
+                                        {/* TODO: Add refactored like button component */}
+                                        {/* Like/Save button */}
+                                        <LikeOutfitHandler outfit={item} currentUserId={user?.uid} />
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>

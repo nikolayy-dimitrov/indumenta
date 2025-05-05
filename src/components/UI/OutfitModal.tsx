@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { faCircleCheck, faX, faCalendarAlt, faTags, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,7 +7,9 @@ import { toast } from "react-toastify";
 
 import { OutfitItem } from "../../types/wardrobe.ts";
 import { db } from "../../config/firebaseConfig.ts";
+import { AuthContext } from "../../context/AuthContext.tsx";
 import { DeleteHandler } from "./DeleteHandler.tsx";
+import { LikeOutfitHandler } from "./LikeOutfitHandler.tsx";
 
 interface OutfitModalProps {
     outfit: OutfitItem | null;
@@ -22,6 +24,8 @@ export const OutfitModal = ({ outfit, onClose, isOwner = false, onDelete }: Outf
     const [date, setDate] = useState(new Date());
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_scheduledDate, setScheduledDate] = useState<Date | null>(null);
+
+    const { user } = useContext(AuthContext);
 
     useEffect(() => {
         if (outfit) {
@@ -291,10 +295,12 @@ export const OutfitModal = ({ outfit, onClose, isOwner = false, onDelete }: Outf
                                 </div>
                             )}
                             {!isOwner && (
-                                <button
-                                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition-colors">
-                                    Save to My Outfits
-                                </button>
+                                <LikeOutfitHandler
+                                    outfit={outfit}
+                                    currentUserId={user?.uid}
+                                    title={'Save Outfit'}
+                                    className="mx-auto w-full"
+                                />
                             )}
                         </div>
                     </div>

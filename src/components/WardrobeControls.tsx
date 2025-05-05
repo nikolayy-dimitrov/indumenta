@@ -3,7 +3,7 @@ import { faShirt } from "@fortawesome/free-solid-svg-icons/faShirt";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 
-import {ActiveCollection, OutfitFilter, SortOption, ViewMode} from "../types/wardrobe.ts";
+import { ActiveCollection, OutfitFilter, SortOption, ViewMode } from "../types/wardrobe.ts";
 
 interface WardrobeControlsProps {
     activeCollection: ActiveCollection;
@@ -42,20 +42,20 @@ export const WardrobeControls = ({
                         transition={{ type: "spring", stiffness: 300, damping: 30 }}
                     />
                     <div className="flex justify-between items-center h-full my-auto w-full px-2">
-            <span
-                className={`max-h-3 text-xs font-medium ${
-                    activeCollection === "clothes" ? "text-secondary" : "text-primary"
-                }`}
-            >
-              <FontAwesomeIcon icon={faShirt} />
-            </span>
+                        <span
+                            className={`max-h-3 text-xs font-medium ${
+                                activeCollection === "clothes" ? "text-secondary" : "text-primary"
+                            }`}
+                        >
+                            <FontAwesomeIcon icon={faShirt} />
+                        </span>
                         <span
                             className={`max-h-3 text-xs font-medium ${
                                 activeCollection === "outfits" ? "text-secondary" : "text-primary"
                             }`}
                         >
-              <FontAwesomeIcon icon={faUserTie} />
-            </span>
+                            <FontAwesomeIcon icon={faUserTie} />
+                        </span>
                     </div>
                 </div>
 
@@ -63,16 +63,16 @@ export const WardrobeControls = ({
                     <div
                         onClick={() => onToggleView("grid")}
                         className={`cursor-pointer h-10 w-10 items-center flex justify-center
-              transition duration-200 hover:bg-primary/20 rounded-s-md
-              ${viewMode === "grid" && "bg-primary/20"}`}
+                                  transition duration-200 hover:bg-primary/20 rounded-s-md
+                                  ${viewMode === "grid" && "bg-primary/20"}`}
                     >
                         <FontAwesomeIcon icon={faTableCells} />
                     </div>
                     <div
                         onClick={() => onToggleView("list")}
                         className={`cursor-pointer h-10 w-10 items-center flex justify-center
-              transition duration-200 hover:bg-primary/20 rounded-e-md
-              ${viewMode === "list" && "bg-primary/20"}`}
+                                  transition duration-200 hover:bg-primary/20 rounded-e-md
+                                  ${viewMode === "list" && "bg-primary/20"}`}
                     >
                         <FontAwesomeIcon icon={faListUl} />
                     </div>

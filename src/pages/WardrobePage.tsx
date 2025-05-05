@@ -109,6 +109,7 @@ export const WardrobePage = () => {
                 <OutfitsGrid
                     outfits={outfits}
                     viewMode={viewMode}
+                    outfitFilter={'owned'}
                     setOutfits={setOutfits}
                     onSelectOutfit={handleSelectOutfit}
                 />

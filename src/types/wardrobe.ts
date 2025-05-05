@@ -3,7 +3,8 @@ import { Timestamp } from "firebase/firestore";
 export type ViewMode = 'grid' | 'list';
 export type ActiveCollection = 'clothes' | 'outfits';
 export type SortOption = 'newest' | 'oldest' | 'color';
-export type OutfitFilter = 'owned' | 'saved';
+export type OutfitFilter = 'all' | 'saved' | 'owned';
+export type ShowMode = "trending" | "community" | "following";
 
 export interface ClothingItem {
     id: string;
@@ -39,14 +40,18 @@ export interface UseModalReturn {
     closeModals: () => void;
 }
 
-export interface UseItemManagementProps {
-    setClothes?: React.Dispatch<React.SetStateAction<ClothingItem[]>>;
-    setOutfits?: React.Dispatch<React.SetStateAction<OutfitItem[]>>;
-    setTrendingOutfits?: React.Dispatch<React.SetStateAction<OutfitItem[]>>;
-    onClose: () => void;
+export interface LikedOutfitsState {
+    likedOutfitIds: string[];
+    isLoading: boolean;
+    error: Error | null;
 }
 
-export interface UseItemManagementReturn {
-    deleteItem: (itemId: string, itemType: 'clothes' | 'outfits') => Promise<void>;
-    confirmDelete: (itemId: string, itemType: 'clothes' | 'outfits') => void;
+export interface UseOutfitLikesReturn {
+    likedOutfitIds: string[];
+    isLoading: boolean;
+    error: Error | null;
+    likeOutfit: (outfitId: string, outfitOwnerId: string) => Promise<void>;
+    unlikeOutfit: (outfitId: string) => Promise<void>;
+    isOutfitLiked: (outfitId: string) => boolean;
+    canLikeOutfit: (outfitOwnerId: string) => boolean;
 }

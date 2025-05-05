@@ -1,9 +1,24 @@
 import { useEffect, useState } from "react";
-import { collection, getDoc, limit, onSnapshot, orderBy, query, Timestamp, where } from "firebase/firestore";
+import {
+    collection,
+    doc,
+    getDoc,
+    setDoc,
+    updateDoc,
+    deleteDoc,
+    increment,
+    limit,
+    onSnapshot,
+    orderBy,
+    query,
+    where,
+    Timestamp
+} from "firebase/firestore";
 import { doc as firestoreDoc } from "firebase/firestore";
-import { db } from "../config/firebaseConfig";
+import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
-import { ClothingItem, OutfitFilter, OutfitItem } from "../types/wardrobe";
+import { db } from "../config/firebaseConfig";
+import { ClothingItem, LikedOutfitsState, OutfitFilter, OutfitItem, UseOutfitLikesReturn } from "../types/wardrobe";
 
 export const useClothes = (userId: string | undefined) => {
     const [clothes, setClothes] = useState<ClothingItem[]>([]);
@@ -40,15 +55,32 @@ export const useOutfits = (userId: string | undefined, filter: OutfitFilter = 'o
     const { savedOutfits, isLoading: isSavedLoading } = useSavedOutfits(userId);
 
     useEffect(() => {
-        if (!userId) {
+        // For 'all' filter, we don't need a userId to fetch community outfits
+        // For other filters, we need a userId
+        if (!userId && filter !== 'all') {
+            setIsLoading(false);
+            return;
+        }
+
+        // Handle 'saved' filter separately since it uses savedOutfits
+        if (filter === 'saved') {
+            setOutfits(savedOutfits);
             setIsLoading(false);
             return;
         }
 
         const outfitsRef = collection(db, "outfits");
-        const q = filter === 'owned'
-            ? query(outfitsRef, where("userId", "==", userId))
-            : query(outfitsRef);
+
+        // Determine the query based on filter
+        let q;
+        if (filter === 'owned' && userId) {
+            q = query(outfitsRef, where("userId", "==", userId));
+        } else if (filter === 'all') {
+            // Community view - get all outfits, potentially limit to a reasonable number
+            q = query(outfitsRef, limit(50));
+        } else {
+            q = query(outfitsRef);
+        }
 
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             const outfitsData = querySnapshot.docs.map((doc) => {
@@ -59,17 +91,13 @@ export const useOutfits = (userId: string | undefined, filter: OutfitFilter = 'o
                     createdAt: data.createdAt,
                     match: data.match,
                     label: data.label,
-                    stylePreferences: data.stylePreferences,
+                    stylePreferences: data.stylePreferences || {},
                     userId: data.userId,
-                    likesCount: data.likesCount
+                    likesCount: data.likesCount || 0
                 } as OutfitItem;
             });
 
-            if (filter === 'saved') {
-                setOutfits(savedOutfits);
-            } else {
-                setOutfits(outfitsData);
-            }
+            setOutfits(outfitsData);
             setIsLoading(false);
         });
 
@@ -107,9 +135,9 @@ export const useSavedOutfits = (userId: string | undefined) => {
                                 createdAt: outfitData.createdAt,
                                 match: outfitData.match,
                                 label: outfitData.label,
-                                stylePreferences: outfitData.stylePreferences,
+                                stylePreferences: outfitData.stylePreferences || {},
                                 userId: outfitData.userId,
-                                likesCount: outfitData.likesCount
+                                likesCount: outfitData.likesCount || 0
                             } as OutfitItem;
                         }
                         return null;
@@ -140,9 +168,11 @@ export const useTrendingOutfits = (limitCount: number = 10) => {
     useEffect(() => {
         const outfitsRef = collection(db, "outfits");
 
+        // Sort by likes descending
         const q = query(
             outfitsRef,
-            orderBy("match", "desc"),
+            where("likesCount", ">", 0),
+            orderBy("likesCount", "desc"),
             limit(limitCount)
         );
 
@@ -155,7 +185,9 @@ export const useTrendingOutfits = (limitCount: number = 10) => {
                     createdAt: data.createdAt,
                     match: data.match,
                     label: data.label,
-                    stylePreferences: data.stylePreferences,
+                    stylePreferences: data.stylePreferences || {},
+                    userId: data.userId,
+                    likesCount: data.likesCount || 0
                 } as OutfitItem;
             });
 
@@ -210,4 +242,228 @@ export const useScheduledOutfits = (userId: string) => {
     }, [userId])
 
     return { scheduledOutfits, isLoading, setScheduledOutfits };
+};
+
+export const useUserPhotos = (userIds: string[]) => {
+    const [userPhotos, setUserPhotos] = useState<Record<string, string>>({});
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<Error | null>(null);
+
+    useEffect(() => {
+        if (!userIds.length) return;
+
+        const uniqueUserIds = [...new Set(userIds)];
+        setIsLoading(true);
+        setError(null);
+
+        const fetchUserPhotos = async () => {
+            try {
+                const storage = getStorage();
+                const photoPromises = uniqueUserIds.map(async (userId) => {
+                    try {
+                        const fileName = `profilePhotos/${userId}`;
+                        const storageRef = ref(storage, fileName);
+                        const photoURL = await getDownloadURL(storageRef);
+                        return { userId, photoURL };
+                    } catch (error) {
+                        console.error(`Error fetching profile photo for ${userId}:`, error);
+                        return { userId, photoURL: null };
+                    }
+                });
+
+                const photos = await Promise.all(photoPromises);
+                const photoMap = photos.reduce((acc, { userId, photoURL }) => {
+                    if (userId && photoURL) {
+                        acc[userId] = photoURL;
+                    }
+                    return acc;
+                }, {} as Record<string, string>);
+
+                setUserPhotos(photoMap);
+            } catch (err) {
+                console.error("Error in useUserPhotos hook:", err);
+                setError(err instanceof Error ? err : new Error("Unknown error in useUserPhotos"));
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchUserPhotos();
+    }, [userIds]);
+
+    return { userPhotos, isLoading, error };
+};
+
+export const useOutfitLikes = (currentUserId: string | undefined | null): UseOutfitLikesReturn => {
+    const [state, setState] = useState<LikedOutfitsState>({
+        likedOutfitIds: [],
+        isLoading: true,
+        error: null
+    });
+
+    useEffect(() => {
+        if (!currentUserId) {
+            setState({
+                likedOutfitIds: [],
+                isLoading: false,
+                error: null
+            });
+            return;
+        }
+
+        // Query to get all outfit IDs that the current user has liked
+        const likesQuery = query(
+            collection(db, "userLikes"),
+            where("userId", "==", currentUserId)
+        );
+
+        const unsubscribe = onSnapshot(
+            likesQuery,
+            (snapshot) => {
+                try {
+                    const likedIds = snapshot.docs.map((doc) => doc.data().outfitId);
+                    setState({
+                        likedOutfitIds: likedIds,
+                        isLoading: false,
+                        error: null
+                    });
+                } catch (error) {
+                    console.error("Error getting liked outfits:", error);
+                    setState((prev) => ({
+                        ...prev,
+                        isLoading: false,
+                        error: error instanceof Error ? error : new Error("Failed to fetch liked outfits")
+                    }));
+                }
+            },
+            (error) => {
+                console.error("Error in likes snapshot:", error);
+                setState((prev) => ({
+                    ...prev,
+                    isLoading: false,
+                    error: error
+                }));
+            }
+        );
+
+        return () => unsubscribe();
+    }, [currentUserId]);
+
+    /**
+     * Like an outfit - updates the likesCount on the outfit and records the like
+     */
+    const likeOutfit = async (outfitId: string, outfitOwnerId: string): Promise<void> => {
+        if (!currentUserId) {
+            throw new Error("User must be logged in to like an outfit");
+        }
+
+        // Check if this is the user's own outfit
+        if (outfitOwnerId === currentUserId) {
+            throw new Error("You cannot like your own outfit");
+        }
+
+        // Check if already liked
+        if (state.likedOutfitIds.includes(outfitId)) {
+            throw new Error("You have already liked this outfit");
+        }
+
+        try {
+            // Create a batch for atomic operations
+            const outfitRef = doc(db, "outfits", outfitId);
+            const userLikeRef = doc(db, "userLikes", `${currentUserId}_${outfitId}`);
+            const outfitLikeRef = doc(db, "outfits", outfitId, "likes", currentUserId);
+
+            // 1. Update the outfit document to increment likesCount
+            await updateDoc(outfitRef, {
+                likesCount: increment(1)
+            });
+
+            // 2. Record the like in userLikes collection (for querying a user's likes)
+            await setDoc(userLikeRef, {
+                userId: currentUserId,
+                outfitId: outfitId,
+                timestamp: new Date()
+            });
+
+            // 3. Record the like in the outfit's subcollection (for checking if a specific user liked an outfit)
+            await setDoc(outfitLikeRef, {
+                userId: currentUserId,
+                timestamp: new Date()
+            });
+
+            // Update local state optimistically
+            setState((prev) => ({
+                ...prev,
+                likedOutfitIds: [...prev.likedOutfitIds, outfitId]
+            }));
+        } catch (error) {
+            console.error("Error liking outfit:", error);
+            throw error instanceof Error ? error : new Error("Failed to like outfit");
+        }
+    };
+
+    /**
+     * Unlike an outfit - decrements the likesCount and removes the like record
+     */
+    const unlikeOutfit = async (outfitId: string): Promise<void> => {
+        if (!currentUserId) {
+            throw new Error("User must be logged in to unlike an outfit");
+        }
+
+        // Check if actually liked
+        if (!state.likedOutfitIds.includes(outfitId)) {
+            throw new Error("You have not liked this outfit");
+        }
+
+        try {
+            // References to update
+            const outfitRef = doc(db, "outfits", outfitId);
+            const userLikeRef = doc(db, "userLikes", `${currentUserId}_${outfitId}`);
+            const outfitLikeRef = doc(db, "outfits", outfitId, "likes", currentUserId);
+
+            // 1. Update the outfit document to decrement likesCount
+            await updateDoc(outfitRef, {
+                likesCount: increment(-1)
+            });
+
+            // 2. Delete the record from userLikes collection
+            await deleteDoc(userLikeRef);
+
+            // 3. Delete the record from the outfit's likes subcollection
+            await deleteDoc(outfitLikeRef);
+
+            // Update local state optimistically
+            setState((prev) => ({
+                ...prev,
+                likedOutfitIds: prev.likedOutfitIds.filter(id => id !== outfitId)
+            }));
+        } catch (error) {
+            console.error("Error unliking outfit:", error);
+            throw error instanceof Error ? error : new Error("Failed to unlike outfit");
+        }
+    };
+
+    /**
+     * Check if the current user has liked a specific outfit
+     */
+    const isOutfitLiked = (outfitId: string): boolean => {
+        return state.likedOutfitIds.includes(outfitId);
+    };
+
+    /**
+     * Check if the current user can like an outfit (they can't like their own outfits)
+     */
+    const canLikeOutfit = (outfitOwnerId: string): boolean => {
+        return currentUserId !== undefined && currentUserId !== outfitOwnerId;
+    };
+
+    return {
+        likedOutfitIds: state.likedOutfitIds,
+        isLoading: state.isLoading,
+        error: state.error,
+        likeOutfit,
+        unlikeOutfit,
+        isOutfitLiked,
+        canLikeOutfit
+    };
 };

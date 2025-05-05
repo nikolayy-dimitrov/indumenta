@@ -16,6 +16,7 @@ import { ForgotPasswordPage } from "./pages/auth/ForgotPasswordPage.tsx";
 import { ResetPasswordPage } from "./pages/auth/ResetPasswordPage.tsx";
 import { StylistPage } from "./pages/StylistPage.tsx";
 import { WardrobePage } from "./pages/WardrobePage.tsx";
+import { ShowroomPage } from "./pages/ShowroomPage.tsx";
 import { ContactPage } from "./pages/ContactPage.tsx";
 import { NotFoundPage } from "./pages/404.tsx";
 import { CheckoutPage } from "./pages/subscription/CheckoutPage.tsx";
@@ -55,6 +56,7 @@ function App() {
                                 <Route path="/payment-success" element={<PaymentSuccessPageWrapper />} />
                                 <Route path="/stylist" element={<StylistPage />} />
                                 <Route path="/wardrobe" element={<WardrobePage />} />
+                                <Route path="/showroom" element={<ShowroomPage />} />
                                 <Route path="/contact" element={<ContactPage />} />
                                 <Route path="*" element={<NotFoundPage />} />
                             </Route>
