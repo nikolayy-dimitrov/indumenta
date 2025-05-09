@@ -20,6 +20,7 @@ export const ConfirmModal = ({ message, onConfirm, onCancel }: ConfirmModalProps
                     initial={{ scale: 0.8 }}
                     animate={{ scale: 1 }}
                     exit={{ scale: 0.8 }}
+                    onClick={(e) => e.stopPropagation()}
                 >
                     <p className="mb-4 text-primary">{message}</p>
                     <div className="flex justify-end space-x-2">

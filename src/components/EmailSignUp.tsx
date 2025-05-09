@@ -6,6 +6,7 @@ import {
 } from 'firebase/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
+import {useEnterKey} from "../hooks/useEnterKey.ts";
 
 export const EmailSignUp: React.FC = () => {
     const [name, setName] = useState<string>('');
@@ -91,6 +92,8 @@ export const EmailSignUp: React.FC = () => {
             setError((err as Error).message);
         }
     };
+
+    useEnterKey(handleRegister);
 
     return (
         <div>

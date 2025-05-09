@@ -89,7 +89,7 @@ export const OutfitsGrid = ({
                                 </div>
                             </div>
                         </div>
-                        {/* TODO: Add a like button for when all outfits are displayed */}
+
                         {outfitFilter === 'owned' ? (
                             <>
                                 {/* Delete Button */}
@@ -322,7 +322,6 @@ export const OutfitsGrid = ({
                                     </>
                                 ) : (
                                     <>
-                                        {/* TODO: Add refactored like button component */}
                                         {/* Like/Save button */}
                                         <LikeOutfitHandler outfit={item} currentUserId={user?.uid} />
                                     </>
