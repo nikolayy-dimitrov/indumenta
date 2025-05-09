@@ -56,7 +56,7 @@ export const ClothesModal = ({ selectedImage, onClose, onDelete }: ClothesModalP
                         <img
                             src={selectedImage.imageUrl}
                             alt="Clothing item full view"
-                            className="w-full h-auto object-contain max-h-[60vh]"
+                            className="w-full h-[300px] object-contain max-h-[60vh]"
                         />
                     </div>
 

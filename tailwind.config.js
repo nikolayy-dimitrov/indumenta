@@ -11,7 +11,6 @@ export default {
         "primary": "#F8E9D5",
         "secondary": "#181819",
         "content": "#B5FED9",
-        "primary-orange": "#FF5733",
         "primary-green": "#4CAF50",
         "primary-blue": "#45B6FE",
         "primary-yellow": "#FFC107",

@@ -13,7 +13,7 @@ import OutfitRecipeImage from "../assets/HomePage/Outfit_recipe.jpg";
 import MatchingColorsImage from "../assets/HomePage/Matching_colors.jpg";
 import WardrobeRoomImage from "../assets/HomePage/Wardrobe_room.jpg";
 import PhoneAccessImage from "../assets/HomePage/Phone_access.jpg";
-import ButtonStoreImage from "../assets/HomePage/Button_store.jpg";
+import RobotStoreImage from "../assets/HomePage/Robot_store.jpeg";
 
 export const featuresData: CardData[] = [
     {
@@ -50,7 +50,7 @@ export const featuresData: CardData[] = [
         title: "One-Click Outfit Magic",
         description: "Quickly upload photos of your clothes for automatic classification and organization.",
         icon: faSquareCaretUp,
-        backgroundImage: ButtonStoreImage,
+        backgroundImage: RobotStoreImage,
     }
 ]
 

@@ -47,7 +47,7 @@ export const UsageDisplay = () => {
                 </p>
             </div>
 
-            <div className="flex max-md:flex-col gap-6 items-center justify-center py-4">
+            <div className="flex gap-6 items-center justify-center py-4 max-md:py-8 max-w-[80vw]">
                 {/* Image Uploads Meter */}
                 <CircleMeter
                     used={usageStats.imageUploads.used}

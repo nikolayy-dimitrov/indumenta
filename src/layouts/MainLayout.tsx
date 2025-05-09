@@ -1,11 +1,16 @@
-import { Navbar } from '../components/Navbar';
+import { useState } from "react";
 import { Outlet } from 'react-router-dom';
+import { Navbar } from '../components/Navbar';
 
 export const MainLayout = () => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
     return (
         <>
-            <Navbar />
-            <Outlet />
+            <Navbar onMenuToggle={setIsMenuOpen} />
+            <div className={`content-wrapper ${isMenuOpen && 'blur-md'}`}>
+                <Outlet/>
+            </div>
         </>
     );
 };

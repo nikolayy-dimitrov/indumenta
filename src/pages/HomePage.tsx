@@ -9,6 +9,7 @@ export const Home = () => {
     return (
         <section id="home">
             <HeroScreen />
+            {/* TODO: Fix gradient merging between sections */}
             <Features />
             <HowItWorksScreen />
             <FaqScreen />

@@ -6,7 +6,11 @@ import { AuthContext } from "../context/AuthContext";
 import Logo from "../assets/indumenta-logo-primary.png";
 import useMediaQuery from "../utils/useMediaQuery.ts";
 
-export const Navbar = () => {
+interface NavbarProps {
+    onMenuToggle: (isOpen: boolean) => void;
+}
+
+export const Navbar = ({ onMenuToggle }: NavbarProps) => {
     const { user } = useContext(AuthContext);
 
     const isAboveMediumScreens = useMediaQuery("(min-width: 1060px)");
@@ -14,11 +18,21 @@ export const Navbar = () => {
     const [isMenuToggled, setIsMenuToggled] = useState<boolean>(false)
 
     const toggleMenu = () => {
-        setIsMenuToggled(!isMenuToggled);
+        const menuState = !isMenuToggled;
+        setIsMenuToggled(menuState);
+
+        onMenuToggle(menuState);
+
+        // Lock scroll when open, unlock when closed
+        if (menuState) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
     };
 
     return (
-        <nav className="md:w-11/12 mx-auto relative flex items-center justify-between py-4 px-8 font-Josefin text-gray-200">
+        <nav className="sticky top-0 z-50 md:w-11/12 mx-auto flex items-center justify-between py-4 px-8 font-Josefin text-gray-200 bg-secondary/95 backdrop-blur">
             {/* Logo */}
             <Link to="/" className="flex items-center justify-center z-40 transition duration-300 active:scale-90 group-hover:opacity-85">
                 {!isAboveMediumScreens ?
@@ -111,8 +125,8 @@ export const Navbar = () => {
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: -100, opacity: 0 }}
                         transition={{ duration: 0.5 }}
-                        className="fixed top-20 z-30 w-10/12 h-[50vh] flex flex-col items-center justify-center
-                        bg-secondary/80 backdrop-blur rounded-3xl"
+                        className="fixed top-24 z-30 w-10/12 h-[60vh] flex flex-col items-center justify-center
+                        bg-secondary/80 backdrop-blur rounded-3xl border border-primary/10"
                     >
                         <div className="flex flex-col items-center justify-center gap-16
                         text-primary text-3xl font-normal">
@@ -124,6 +138,11 @@ export const Navbar = () => {
                             <Link to="/stylist">
                                 <button onClick={toggleMenu}>
                                     Stylist
+                                </button>
+                            </Link>
+                            <Link to="/showroom">
+                                <button onClick={toggleMenu}>
+                                    Showroom
                                 </button>
                             </Link>
                             <Link to="/wardrobe">

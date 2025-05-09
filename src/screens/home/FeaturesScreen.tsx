@@ -24,7 +24,7 @@ const FeatureCard: React.FC<FeatureScreenProps> = ({ card, index, scrollY }) => 
     return (
         <motion.div
             style={{ opacity, y, translateY: cardPosition, backgroundImage: `linear-gradient(to bottom, rgba(69,182,254,0.4), rgba(248,233,213,0.8)), url(${card.backgroundImage})` }}
-            className={"bg-cover bg-center bg-blend-multiply flex flex-col items-center justify-center py-32 px-1 rounded-3xl transform"}
+            className={"bg-cover bg-center bg-blend-multiply flex flex-col items-center justify-center py-32 px-1 rounded-xl transform"}
         >
             {!card.backgroundImage &&
                 <div className="flex flex-col items-center justify-center">
@@ -61,8 +61,8 @@ export const Features = () => {
             id="features"
             className="relative min-h-[300vh] bg-gradient-to-b from-[#0f0f10] to-secondary px-12 py-12 font-Josefin"
         >
-            <div className="absolute left-0 overflow-hidden w-full h-full
-            bg-gradient-to-b from-transparent from-50% via-primary-blue/20 via-100% to-secondary"></div>
+            <div className="absolute left-0 pt-0 overflow-hidden w-full h-full
+            bg-gradient-to-b from-transparent from-50% via-primary/40 via-100% to-secondary"></div>
             <div className="sticky top-0 h-screen flex items-center justify-center">
                 {/* Cards grid */}
                 <motion.div className="grid grid-cols-2 md:grid-cols-3 gap-4 lg:w-1/2 max-lg:w-2/3 max-md:w-full mx-auto">
@@ -72,17 +72,17 @@ export const Features = () => {
                 </motion.div>
 
                 <div className="overflow-hidden absolute inset-0 flex flex-col items-center justify-center pointer-events-none drop-shadow-lg">
-                    <motion.h1
+                    <motion.h2
                         style={{ opacity: topHeadingOpacity, x: topHeadingX, filter: topHeadingBlur }}
-                        className="text-8xl max-md:text-6xl font-extrabold text-primary text-left ml-8 uppercase -tracking-wider leading-tight"
+                        className="text-8xl max-md:text-6xl font-extrabold text-white ml-12 uppercase -tracking-wider leading-tight"
                     >
                         Your Closet
-                    </motion.h1>
+                    </motion.h2>
                     <motion.h2
                         style={{ opacity: botHeadingOpacity, x: botHeadingX, filter: botHeadingBlur }}
-                        className="text-8xl max-md:text-6xl font-extrabold text-primary md:ml-32 max-md:ml-6 uppercase -tracking-wider leading-tight"
+                        className="text-8xl max-md:text-6xl font-extrabold text-white uppercase -tracking-wider leading-tight"
                     >
-                        Smarter .
+                        Smarter
                     </motion.h2>
                 </div>
             </div>

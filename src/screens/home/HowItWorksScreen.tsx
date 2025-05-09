@@ -44,7 +44,7 @@ export const HowItWorksScreen = () => {
         <section
             ref={sectionRef}
             id="how-it-works"
-            className="bg-gradient-to-t from-transparent from-60% via-primary-blue/20 via-100% to-secondary w-full h-full mx-auto font-Josefin text-primary py-16 mt-12"
+            className="bg-gradient-to-t from-transparent from-60% via-primary/40 via-100% to-secondary w-full h-full mx-auto font-Josefin text-primary py-16 mt-12"
         >
             <div
                 ref={containerRef}
@@ -79,7 +79,7 @@ export const HowItWorksScreen = () => {
                                 <img
                                     src={step.image}
                                     alt={step.stepLabel}
-                                    className="w-full max-w-sm"
+                                    className="max-w-sm max-h-[70vh]"
                                 />
                             </div>
                         </motion.div>
