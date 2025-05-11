@@ -1,13 +1,19 @@
 import { auth } from "../config/firebaseConfig.ts";
 
 interface RekognitionResponse {
-    success: boolean;
     category: string;
     subCategory: string | null;
     vibe: string;
     season: string;
     color: string;
     allLabels: string[];
+    confidence: {
+        category: number;
+        subCategory: number | null;
+        vibe: number;
+        season: number;
+        color: number;
+    };
 }
 
 /**
