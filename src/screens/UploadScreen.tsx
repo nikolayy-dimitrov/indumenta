@@ -105,6 +105,8 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
         }
     };
 
+    const randomRotation = Math.floor(Math.random() * 10) - 5;
+
     return (
         <section id="upload" className="h-[80vh] relative flex items-center justify-center md:w-10/12 mx-auto font-Josefin">
             {!isLoading && user ? (
@@ -145,14 +147,39 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
                         <div className="flex items-center justify-center gap-2">
                             <label htmlFor="file-upload" className="cursor-pointer">
                                 {image ? (
-                                    <div>
-                                        <img
-                                            src={URL.createObjectURL(image)}
-                                            alt={`Uploaded file image`}
-                                            className="lg:w-56 lg:h-56 max-lg:w-40 max-lg:h-40 object-contain p-2 rounded-lg border-2 border-gray-400"
-                                        />
-                                    </div>
+                                    <div
+                                        className="perspective"
+                                        style={{ perspective: '1000px' }}
+                                    >
+                                        <div
+                                            className="relative transform transition-all duration-500 ease-in-out hover:scale-105"
+                                            style={{
+                                                transform: `rotate(${randomRotation}deg)`,
+                                                width: isAboveMediumScreens ? '14rem' : '10rem',
+                                                height: isAboveMediumScreens ? '14rem' : '10rem'
+                                            }}
+                                        >
+                                            {/* Card with shadow effect */}
+                                            <div className="absolute inset-0 rounded-lg bg-white shadow-2xl"
+                                                 style={{
+                                                     boxShadow: '0 10px 25px rgba(0, 0, 0, 0.15), 0 5px 10px rgba(0, 0, 0, 0.12)',
+                                                     transform: 'translateZ(-10px)'
+                                                 }}>
+                                            </div>
 
+                                            {/* Image container */}
+                                            <div className="relative w-full h-full rounded-lg overflow-hidden border-2 border-gray-200">
+                                                <img
+                                                    src={URL.createObjectURL(image)}
+                                                    alt="Uploaded clothing item"
+                                                    className="w-full h-full object-contain"
+                                                />
+
+                                                {/* Slight overlay/gradient for card effect */}
+                                                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white opacity-20 rounded-lg pointer-events-none"></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 ) : (
                                     <div className="transition-all tranform duration-[400ms] active:opacity-60 hover:scale-95">
                                         <IconPlayer

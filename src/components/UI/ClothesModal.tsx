@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { ClothingItem } from "../../types/wardrobe.ts";
@@ -9,15 +8,16 @@ interface ClothesModalProps {
     selectedImage: ClothingItem | null;
     onClose: () => void;
     onDelete?: (itemId: string) => void;
+    isColorPickerOpen: boolean;
+    setIsColorPickerOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const ClothesModal = ({ selectedImage, onClose, onDelete }: ClothesModalProps) => {
-    const [isColorPickerOpen, setIsColorPickerOpen] = useState<boolean>(false);
+export const ClothesModal = ({ selectedImage, onClose, onDelete, isColorPickerOpen,
+                                 setIsColorPickerOpen }: ClothesModalProps) => {
 
     const handleSuccessfulDelete = (outfitId: string) => {
-        if (onDelete) {
-            onDelete(outfitId);
-        }
+        if (onDelete) onDelete(outfitId);
+
         // Close the modal after successful deletion
         onClose();
     };

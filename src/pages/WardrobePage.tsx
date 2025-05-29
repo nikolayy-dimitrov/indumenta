@@ -17,8 +17,7 @@ export const WardrobePage = () => {
     const { user } = useContext(AuthContext);
     const [activeCollection, setActiveCollection] = useState<ActiveCollection>('clothes');
     const [viewMode, setViewMode] = useState<ViewMode>("grid");
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_isColorPickerOpen, setIsColorPickerOpen] = useState<boolean>(false);
+    const [isColorPickerOpen, setIsColorPickerOpen] = useState<boolean>(false);
 
     const [selectedImage, setSelectedImage] = useState<ClothingItem | null>(null);
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitItem | null>(null);
@@ -40,10 +39,14 @@ export const WardrobePage = () => {
 
     // Callback function to reset all modal/popup states
     const handleResetStates = useCallback(() => {
-        setSelectedImage(null);
-        setSelectedOutfit(null);
-        setIsColorPickerOpen(false);
-    }, []);
+        if (isColorPickerOpen) {
+            setIsColorPickerOpen(false);
+        } else if (selectedImage) {
+            setSelectedImage(null);
+        } else if (selectedOutfit) {
+            setSelectedOutfit(null);
+        }
+    }, [isColorPickerOpen, selectedImage, selectedOutfit]);
 
     useEscapeKey(handleResetStates);
 
@@ -121,6 +124,8 @@ export const WardrobePage = () => {
                     selectedImage={selectedImage}
                     onClose={() => setSelectedImage(null)}
                     onDelete={handleDeleteClothingItem}
+                    isColorPickerOpen={isColorPickerOpen}
+                    setIsColorPickerOpen={setIsColorPickerOpen}
                 />
             )}
 
