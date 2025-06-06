@@ -38,6 +38,7 @@ export const OutfitDisplayScreen: React.FC<OutfitDisplayScreenProps> = ({
     const [isSaving, setIsSaving] = useState(false);
     const [isOutfitSaved, setIsOutfitSaved] = useState(false);
     const [selectedImage, setSelectedImage] = useState<ClothingItem | null>(null);
+    const [isColorPickerOpen, setIsColorPickerOpen] = useState<boolean>(false);
 
     // Callback to close the modal
     const handleCloseModal = useCallback(() => {
@@ -210,6 +211,8 @@ export const OutfitDisplayScreen: React.FC<OutfitDisplayScreenProps> = ({
 
             {createPortal (
                 <ClothesModal
+                    isColorPickerOpen={isColorPickerOpen}
+                    setIsColorPickerOpen={setIsColorPickerOpen}
                     selectedImage={selectedImage}
                     onClose={() => setSelectedImage(null)}
                 />,
