@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -28,10 +28,12 @@ export const OutfitsGrid = ({
     const { user } = useContext(AuthContext);
 
     // Extract all user IDs from outfits
-    const userIds = outfits.map(outfit => outfit.userId).filter(Boolean) as string[];
+    const userIds = useMemo(() => {
+        return outfits.map(outfit => outfit.userId).filter(Boolean) as string[]
+    }, [outfits]);
 
     // Fetch user photos for all outfit creators
-    const { userPhotos } = useUserPhotos(userIds);
+    const { userPhotos } = useUserPhotos(outfitFilter !== 'owned' ? userIds : []);
 
     const handleSuccessfulDelete = (outfitId: string) => {
         setOutfits((prev) => prev.filter((item) => item.id !== outfitId));
