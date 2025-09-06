@@ -27,7 +27,7 @@ interface OutfitRecommendation {
 
 export const StylistPage = () => {
     const { user } = useContext(AuthContext);
-    const { isLoading , setIsLoading } = useContext(WardrobeContext);
+    const { isLoading, setIsLoading } = useContext(WardrobeContext);
 
     const [step, setStep] = useState<'upload' | 'style' | 'outfit'>('upload');
     const [stylePreferences, setStylePreferences] = useState<StylePreferences>({
@@ -59,13 +59,14 @@ export const StylistPage = () => {
 
         const wardrobeMap = new Map();
         querySnapshot.docs.forEach(doc => {
+            const data = doc.data();
             wardrobeMap.set(doc.id, {
                 id: doc.id,
-                imageUrl: doc.data().imageUrl,
-                dominantColor: doc.data().dominantColor,
-                category: doc.data().category || "Unknown",
-                vibe: doc.data().vibe || "Unknown",
-                season: doc.data().season || "Unknown",
+                imageUrl: data.imageUrl,
+                dominantColor: data.analysis?.color || "Unknown",
+                category: data.analysis?.category || "Unknown",
+                vibe: data.analysis?.vibe || "Unknown",
+                season: data.analysis?.season || "Unknown",
             });
         });
 
@@ -107,7 +108,6 @@ export const StylistPage = () => {
         }
     };
 
-    // Check whether the outfit is already in the firebase collection
     const checkIfOutfitSaved = async (outfitId: string) => {
         if (!user) return false;
 
@@ -127,7 +127,6 @@ export const StylistPage = () => {
         }
     };
 
-    // Save generate outfit function
     const saveOutfit = async (outfitToSave: OutfitRecommendation) => {
         if (!user) return;
 
@@ -158,11 +157,11 @@ export const StylistPage = () => {
     return (
         <section id="stylist" className="relative">
             <div className="absolute w-full h-full">
-                <InteractiveWardrobe />
+                <InteractiveWardrobe/>
             </div>
             <div className={`z-20 relative ${isLoading ? 'hidden' : ''}`}>
                 {step === 'upload' ? (
-                    <Upload onNext={() => setStep('style')} />
+                    <Upload onNext={() => setStep('style')}/>
                 ) : step === 'style' ? (
                     <StyleSelectionScreen
                         stylePreferences={stylePreferences}

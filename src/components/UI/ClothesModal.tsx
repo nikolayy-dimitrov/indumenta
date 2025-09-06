@@ -12,13 +12,14 @@ interface ClothesModalProps {
     setIsColorPickerOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const ClothesModal = ({ selectedImage, onClose, onDelete, isColorPickerOpen,
-                                 setIsColorPickerOpen }: ClothesModalProps) => {
+export const ClothesModal = ({
+                                 selectedImage, onClose, onDelete, isColorPickerOpen,
+                                 setIsColorPickerOpen
+                             }: ClothesModalProps) => {
 
     const handleSuccessfulDelete = (outfitId: string) => {
         if (onDelete) onDelete(outfitId);
 
-        // Close the modal after successful deletion
         onClose();
     };
 
@@ -36,23 +37,26 @@ export const ClothesModal = ({ selectedImage, onClose, onDelete, isColorPickerOp
                 {/* Header with Close Button */}
                 <div className="flex items-center justify-between p-4">
                     <h2 className="text-xl font-semibold">
-                        {selectedImage.category || "Clothing Item"}
-                        {selectedImage.subCategory &&
-                            <span className="text-secondary/70 dark:text-primary/60 ml-2">| {selectedImage.subCategory}</span>
+                        {selectedImage.analysis!.category || "Clothing Item"}
+                        {selectedImage.analysis?.subCategory &&
+                            <span
+                                className="text-secondary/70 dark:text-primary/60 ml-2">| {selectedImage.analysis.subCategory}</span>
                         }
                     </h2>
                     <button
                         className="text-secondary/80 hover:text-secondary/60 dark:text-primary/80 dark:hover:text-primary/60 transition-colors"
                         onClick={onClose}
                     >
-                        <FontAwesomeIcon icon={faX} />
+                        <FontAwesomeIcon icon={faX}/>
                     </button>
                 </div>
 
                 {/* Content Grid */}
-                <div className="grid md:grid-cols-2 gap-6 p-4 max-h-[calc(90vh-70px)] overflow-y-auto">
+                <div
+                    className="grid md:grid-cols-2 gap-6 p-4 max-h-[calc(90vh-70px)] overflow-y-auto">
                     {/* Left Side - Image */}
-                    <div className="relative rounded-lg overflow-hidden bg-primary dark:bg-secondary">
+                    <div
+                        className="relative rounded-lg overflow-hidden bg-primary dark:bg-secondary">
                         <img
                             src={selectedImage.imageUrl}
                             alt="Clothing item full view"
@@ -74,16 +78,16 @@ export const ClothesModal = ({ selectedImage, onClose, onDelete, isColorPickerOp
                                     <span className="font-medium">Category</span>
                                     <span
                                         className="px-2 py-1 rounded-full text-xs text-secondary dark:text-primary border border-primary">
-                                        {selectedImage.category}
+                                        {selectedImage.analysis!.category}
                                     </span>
                                 </div>
 
-                                {selectedImage.subCategory && (
+                                {selectedImage.analysis?.subCategory && (
                                     <div className="flex justify-between items-center">
                                         <span className="font-medium">Type</span>
                                         <span
                                             className="px-2 py-1 rounded-full text-xs text-secondary dark:text-primary border border-primary">
-                                            {selectedImage.subCategory}
+                                            {selectedImage.analysis.subCategory}
                                         </span>
                                     </div>
                                 )}
@@ -93,7 +97,7 @@ export const ClothesModal = ({ selectedImage, onClose, onDelete, isColorPickerOp
                                     <div className="flex items-center gap-2">
                                         <ColorPicker
                                             itemId={selectedImage.id}
-                                            initialColor={selectedImage.dominantColor}
+                                            initialColor={selectedImage.analysis!.color}
                                             isOpen={isColorPickerOpen}
                                             setIsOpen={setIsColorPickerOpen}
                                         />

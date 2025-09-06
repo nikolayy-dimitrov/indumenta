@@ -72,10 +72,8 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
         setIsLoading(true);
         setUploadProgress("Uploading image and analyzing with AI...");
 
-        const firstDominantColor = dominantColor[0] || null;
-
         try {
-            await handleUpload([image], user, [firstDominantColor!], handleUploadSuccess, handleUploadError);
+            await handleUpload([image], user, handleUploadSuccess, handleUploadError);
             await handleNext();
         } catch (error) {
             console.error("Error during upload:", error);
@@ -108,7 +106,8 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
     const randomRotation = Math.floor(Math.random() * 10) - 5;
 
     return (
-        <section id="upload" className="h-[80vh] relative flex items-center justify-center md:w-10/12 mx-auto font-Josefin">
+        <section id="upload"
+                 className="h-[80vh] relative flex items-center justify-center md:w-10/12 mx-auto font-Josefin">
             {!isLoading && user ? (
                 <div className="flex flex-col items-center justify-center h-full">
                     {/* To Style Preferences Screen button */}
@@ -160,15 +159,17 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
                                             }}
                                         >
                                             {/* Card with shadow effect */}
-                                            <div className="absolute inset-0 rounded-lg bg-white shadow-2xl"
-                                                 style={{
-                                                     boxShadow: '0 10px 25px rgba(0, 0, 0, 0.15), 0 5px 10px rgba(0, 0, 0, 0.12)',
-                                                     transform: 'translateZ(-10px)'
-                                                 }}>
+                                            <div
+                                                className="absolute inset-0 rounded-lg bg-white shadow-2xl"
+                                                style={{
+                                                    boxShadow: '0 10px 25px rgba(0, 0, 0, 0.15), 0 5px 10px rgba(0, 0, 0, 0.12)',
+                                                    transform: 'translateZ(-10px)'
+                                                }}>
                                             </div>
 
                                             {/* Image container */}
-                                            <div className="relative w-full h-full rounded-lg overflow-hidden border-2 border-gray-200">
+                                            <div
+                                                className="relative w-full h-full rounded-lg overflow-hidden border-2 border-gray-200">
                                                 <img
                                                     src={URL.createObjectURL(image)}
                                                     alt="Uploaded clothing item"
@@ -176,12 +177,14 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
                                                 />
 
                                                 {/* Slight overlay/gradient for card effect */}
-                                                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white opacity-20 rounded-lg pointer-events-none"></div>
+                                                <div
+                                                    className="absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white opacity-20 rounded-lg pointer-events-none"></div>
                                             </div>
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className="transition-all tranform duration-[400ms] active:opacity-60 hover:scale-95">
+                                    <div
+                                        className="transition-all tranform duration-[400ms] active:opacity-60 hover:scale-95">
                                         <IconPlayer
                                             iconSrc={PhotoAnimatedIcon}
                                             iconSize={isAboveMediumScreens ? 120 : 80}
@@ -204,7 +207,7 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
 
                         {uploadProgress && (
                             <div className="mt-2 text-primary flex items-center">
-                                <FontAwesomeIcon icon={faSpinner} spin className="mr-2" />
+                                <FontAwesomeIcon icon={faSpinner} spin className="mr-2"/>
                                 <span>{uploadProgress}</span>
                             </div>
                         )}

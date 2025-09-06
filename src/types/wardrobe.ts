@@ -6,16 +6,23 @@ export type SortOption = 'newest' | 'oldest' | 'color';
 export type OutfitFilter = 'all' | 'saved' | 'owned';
 export type ShowMode = "trending" | "community" | "following";
 
-export interface ClothingItem {
-    id: string;
-    imageUrl: string;
-    dominantColor: string;
-    uploadedAt: Timestamp;
+export interface ClothingImage {
     userId: string;
-    category: string;
-    subCategory: string;
-    season: string;
-    labels: [];
+    imageUrl: string;
+    uploadedAt: Timestamp;
+    status: string;
+}
+
+export interface ClothingItem extends ClothingImage {
+    id: string;
+    analysis?: {
+        category: string;
+        subCategory?: string;
+        color: string;
+        secondaryColor?: string;
+        occasion: string[];
+        season: string[];
+    }
 }
 
 export interface OutfitItem {

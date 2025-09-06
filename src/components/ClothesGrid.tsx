@@ -41,7 +41,7 @@ export const ClothesGrid = ({
                 );
             case "color":
                 return [...items].sort((a, b) =>
-                    (a.dominantColor || "").localeCompare(b.dominantColor || "")
+                    (a.analysis!.color || "").localeCompare(b.analysis!.color || "")
                 );
             default:
                 return items;
@@ -52,7 +52,7 @@ export const ClothesGrid = ({
         return (
             <div className="flex justify-center items-center text-center h-[500px] font-Josefin">
                 <p className="text-primary/90">
-                    Your wardrobe is empty. <br />
+                    Your wardrobe is empty. <br/>
                     <Link to="/stylist" className="font-semibold">
                         Start by adding some clothes!
                     </Link>
@@ -92,15 +92,16 @@ export const ClothesGrid = ({
                                     }}
                                     className="absolute right-1 top-1 h-8 w-8 rounded-full bg-white/50 backdrop-blur-sm flex items-center justify-center text-red-600 hover:bg-white/70 transition-colors"
                                 >
-                                    <FontAwesomeIcon icon={faX} className="h-3 w-3" />
+                                    <FontAwesomeIcon icon={faX} className="h-3 w-3"/>
                                 </button>
                             )}
                         </DeleteHandler>
 
-                        <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between p-2 bg-black/60 text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div
+                            className="absolute bottom-0 left-0 right-0 flex items-center justify-between p-2 bg-black/60 text-white opacity-0 group-hover:opacity-100 transition-opacity">
                             <ColorPicker
                                 itemId={item.id}
-                                initialColor={item.dominantColor}
+                                initialColor={item.analysis!.color}
                                 isOpen={isColorPickerOpen}
                                 setIsOpen={setIsColorPickerOpen}
                             />
@@ -112,12 +113,13 @@ export const ClothesGrid = ({
 
                     <div className="p-3">
                         <h3 className="truncate text-sm font-medium">
-                            {item.category || "Untitled Item"}
+                            {item.analysis!.category || "Untitled Item"}
                         </h3>
-                        {item.subCategory && (
+                        {item.analysis?.subCategory && (
                             <div className="mt-1 flex flex-wrap gap-1">
-                                <span className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800 font-medium">
-                                    {item.subCategory}
+                                <span
+                                    className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800 font-medium">
+                                    {item.analysis.subCategory}
                                 </span>
                             </div>
                         )}
@@ -147,14 +149,16 @@ export const ClothesGrid = ({
 
                         <div className="flex flex-1 items-center justify-between p-4">
                             <div>
-                                <h3 className="font-medium">{item.category || "Untitled Item"}</h3>
+                                <h3 className="font-medium">{item.analysis!.category || "Untitled Item"}</h3>
                                 <div className="mt-1 flex flex-wrap gap-1">
-                                    {item.subCategory && (
-                                        <span className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800 font-medium">
-                                            {item.subCategory}
+                                    {item.analysis?.subCategory && (
+                                        <span
+                                            className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800 font-medium">
+                                            {item.analysis.subCategory}
                                         </span>
                                     )}
-                                        <span className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800 font-medium">
+                                    <span
+                                        className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800 font-medium">
                                             {item.uploadedAt.toDate().toLocaleDateString()}
                                         </span>
                                 </div>
@@ -175,7 +179,7 @@ export const ClothesGrid = ({
                                             }}
                                             className="h-8 w-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-red-600 transition-colors"
                                         >
-                                            <FontAwesomeIcon icon={faX} className="h-3 w-3" />
+                                            <FontAwesomeIcon icon={faX} className="h-3 w-3"/>
                                         </button>
                                     )}
                                 </DeleteHandler>
