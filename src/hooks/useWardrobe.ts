@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
     collection,
     doc,
@@ -52,7 +52,11 @@ export const useClothes = (userId: string | undefined) => {
         return () => unsubscribe();
     }, [userId]);
 
-    return { clothes, isLoading, setClothes };
+    return useMemo(() => ({
+        clothes,
+        isLoading,
+        setClothes
+    }), [clothes, isLoading, setClothes])
 };
 
 export const useOutfits = (userId: string | undefined, filter: OutfitFilter = 'owned') => {
@@ -105,7 +109,17 @@ export const useOutfits = (userId: string | undefined, filter: OutfitFilter = 'o
         return () => unsubscribe();
     }, [userId, filter, savedOutfits]);
 
-    return { outfits, isLoading: isLoading || isSavedLoading, setOutfits };
+    const memoizedOutfits = useMemo(() => {
+        return outfits.sort((a, b) => {
+            return b.createdAt.seconds - a.createdAt.seconds;
+        });
+    }, [outfits]);
+
+    return useMemo(() => ({
+        outfits: memoizedOutfits,
+        isLoading: isLoading || isSavedLoading,
+        setOutfits,
+    }), [memoizedOutfits, isLoading, isSavedLoading, setOutfits])
 };
 
 export const useSavedOutfits = (userId: string | undefined) => {
