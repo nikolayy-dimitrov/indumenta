@@ -47,14 +47,14 @@ export const WardrobeControls = ({
                                 activeCollection === "clothes" ? "text-secondary" : "text-primary"
                             }`}
                         >
-                            <FontAwesomeIcon icon={faShirt} />
+                            <FontAwesomeIcon icon={faShirt}/>
                         </span>
                         <span
                             className={`max-h-3 text-xs font-medium ${
                                 activeCollection === "outfits" ? "text-secondary" : "text-primary"
                             }`}
                         >
-                            <FontAwesomeIcon icon={faUserTie} />
+                            <FontAwesomeIcon icon={faUserTie}/>
                         </span>
                     </div>
                 </div>
@@ -66,7 +66,7 @@ export const WardrobeControls = ({
                                   transition duration-200 hover:bg-primary/20 rounded-s-md
                                   ${viewMode === "grid" && "bg-primary/20"}`}
                     >
-                        <FontAwesomeIcon icon={faTableCells} />
+                        <FontAwesomeIcon icon={faTableCells}/>
                     </div>
                     <div
                         onClick={() => onToggleView("list")}
@@ -74,12 +74,12 @@ export const WardrobeControls = ({
                                   transition duration-200 hover:bg-primary/20 rounded-e-md
                                   ${viewMode === "list" && "bg-primary/20"}`}
                     >
-                        <FontAwesomeIcon icon={faListUl} />
+                        <FontAwesomeIcon icon={faListUl}/>
                     </div>
                 </div>
             </div>
 
-            {/* Sort/Filter options - Commented out for now as in original code */}
+            {/* Sort/Filter options */}
             {/*<div className="flex items-center gap-4">*/}
             {/*    <label htmlFor={activeCollection === "clothes" ? "sort" : "filter"}>*/}
             {/*        {activeCollection === "clothes" ? "Sort by:" : "Filter:"}*/}

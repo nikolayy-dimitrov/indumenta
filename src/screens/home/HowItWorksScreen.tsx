@@ -34,7 +34,6 @@ export const HowItWorksScreen = () => {
     const step1 = useStepAnimation(scrollYProgress, 1, howItWorksData.length);
     const step2 = useStepAnimation(scrollYProgress, 2, howItWorksData.length);
 
-    // Combine all steps into an array
     const transformValues = useMemo(() =>
             [step0, step1, step2],
         [step0, step1, step2]

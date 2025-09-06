@@ -19,7 +19,6 @@ export const ResetPasswordPage = () => {
     const location = useLocation();
 
     useEffect(() => {
-        // Extract the OOB code from URL search parameters
         const queryParams = new URLSearchParams(location.search);
         const oobCode = queryParams.get('oobCode');
 
@@ -29,7 +28,6 @@ export const ResetPasswordPage = () => {
             return;
         }
 
-        // Verify the action code is valid
         const verifyCode = async () => {
             try {
                 const email = await verifyPasswordResetCode(auth, oobCode);
@@ -64,25 +62,21 @@ export const ResetPasswordPage = () => {
             return;
         }
 
-        // Check for uppercase letter
         if (!/[A-Z]/.test(newPassword)) {
             setError('Password must include at least one uppercase letter.');
             return;
         }
 
-        // Check for lowercase letter
         if (!/[a-z]/.test(newPassword)) {
             setError('Password must include at least one lowercase letter.');
             return;
         }
 
-        // Check for digit
         if (!/\d/.test(newPassword)) {
             setError('Password must include at least one number.');
             return;
         }
 
-        // Check for special character
         if (!/[!@#$%^&*(),.?":{}|<>_\-\\[\]/]/.test(newPassword)) {
             setError('Password must include at least one special character.');
             return;
@@ -102,31 +96,35 @@ export const ResetPasswordPage = () => {
 
     if (loading) {
         return (
-            <section id="reset-password" className="flex flex-col items-center justify-center m-auto h-full px-4 w-full max-w-lg">
+            <section id="reset-password"
+                     className="flex flex-col items-center justify-center m-auto h-full px-4 w-full max-w-lg">
                 <div className="flex flex-col items-center justify-center my-4">
                     <h1 className="text-4xl font-bold uppercase">INDUMENTA</h1>
                     <p className="text-sm font-light lowercase">Reset Your Password</p>
                 </div>
-                <div className="flex flex-col items-center justify-center w-full my-2 py-6 px-6 border border-primary/20 shadow-sm rounded-lg">
+                <div
+                    className="flex flex-col items-center justify-center w-full my-2 py-6 px-6 border border-primary/20 shadow-sm rounded-lg">
                     <p>Verifying your reset link...</p>
                 </div>
             </section>
         );
     }
 
-    // Show success message after password reset
     if (success) {
         return (
-            <section id="reset-password" className="flex flex-col items-center justify-center m-auto h-full px-4 w-full max-w-lg">
+            <section id="reset-password"
+                     className="flex flex-col items-center justify-center m-auto h-full px-4 w-full max-w-lg">
                 <div className="flex flex-col items-center justify-center my-4">
                     <h1 className="text-4xl font-bold uppercase">INDUMENTA</h1>
                     <p className="text-sm font-light lowercase">Reset Your Password</p>
                 </div>
-                <div className="flex flex-col items-center justify-center w-full my-2 py-6 px-6 border border-primary/20 shadow-sm rounded-lg">
+                <div
+                    className="flex flex-col items-center justify-center w-full my-2 py-6 px-6 border border-primary/20 shadow-sm rounded-lg">
                     <div className="text-center mb-4 space-y-2">
                         <h2 className="font-medium text-2xl">Password Reset Successful!</h2>
                         <p className="font-light text-sm opacity-60">
-                            Your password has been successfully reset. You can now login with your new password.
+                            Your password has been successfully reset. You can now login with your
+                            new password.
                         </p>
                     </div>
                     <button
@@ -142,15 +140,16 @@ export const ResetPasswordPage = () => {
         );
     }
 
-    // Show error if code is invalid
     if (!isValidCode) {
         return (
-            <section id="reset-password" className="flex flex-col items-center justify-center m-auto h-full px-4 w-full max-w-lg">
+            <section id="reset-password"
+                     className="flex flex-col items-center justify-center m-auto h-full px-4 w-full max-w-lg">
                 <div className="flex flex-col items-center justify-center my-4">
                     <h1 className="text-4xl font-bold uppercase">INDUMENTA</h1>
                     <p className="text-sm font-light lowercase">Reset Your Password</p>
                 </div>
-                <div className="flex flex-col items-center justify-center w-full my-2 py-6 px-6 border border-primary/20 shadow-sm rounded-lg">
+                <div
+                    className="flex flex-col items-center justify-center w-full my-2 py-6 px-6 border border-primary/20 shadow-sm rounded-lg">
                     <div className="text-center mb-4 space-y-2">
                         <h2 className="font-medium text-2xl">Invalid Reset Link</h2>
                         <p className="font-light text-sm opacity-60 text-red-500">
@@ -170,14 +169,15 @@ export const ResetPasswordPage = () => {
         );
     }
 
-    // Show the password reset form
     return (
-        <section id="reset-password" className="flex flex-col items-center justify-center m-auto h-full px-4 w-full max-w-lg">
+        <section id="reset-password"
+                 className="flex flex-col items-center justify-center m-auto h-full px-4 w-full max-w-lg">
             <div className="flex flex-col items-center justify-center my-4">
                 <h1 className="text-4xl font-bold uppercase">INDUMENTA</h1>
                 <p className="text-sm font-light lowercase">Reset Your Password</p>
             </div>
-            <div className="flex flex-col items-center justify-center w-full my-2 py-6 px-6 border border-primary/20 shadow-sm rounded-lg">
+            <div
+                className="flex flex-col items-center justify-center w-full my-2 py-6 px-6 border border-primary/20 shadow-sm rounded-lg">
                 <div className="text-center mb-4 space-y-2">
                     <h2 className="font-medium text-2xl">Create New Password</h2>
                     <p className="font-light text-sm opacity-60">
@@ -186,7 +186,8 @@ export const ResetPasswordPage = () => {
                 </div>
                 <div className="mb-4 w-full space-y-4">
                     <div>
-                        <label htmlFor="newPassword" className="block text-primary font-medium text-sm mb-2">
+                        <label htmlFor="newPassword"
+                               className="block text-primary font-medium text-sm mb-2">
                             New Password
                         </label>
                         <div className="relative">
@@ -208,7 +209,8 @@ export const ResetPasswordPage = () => {
                         </div>
                     </div>
                     <div>
-                        <label htmlFor="confirmPassword" className="block text-primary font-medium text-sm mb-2">
+                        <label htmlFor="confirmPassword"
+                               className="block text-primary font-medium text-sm mb-2">
                             Confirm Password
                         </label>
                         <div className="relative">
@@ -244,7 +246,7 @@ export const ResetPasswordPage = () => {
                     type="button"
                     to="/authentication"
                 >
-                    <FontAwesomeIcon icon={faArrowLeft} />
+                    <FontAwesomeIcon icon={faArrowLeft}/>
                     <span className="transition duration-300 hover:underline">
                         Back to login
                     </span>

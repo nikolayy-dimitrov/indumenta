@@ -12,7 +12,7 @@ import doorTextureUrl from "../assets/textures/6464.jpg";
 import handlesTextureUrl from "../assets/textures/101853.jpg";
 
 const Wardrobe = () => {
-    const { isLoading} = useContext(WardrobeContext);
+    const { isLoading } = useContext(WardrobeContext);
 
     const leftDoorRef = useRef<Mesh>(null);
     const rightDoorRef = useRef<Mesh>(null);
@@ -23,7 +23,6 @@ const Wardrobe = () => {
     const handlesTexture = useLoader(TextureLoader, handlesTextureUrl);
     const backTexture = useLoader(TextureLoader, backTextureUrl);
 
-    // Configure texture properties
     backTexture.wrapS = backTexture.wrapT = THREE.RepeatWrapping;
     backTexture.repeat.set(1, 1);
 
@@ -40,13 +39,12 @@ const Wardrobe = () => {
         const rightHandle = rightHandleRef.current;
 
         if (leftDoor && rightDoor && leftHandle && rightHandle) {
-            const openAngle = Math.PI / 2; // 90 degrees
+            const openAngle = Math.PI / 2;
 
             // Smooth interpolation for opening/closing
             const targetLeftRotation = isLoading ? 0 : -openAngle; // Close if loading, open otherwise
             const targetRightRotation = isLoading ? 0 : openAngle;
 
-            // Smooth doors rotation
             leftDoor.rotation.y = THREE.MathUtils.lerp(
                 leftDoor.rotation.y,
                 targetLeftRotation,
@@ -58,7 +56,6 @@ const Wardrobe = () => {
                 0.05 // Smoothing factor
             );
 
-            // Rotate handles with doors
             leftHandle.rotation.y = leftDoor.rotation.y;
             rightHandle.rotation.y = rightDoor.rotation.y;
         }
@@ -68,7 +65,7 @@ const Wardrobe = () => {
         <group>
             {/* Wardrobe body */}
             <mesh position={[0, 1.5, 0]}>
-                <boxGeometry args={[3, 3, 1]} />
+                <boxGeometry args={[3, 3, 1]}/>
                 <meshStandardMaterial
                     map={backTexture}
                     roughness={0.7}
@@ -82,7 +79,7 @@ const Wardrobe = () => {
                 position={[-1.5, 1.5, 0.51]}
                 rotation={[0, 0, 0]}
             >
-                <boxGeometry args={[2.99, 3, 0.1]} />
+                <boxGeometry args={[2.99, 3, 0.1]}/>
                 <meshStandardMaterial
                     map={doorTexture}
                     roughness={0.7}
@@ -95,7 +92,7 @@ const Wardrobe = () => {
                     position={[1, 0, 0.1]}
                     rotation={[0, 0, Math.PI / 2]}
                 >
-                    <cylinderGeometry args={[0.05, 0.05, 0.2, 32]} />
+                    <cylinderGeometry args={[0.05, 0.05, 0.2, 32]}/>
                     <meshStandardMaterial
                         map={handlesTexture}
                         roughness={0.3}
@@ -110,7 +107,7 @@ const Wardrobe = () => {
                 position={[1.5, 1.5, 0.51]}
                 rotation={[0, 0, 0]}
             >
-                <boxGeometry args={[2.99, 3, 0.1]} />
+                <boxGeometry args={[2.99, 3, 0.1]}/>
                 <meshStandardMaterial
                     map={doorTexture}
                     roughness={0.7}
@@ -123,7 +120,7 @@ const Wardrobe = () => {
                     position={[-1, 0, 0.1]}
                     rotation={[0, 0, Math.PI / 2]}
                 >
-                    <cylinderGeometry args={[0.05, 0.05, 0.2, 32]} />
+                    <cylinderGeometry args={[0.05, 0.05, 0.2, 32]}/>
                     <meshStandardMaterial
                         map={handlesTexture}
                         roughness={0.3}
@@ -137,7 +134,8 @@ const Wardrobe = () => {
 
 const WardrobeScene: React.FC = () => {
     return (
-        <div className="w-11/12 mx-auto md:h-[90vh] max-md:h-[80vh] bg-secondary overflow-hidden rounded-3xl">
+        <div
+            className="w-11/12 mx-auto md:h-[90vh] max-md:h-[80vh] bg-secondary overflow-hidden rounded-3xl">
             <Canvas
                 className="w-full h-full bg-secondary"
                 gl={{ antialias: true }}
@@ -150,11 +148,11 @@ const WardrobeScene: React.FC = () => {
                 />
 
                 {/* Lighting */}
-                <ambientLight intensity={0.7} />
-                <pointLight position={[3, 3, 5]} intensity={10} />
-                <pointLight position={[-3, 3, 5]} intensity={5} />
+                <ambientLight intensity={0.7}/>
+                <pointLight position={[3, 3, 5]} intensity={10}/>
+                <pointLight position={[-3, 3, 5]} intensity={5}/>
 
-                <Wardrobe />
+                <Wardrobe/>
             </Canvas>
         </div>
     );

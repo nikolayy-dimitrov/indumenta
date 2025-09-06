@@ -17,7 +17,6 @@ export const OutfitCalendar = () => {
     const { user } = useContext(AuthContext);
     const { scheduledOutfits } = useScheduledOutfits(user!.uid);
 
-    // Process outfits to organize by scheduled date
     useEffect(() => {
         if (!scheduledOutfits || scheduledOutfits.length === 0) return;
 
@@ -39,17 +38,14 @@ export const OutfitCalendar = () => {
         setScheduledOutfitsByDate(outfitsByDate);
     }, [scheduledOutfits]);
 
-    // Get days in month
     const getDaysInMonth = (year: number, month: number) => {
         return new Date(year, month + 1, 0).getDate();
     };
 
-    // Get day of the week for the first day of the month (0 = Sunday, 6 = Saturday)
     const getFirstDayOfMonth = (year: number, month: number) => {
         return new Date(year, month, 1).getDay();
     };
 
-    // Get previous month days that should be displayed
     const getPrevMonthDays = (year: number, month: number) => {
         const firstDay = getFirstDayOfMonth(year, month);
         if (firstDay === 0) return [];
@@ -71,11 +67,10 @@ export const OutfitCalendar = () => {
         return prevMonthDays;
     };
 
-    // Get next month days that should be displayed
     const getNextMonthDays = (year: number, month: number) => {
         const daysInMonth = getDaysInMonth(year, month);
         const lastDay = new Date(year, month, daysInMonth).getDay();
-        if (lastDay === 6) return []; // Saturday is last day
+        if (lastDay === 6) return [];
 
         const nextMonth = month === 11 ? 0 : month + 1;
         const nextMonthYear = month === 11 ? year + 1 : year;
@@ -93,7 +88,6 @@ export const OutfitCalendar = () => {
         return nextMonthDays;
     };
 
-    // Get current month days
     const getCurrentMonthDays = (year: number, month: number) => {
         const daysInMonth = getDaysInMonth(year, month);
         const days = [];
@@ -110,7 +104,6 @@ export const OutfitCalendar = () => {
         return days;
     };
 
-    // Get all calendar days for display
     const getCalendarDays = () => {
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
@@ -128,13 +121,11 @@ export const OutfitCalendar = () => {
         return weekDays[dayOfWeek];
     };
 
-    // Get scheduled outfits for a specific date
     const getOutfitsForDate = (year: number, month: number, day: number) => {
         const dateKey = `${year}-${month}-${day}`;
         return scheduledOutfitsByDate[dateKey] || [];
     };
 
-    // Navigate to previous month
     const goToPrevMonth = () => {
         setCurrentDate(prev => {
             const prevMonth = new Date(prev);
@@ -143,7 +134,6 @@ export const OutfitCalendar = () => {
         });
     };
 
-    // Navigate to next month
     const goToNextMonth = () => {
         setCurrentDate(prev => {
             const nextMonth = new Date(prev);
@@ -188,18 +178,18 @@ export const OutfitCalendar = () => {
                     onClick={goToNextMonth}
                 >
                     <span className="tracking-wide">Next</span>
-                    <FontAwesomeIcon icon={faCircleChevronRight} size={'sm'} />
+                    <FontAwesomeIcon icon={faCircleChevronRight} size={'sm'}/>
                 </motion.button>
             </div>
             {/* Calendar Grid */}
             <div className="flex-1 flex flex-col md:border-2 border-primary rounded-lg p-1">
                 {/* Calendar days */}
-                <div className="grid md:grid-cols-7 max-md:grid-cols-2 flex-1 auto-rows-fr gap-2 p-2">
+                <div
+                    className="grid md:grid-cols-7 max-md:grid-cols-2 flex-1 auto-rows-fr gap-2 p-2">
                     {calendarDays.map((dayInfo, index) => {
                         const dayOfWeek = getDayOfWeek(dayInfo.year, dayInfo.month, dayInfo.day);
                         const dayOutfits = getOutfitsForDate(dayInfo.year, dayInfo.month, dayInfo.day);
 
-                        // Check if today
                         const today = new Date();
                         const isToday =
                             today.getDate() === dayInfo.day &&
@@ -231,36 +221,42 @@ export const OutfitCalendar = () => {
                                                 whileHover={{ scale: 1.05 }}
                                             >
                                                 {outfit.label ? (
-                                                    <div className="flex items-center justify-center">
-                                                        <span className="font-semibold tracking-wider">{outfit.label}</span>
+                                                    <div
+                                                        className="flex items-center justify-center">
+                                                        <span
+                                                            className="font-semibold tracking-wider">{outfit.label}</span>
                                                     </div>
                                                 ) : (
                                                     <>
-                                                    {outfit.outfitPieces && (
-                                                        <div className="flex items-center justify-center gap-1">
-                                                            <div className="w-6 h-6 rounded-sm overflow-hidden">
-                                                                <img
-                                                                    src={outfit.outfitPieces.Top}
-                                                                    alt="Top"
-                                                                    className="w-full h-full object-cover"
-                                                                />
+                                                        {outfit.outfitPieces && (
+                                                            <div
+                                                                className="flex items-center justify-center gap-1">
+                                                                <div
+                                                                    className="w-6 h-6 rounded-sm overflow-hidden">
+                                                                    <img
+                                                                        src={outfit.outfitPieces.Top}
+                                                                        alt="Top"
+                                                                        className="w-full h-full object-cover"
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    className="w-6 h-6 rounded-sm overflow-hidden">
+                                                                    <img
+                                                                        src={outfit.outfitPieces.Bottom}
+                                                                        alt="Bottom"
+                                                                        className="w-full h-full object-cover"
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    className="w-6 h-6 rounded-sm overflow-hidden">
+                                                                    <img
+                                                                        src={outfit.outfitPieces.Shoes}
+                                                                        alt="Shoes"
+                                                                        className="w-full h-full object-cover"
+                                                                    />
+                                                                </div>
                                                             </div>
-                                                            <div className="w-6 h-6 rounded-sm overflow-hidden">
-                                                                <img
-                                                                    src={outfit.outfitPieces.Bottom}
-                                                                    alt="Bottom"
-                                                                    className="w-full h-full object-cover"
-                                                                />
-                                                            </div>
-                                                            <div className="w-6 h-6 rounded-sm overflow-hidden">
-                                                                <img
-                                                                    src={outfit.outfitPieces.Shoes}
-                                                                    alt="Shoes"
-                                                                    className="w-full h-full object-cover"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    )}
+                                                        )}
                                                     </>
                                                 )}
                                             </motion.div>

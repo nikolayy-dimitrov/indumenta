@@ -6,7 +6,7 @@ import {
 } from 'firebase/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
-import {useEnterKey} from "../hooks/useEnterKey.ts";
+import { useEnterKey } from "../hooks/useEnterKey.ts";
 
 export const EmailSignUp: React.FC = () => {
     const [name, setName] = useState<string>('');
@@ -16,32 +16,26 @@ export const EmailSignUp: React.FC = () => {
     const [error, setError] = useState<string>('');
 
     function validatePassword(password: string): string | null {
-        // 1) Check length
         if (password.length < 8) {
             return 'Password must be at least 8 characters long.';
         }
 
-        // 2) Check for uppercase letter
         if (!/[A-Z]/.test(password)) {
             return 'Password must include at least one uppercase letter.';
         }
 
-        // 3) Check for lowercase letter
         if (!/[a-z]/.test(password)) {
             return 'Password must include at least one lowercase letter.';
         }
 
-        // 4) Check for digit
         if (!/\d/.test(password)) {
             return 'Password must include at least one number.';
         }
 
-        // 5) Check for special character
         if (!/[!@#$%^&*(),.?":{}|<>_\-\\[\]/]/.test(password)) {
             return 'Password must include at least one special character.';
         }
 
-        // All checks passed
         return null;
     }
 
@@ -74,7 +68,6 @@ export const EmailSignUp: React.FC = () => {
         try {
             const auth = getAuth();
             const userCredential: UserCredential = await createUserWithEmailAndPassword(auth, email, password);
-            // console.log('User registered:', userCredential.user);
             const userId = userCredential.user.uid;
 
             if (name) {

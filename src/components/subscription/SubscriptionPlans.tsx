@@ -8,7 +8,7 @@ import { useFirebaseCustomerId } from "../../hooks/useFirebaseCustomerId.ts";
 
 export const SubscriptionPlans: React.FC = () => {
     const [selectedPlan] = useState<string | null>(null);
-    const [ , setPrices] = useState([]);
+    const [, setPrices] = useState([]);
     const { user } = useContext(AuthContext);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ export const SubscriptionPlans: React.FC = () => {
 
     useEffect(() => {
         const fetchPrices = async () => {
-            const {prices} = await fetch('api/config').then(r => r.json());
+            const { prices } = await fetch('api/config').then(r => r.json());
             setPrices(prices);
         };
         fetchPrices();
@@ -33,9 +33,10 @@ export const SubscriptionPlans: React.FC = () => {
 
         const token = await user.getIdToken();
 
-        console.log(stripeCustomerId);
-
-        const {subscriptionId, clientSecret} = await fetch(apiUrl + '/api/subscribe/create-subscription', {
+        const {
+            subscriptionId,
+            clientSecret
+        } = await fetch(apiUrl + '/api/subscribe/create-subscription', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
@@ -101,7 +102,8 @@ export const SubscriptionPlans: React.FC = () => {
                         <ul className="mb-6">
                             {plan.features.map(feature => (
                                 <li key={feature} className="flex items-center gap-2 mb-2">
-                                    <FontAwesomeIcon icon={faCircleCheck} className="text-green-500" />
+                                    <FontAwesomeIcon icon={faCircleCheck}
+                                                     className="text-green-500"/>
                                     {feature}
                                 </li>
                             ))}

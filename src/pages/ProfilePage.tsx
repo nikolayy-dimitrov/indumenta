@@ -36,7 +36,6 @@ export const Profile: React.FC = () => {
         }
     };
 
-    // Handles uploading the file to Firebase and updating the user profile
     const handleImageUpload = async (file: File) => {
         if (!user) return;
         try {
@@ -44,16 +43,14 @@ export const Profile: React.FC = () => {
             const fileName = `profilePhotos/${user.uid}`;
             const storageRef = ref(storage, fileName);
 
-            // Delete existing photo if it exists
             try {
                 await deleteObject(storageRef);
             } catch (deleteError) {
-                console.log("No existing photo to delete", deleteError);
+                console.error("No existing photo to delete", deleteError);
             }
 
-            // Upload the new file using its type as contentType
             await uploadBytes(storageRef, file, { contentType: file.type });
-            // Get the download URL and update the user's profile
+
             const photoURL = await getDownloadURL(storageRef);
             await updateProfile(user, { photoURL });
             setUserPhoto(photoURL);
@@ -123,7 +120,8 @@ export const Profile: React.FC = () => {
     if (!user) return;
 
     return (
-        <div className="w-11/12 mx-auto flex flex-col items-center justify-center md:mt-8 max-md:mt-16 font-Josefin">
+        <div
+            className="w-11/12 mx-auto flex flex-col items-center justify-center md:mt-8 max-md:mt-16 font-Josefin">
             {/* Profile information */}
             <div className="flex flex-col items-center justify-center gap-4">
                 {/* Profile Photo */}
@@ -138,7 +136,7 @@ export const Profile: React.FC = () => {
                         <FontAwesomeIcon
                             icon={faCameraRetro}
                             className="p-12 border rounded-full border-secondary dark:border-primary
-                             transition duration-200 hover:opacity-80" />
+                             transition duration-200 hover:opacity-80"/>
                     )}
                     <input
                         type="file"
@@ -162,14 +160,15 @@ export const Profile: React.FC = () => {
                                     <FontAwesomeIcon icon={faCircleCheck}/>
                                 </button>
                             </div>
-                        :
-                        <button
-                            onClick={toggleEditUsername}
-                        >
-                            <span className="text-secondary dark:text-primary text-center text-xl font-semibold uppercase tracking-widest">
+                            :
+                            <button
+                                onClick={toggleEditUsername}
+                            >
+                            <span
+                                className="text-secondary dark:text-primary text-center text-xl font-semibold uppercase tracking-widest">
                                 {user.displayName || `User ${user.uid}`}
                             </span>
-                        </button>
+                            </button>
                         }
                     </div>
                     <p className="text-xs text-center opacity-80">
@@ -178,28 +177,31 @@ export const Profile: React.FC = () => {
                     {/* Subscriptions */}
                     {subscriptionStatus === 'active' ? (
                         <div className="text-green-500 flex items-center justify-center gap-2">
-                            <FontAwesomeIcon icon={faCircleCheck} />
+                            <FontAwesomeIcon icon={faCircleCheck}/>
                             Active ({periodEndDate})
                         </div>
                     ) : (
                         <>
                             {subscriptionPanel ? (
-                                <SubscriptionPlans />
-                                ) : (
-                                    <button
-                                        onClick={() => {setSubscriptionPanel(true)}}
-                                        className="py-2 px-4 rounded-xl my-2
+                                <SubscriptionPlans/>
+                            ) : (
+                                <button
+                                    onClick={() => {
+                                        setSubscriptionPanel(true)
+                                    }}
+                                    className="py-2 px-4 rounded-xl my-2
                                         transition duration-300 hover:bg-primary/20 active:scale-90 active:bg-primary/40"
-                                    >
+                                >
                                         <span
                                             className="text-content uppercase tracking-wide text-lg">
                                             Unlock INDUMENTA
                                         </span>
-                                    </button>
-                                )}
+                                </button>
+                            )}
                         </>
                     )}
-                    <span className="text-center text-secondary/80 dark:text-primary/80 uppercase text-xs tracking-wider">
+                    <span
+                        className="text-center text-secondary/80 dark:text-primary/80 uppercase text-xs tracking-wider">
                         {formattedCreationTime}
                     </span>
                 </div>
@@ -215,16 +217,18 @@ export const Profile: React.FC = () => {
                     <div className="px-1">
                         <Link to="/subscription/manage"
                               className="py-4 max-md:w-full md:w-1/3 px-2 flex flex-row items-center gap-4 active:bg-primary/10 rounded-2xl">
-                            <FontAwesomeIcon icon={faCreditCard} />
-                            <span className="text-secondary dark:text-primary lowercase tracking-wide text-xl">
+                            <FontAwesomeIcon icon={faCreditCard}/>
+                            <span
+                                className="text-secondary dark:text-primary lowercase tracking-wide text-xl">
                                 Subscription
                             </span>
                         </Link>
                         <Link
                             to="/profile/calendar"
                             className="py-4 max-md:w-full md:w-1/3 px-2 flex flex-row items-center gap-4 active:bg-primary/10 rounded-2xl">
-                            <FontAwesomeIcon icon={faCalendarDays} />
-                            <span className="text-secondary dark:text-primary lowercase tracking-wide text-xl">
+                            <FontAwesomeIcon icon={faCalendarDays}/>
+                            <span
+                                className="text-secondary dark:text-primary lowercase tracking-wide text-xl">
                                 Outfit Calendar
                             </span>
                         </Link>
@@ -237,21 +241,27 @@ export const Profile: React.FC = () => {
                         Resources
                     </p>
                     <div className="px-1">
-                        <button type="button" className="py-4 w-full flex flex-row items-center gap-4">
-                            <FontAwesomeIcon icon={faHeadset} />
-                            <span className="text-secondary dark:text-primary lowercase tracking-wide text-xl">
+                        <button type="button"
+                                className="py-4 w-full flex flex-row items-center gap-4">
+                            <FontAwesomeIcon icon={faHeadset}/>
+                            <span
+                                className="text-secondary dark:text-primary lowercase tracking-wide text-xl">
                                 Support
                             </span>
                         </button>
-                        <button type="button" className="py-4 w-full flex flex-row items-center gap-4">
+                        <button type="button"
+                                className="py-4 w-full flex flex-row items-center gap-4">
                             <FontAwesomeIcon icon={faStar}/>
-                            <span className="text-secondary dark:text-primary lowercase tracking-wide text-xl">
+                            <span
+                                className="text-secondary dark:text-primary lowercase tracking-wide text-xl">
                                 Rate Us
                             </span>
                         </button>
-                        <button type="button" className="py-4 w-full flex flex-row items-center gap-4">
+                        <button type="button"
+                                className="py-4 w-full flex flex-row items-center gap-4">
                             <FontAwesomeIcon icon={faXTwitter}/>
-                            <span className="text-secondary dark:text-primary lowercase tracking-wide text-xl">
+                            <span
+                                className="text-secondary dark:text-primary lowercase tracking-wide text-xl">
                                 Follow Us
                             </span>
                         </button>
@@ -262,8 +272,9 @@ export const Profile: React.FC = () => {
                 <div className="px-1 my-2">
                     <button type="button" onClick={handleLogout}
                             className="py-4 w-full flex flex-row items-center gap-4">
-                        <FontAwesomeIcon icon={faRightFromBracket} />
-                        <span className="text-secondary dark:text-primary lowercase tracking-wider text-xl">
+                        <FontAwesomeIcon icon={faRightFromBracket}/>
+                        <span
+                            className="text-secondary dark:text-primary lowercase tracking-wider text-xl">
                             Sign Out
                         </span>
                     </button>

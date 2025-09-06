@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { faCircleCheck, faX, faCalendarAlt, faTags, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+    faCircleCheck,
+    faX,
+    faCalendarAlt,
+    faTags,
+    faPencilAlt
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
@@ -123,7 +129,6 @@ export const OutfitModal = ({ outfit, onClose, isOwner = false, onDelete }: Outf
         if (onDelete) {
             onDelete(outfitId);
         }
-        // Close the modal after successful deletion
         onClose();
     };
 
@@ -151,7 +156,7 @@ export const OutfitModal = ({ outfit, onClose, isOwner = false, onDelete }: Outf
                                     onClick={toggleEditLabel}
                                     className="ml-2 text-secondary/70 dark:text-primary/60 hover:text-secondary/90 dark:hover:text-primary/80"
                                 >
-                                    <FontAwesomeIcon icon={faPencilAlt} size="sm" />
+                                    <FontAwesomeIcon icon={faPencilAlt} size="sm"/>
                                 </button>
                             </div>
                         ) : (
@@ -166,7 +171,7 @@ export const OutfitModal = ({ outfit, onClose, isOwner = false, onDelete }: Outf
                                     onClick={handleLabelChange}
                                     className="flex items-center text-primary-green/80 hover:text-primary-green dark:text-primary/80 dark:hover:text-primary"
                                 >
-                                    <FontAwesomeIcon icon={faCircleCheck} />
+                                    <FontAwesomeIcon icon={faCircleCheck}/>
                                 </button>
                             </div>
                         )}
@@ -175,15 +180,17 @@ export const OutfitModal = ({ outfit, onClose, isOwner = false, onDelete }: Outf
                         className="text-secondary/80 hover:text-secondary/60 dark:text-primary/80 dark:hover:text-primary/60 transition-colors"
                         onClick={onClose}
                     >
-                        <FontAwesomeIcon icon={faX} />
+                        <FontAwesomeIcon icon={faX}/>
                     </button>
                 </div>
 
                 {/* Content */}
                 <div className="grid md:grid-cols-5 gap-4 p-4">
                     {/* Images Display - 3/5 of width */}
-                    <div className="md:col-span-3 rounded-lg overflow-hidden bg-primary dark:bg-secondary">
-                        <div className="md:w-11/12 max-md:w-8/12 h-full flex flex-col md:flex-row mx-auto gap-2">
+                    <div
+                        className="md:col-span-3 rounded-lg overflow-hidden bg-primary dark:bg-secondary">
+                        <div
+                            className="md:w-11/12 max-md:w-8/12 h-full flex flex-col md:flex-row mx-auto gap-2">
                             <div className="w-full md:w-1/3 aspect-square md:h-auto">
                                 <img
                                     src={outfit.outfitPieces.Top}
@@ -221,11 +228,13 @@ export const OutfitModal = ({ outfit, onClose, isOwner = false, onDelete }: Outf
                             <div className="space-y-4">
                                 <div className="flex items-center gap-3">
                                     <div className="flex-1">
-                                        <label htmlFor="scheduledDate" className="block text-center text-sm text-secondary/80 dark:text-primary/80 mb-1">
+                                        <label htmlFor="scheduledDate"
+                                               className="block text-center text-sm text-secondary/80 dark:text-primary/80 mb-1">
                                             Scheduled Date
                                         </label>
                                         <div className="flex items-center justify-center gap-2">
-                                            <FontAwesomeIcon icon={faCalendarAlt} className="text-primary/80" />
+                                            <FontAwesomeIcon icon={faCalendarAlt}
+                                                             className="text-primary/80"/>
                                             <input
                                                 id="scheduledDate"
                                                 type="date"
@@ -250,17 +259,19 @@ export const OutfitModal = ({ outfit, onClose, isOwner = false, onDelete }: Outf
                             {isOwner && (
                                 <div className="flex items-center justify-between mb-3">
                                     <div className="flex items-center gap-2">
-                                        <FontAwesomeIcon icon={faTags} className="text-gray-400" />
-                                        <span className="text-gray-600 dark:text-gray-300">Created</span>
+                                        <FontAwesomeIcon icon={faTags} className="text-gray-400"/>
+                                        <span
+                                            className="text-gray-600 dark:text-gray-300">Created</span>
                                     </div>
-                                    <span className="text-gray-800 dark:text-gray-200">{outfit.createdAt.toDate().toLocaleDateString()}</span>
+                                    <span
+                                        className="text-gray-800 dark:text-gray-200">{outfit.createdAt.toDate().toLocaleDateString()}</span>
                                 </div>
                             )}
 
                             {/* Additional outfit details */}
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-2">
-                                    <FontAwesomeIcon icon={faTags} className="text-gray-400" />
+                                    <FontAwesomeIcon icon={faTags} className="text-gray-400"/>
                                     <span className="text-gray-600 dark:text-gray-300">Items</span>
                                 </div>
                                 <span className="text-gray-800 dark:text-gray-200">3 pieces</span>

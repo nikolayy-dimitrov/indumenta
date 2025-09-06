@@ -18,31 +18,29 @@ export const ShowroomPage = () => {
     const [selectedOutfit, setSelectedOutfit] = useState<OutfitItem | null>(null);
     const [searchQuery, setSearchQuery] = useState<string>("");
 
-    // Get trending outfits
     const { trendingOutfits, isLoading: isTrendingLoading } = useTrendingOutfits(12);
-    // Get community outfits (all outfits)
-    const { outfits: communityOutfits, isLoading: isCommunityLoading } = useOutfits(undefined, "all");
+    // Get all outfits
+    const {
+        outfits: communityOutfits,
+        isLoading: isCommunityLoading
+    } = useOutfits(undefined, "all");
 
     const isOwner = user?.uid === selectedOutfit?.userId;
 
-    // Reset state on escape key
     const handleResetStates = useCallback(() => {
         setSelectedOutfit(null);
     }, []);
 
     useEscapeKey(handleResetStates);
 
-    // Handler for toggling view mode
     const handleToggleView = (mode: ViewMode) => {
         setViewMode(mode);
     };
 
-    // Handler for selecting an outfit
     const handleSelectOutfit = (outfit: OutfitItem) => {
         setSelectedOutfit(outfit);
     };
 
-    // Filter outfits based on search query
     const filteredOutfits = (outfits: OutfitItem[]) => {
         if (!searchQuery.trim()) return outfits;
 
@@ -53,7 +51,6 @@ export const ShowroomPage = () => {
         );
     };
 
-    // Get the outfits to display based on show mode
     const displayOutfits = () => {
         switch (showMode) {
             case "trending":
@@ -71,7 +68,7 @@ export const ShowroomPage = () => {
     const outfits = displayOutfits();
 
     if (isTrendingLoading || isCommunityLoading) {
-        return <LoadingIndicator />;
+        return <LoadingIndicator/>;
     }
 
     return (
@@ -85,7 +82,8 @@ export const ShowroomPage = () => {
             </div>
 
             {/* View Controls */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+            <div
+                className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                 <div className="flex gap-2">
                     <button
                         onClick={() => setShowMode("trending")}
@@ -166,9 +164,10 @@ export const ShowroomPage = () => {
 
             {/* Empty state */}
             {displayOutfits().length === 0 && (
-                <div className="flex justify-center items-center text-center h-[500px] font-Josefin">
+                <div
+                    className="flex justify-center items-center text-center h-[500px] font-Josefin">
                     <p className="text-primary/90">
-                        No outfits found. <br />
+                        No outfits found. <br/>
                         {searchQuery ? (
                             "Try adjusting your search criteria."
                         ) : (
@@ -186,7 +185,8 @@ export const ShowroomPage = () => {
                     outfit={selectedOutfit}
                     onClose={() => setSelectedOutfit(null)}
                     isOwner={isOwner}
-                    onDelete={() => {}}
+                    onDelete={() => {
+                    }}
                 />
             )}
         </section>

@@ -73,7 +73,7 @@ export const featuresContainerVariants = {
     visible: {
         opacity: 1,
         transition: {
-            staggerChildren: 0.2, // Adjust delay between children animations
+            staggerChildren: 0.2,
         },
     },
 };

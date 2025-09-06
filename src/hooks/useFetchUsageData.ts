@@ -32,12 +32,10 @@ export const useFetchUsageData = () => {
             try {
                 setLoading(true);
 
-                // Get auth token
                 const token = await user.getIdToken();
 
                 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
-                // Make API request with auth token
                 const response = await fetch(apiUrl + '/api/subscribe/user/usage', {
                     method: 'GET',
                     headers: {

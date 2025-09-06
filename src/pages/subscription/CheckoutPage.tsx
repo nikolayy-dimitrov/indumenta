@@ -12,8 +12,7 @@ export const CheckoutPage = () => {
     } = useLocation();
 
     if (!clientSecret) {
-        // Redirect back to profile page if no client secret is available
-        return <Navigate to="/profile" />;
+        return <Navigate to="/profile"/>;
     }
 
     return (
@@ -23,7 +22,7 @@ export const CheckoutPage = () => {
                 stripe={stripePromise}
                 options={{ clientSecret }}
             >
-                <PaymentForm />
+                <PaymentForm/>
             </Elements>
         </div>
     );

@@ -7,7 +7,7 @@ import { ConfirmModal } from "./ConfirmModal";
 
 interface DeleteHandlerProps {
     itemId: string | null;
-    collectionName: string; // "clothes", "outfits", etc.
+    collectionName: string;
     onSuccessfulDelete: (itemId: string) => void;
     onCancelDelete?: () => void;
     children: (handleDelete: (itemId: string) => void) => React.ReactNode;
@@ -40,7 +40,6 @@ export const DeleteHandler: React.FC<DeleteHandlerProps> = ({
                 theme: "dark",
             });
 
-            // Call the onSuccessfulDelete callback
             onSuccessfulDelete(itemToDelete);
         } catch (error) {
             console.error(`Error deleting item from ${collectionName}:`, error);

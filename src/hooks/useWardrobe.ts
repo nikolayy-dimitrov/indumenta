@@ -18,7 +18,13 @@ import { doc as firestoreDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
 import { db } from "../config/firebaseConfig";
-import { ClothingItem, LikedOutfitsState, OutfitFilter, OutfitItem, UseOutfitLikesReturn } from "../types/wardrobe";
+import {
+    ClothingItem,
+    LikedOutfitsState,
+    OutfitFilter,
+    OutfitItem,
+    UseOutfitLikesReturn
+} from "../types/wardrobe";
 
 export const useClothes = (userId: string | undefined) => {
     const [clothes, setClothes] = useState<ClothingItem[]>([]);
@@ -55,14 +61,11 @@ export const useOutfits = (userId: string | undefined, filter: OutfitFilter = 'o
     const { savedOutfits, isLoading: isSavedLoading } = useSavedOutfits(userId);
 
     useEffect(() => {
-        // For 'all' filter, we don't need a userId to fetch community outfits
-        // For other filters, we need a userId
         if (!userId && filter !== 'all') {
             setIsLoading(false);
             return;
         }
 
-        // Handle 'saved' filter separately since it uses savedOutfits
         if (filter === 'saved') {
             setOutfits(savedOutfits);
             setIsLoading(false);
@@ -71,12 +74,10 @@ export const useOutfits = (userId: string | undefined, filter: OutfitFilter = 'o
 
         const outfitsRef = collection(db, "outfits");
 
-        // Determine the query based on filter
         let q;
         if (filter === 'owned' && userId) {
             q = query(outfitsRef, where("userId", "==", userId));
         } else if (filter === 'all') {
-            // Community view - get all outfits, potentially limit to a reasonable number
             q = query(outfitsRef, limit(50));
         } else {
             q = query(outfitsRef);
@@ -168,7 +169,6 @@ export const useTrendingOutfits = (limitCount: number = 10) => {
     useEffect(() => {
         const outfitsRef = collection(db, "outfits");
 
-        // Sort by likes descending
         const q = query(
             outfitsRef,
             where("likesCount", ">", 0),
@@ -311,7 +311,6 @@ export const useOutfitLikes = (currentUserId: string | undefined | null): UseOut
             return;
         }
 
-        // Query to get all outfit IDs that the current user has liked
         const likesQuery = query(
             collection(db, "userLikes"),
             where("userId", "==", currentUserId)
@@ -357,41 +356,34 @@ export const useOutfitLikes = (currentUserId: string | undefined | null): UseOut
             throw new Error("User must be logged in to like an outfit");
         }
 
-        // Check if this is the user's own outfit
         if (outfitOwnerId === currentUserId) {
             throw new Error("You cannot like your own outfit");
         }
 
-        // Check if already liked
         if (state.likedOutfitIds.includes(outfitId)) {
             throw new Error("You have already liked this outfit");
         }
 
         try {
-            // Create a batch for atomic operations
             const outfitRef = doc(db, "outfits", outfitId);
             const userLikeRef = doc(db, "userLikes", `${currentUserId}_${outfitId}`);
             const outfitLikeRef = doc(db, "outfits", outfitId, "likes", currentUserId);
 
-            // 1. Update the outfit document to increment likesCount
             await updateDoc(outfitRef, {
                 likesCount: increment(1)
             });
 
-            // 2. Record the like in userLikes collection (for querying a user's likes)
             await setDoc(userLikeRef, {
                 userId: currentUserId,
                 outfitId: outfitId,
                 timestamp: new Date()
             });
 
-            // 3. Record the like in the outfit's subcollection (for checking if a specific user liked an outfit)
             await setDoc(outfitLikeRef, {
                 userId: currentUserId,
                 timestamp: new Date()
             });
 
-            // Update local state optimistically
             setState((prev) => ({
                 ...prev,
                 likedOutfitIds: [...prev.likedOutfitIds, outfitId]
@@ -410,29 +402,23 @@ export const useOutfitLikes = (currentUserId: string | undefined | null): UseOut
             throw new Error("User must be logged in to unlike an outfit");
         }
 
-        // Check if actually liked
         if (!state.likedOutfitIds.includes(outfitId)) {
             throw new Error("You have not liked this outfit");
         }
 
         try {
-            // References to update
             const outfitRef = doc(db, "outfits", outfitId);
             const userLikeRef = doc(db, "userLikes", `${currentUserId}_${outfitId}`);
             const outfitLikeRef = doc(db, "outfits", outfitId, "likes", currentUserId);
 
-            // 1. Update the outfit document to decrement likesCount
             await updateDoc(outfitRef, {
                 likesCount: increment(-1)
             });
 
-            // 2. Delete the record from userLikes collection
             await deleteDoc(userLikeRef);
 
-            // 3. Delete the record from the outfit's likes subcollection
             await deleteDoc(outfitLikeRef);
 
-            // Update local state optimistically
             setState((prev) => ({
                 ...prev,
                 likedOutfitIds: prev.likedOutfitIds.filter(id => id !== outfitId)

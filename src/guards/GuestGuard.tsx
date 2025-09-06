@@ -7,16 +7,14 @@ const GuestGuard: React.FC = () => {
     const { user, isLoading } = useContext(AuthContext);
 
     if (isLoading) {
-        return <LoadingIndicator />;
+        return <LoadingIndicator/>;
     }
 
-    // If user is not logged in, redirect to login page
     if (!user) {
-        return <Navigate to="/authentication" replace />;
+        return <Navigate to="/authentication" replace/>;
     }
 
-    // Otherwise, render the nested routes/components
-    return <Outlet />;
+    return <Outlet/>;
 };
 
 export default GuestGuard;

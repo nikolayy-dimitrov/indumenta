@@ -32,13 +32,16 @@ export const Navbar = ({ onMenuToggle }: NavbarProps) => {
     };
 
     return (
-        <nav className="sticky top-0 z-50 md:w-11/12 mx-auto flex items-center justify-between py-4 px-8 font-Josefin text-gray-200 bg-secondary/95 backdrop-blur">
+        <nav
+            className="sticky top-0 z-50 md:w-11/12 mx-auto flex items-center justify-between py-4 px-8 font-Josefin text-gray-200 bg-secondary/95 backdrop-blur">
             {/* Logo */}
-            <Link to="/" className="flex items-center justify-center z-40 transition duration-300 active:scale-90 group-hover:opacity-85">
+            <Link to="/"
+                  className="flex items-center justify-center z-40 transition duration-300 active:scale-90 group-hover:opacity-85">
                 {!isAboveMediumScreens ?
-                    <img src={Logo} alt="logo" className="max-w-8" />
-                :
-                    <span className="transition duration-300 hover:text-primary text-2xl font-extrabold">
+                    <img src={Logo} alt="logo" className="max-w-8"/>
+                    :
+                    <span
+                        className="transition duration-300 hover:text-primary text-2xl font-extrabold">
                         INDUMENTA
                     </span>
                 }
@@ -46,52 +49,53 @@ export const Navbar = ({ onMenuToggle }: NavbarProps) => {
             {/* Main menu */}
             {isAboveMediumScreens ? (
                 <>
-                <div className="absolute left-1/2 transform -translate-x-1/2 flex gap-8 font-semibold z-40">
-                    {!user &&
-                        (<NavLink to="/"
-                              className={({isActive}) =>
-                                  `${isActive && "text-primary/20"} transition duration-300 active:scale-90 hover:text-primary/90 text-sm uppercase tracking-wide`
-                              }>
-                        Home
-                    </NavLink>
-                        )}
-                    <NavLink to="/stylist"
-                             className={({ isActive }) =>
-                        `${isActive && "text-primary/20"} transition duration-300 active:scale-90 hover:text-primary/90 text-sm uppercase tracking-wide`
-                    }>
-                        Stylist
-                    </NavLink>
-                    {user && (
-                        <NavLink to="/wardrobe"
+                    <div
+                        className="absolute left-1/2 transform -translate-x-1/2 flex gap-8 font-semibold z-40">
+                        {!user &&
+                            (<NavLink to="/"
+                                      className={({ isActive }) =>
+                                          `${isActive && "text-primary/20"} transition duration-300 active:scale-90 hover:text-primary/90 text-sm uppercase tracking-wide`
+                                      }>
+                                    Home
+                                </NavLink>
+                            )}
+                        <NavLink to="/stylist"
                                  className={({ isActive }) =>
-                            `${isActive && "text-primary/20"} transition duration-300 active:scale-90 hover:text-primary/90 text-sm uppercase tracking-wide`
-                        }>
-                            Wardrobe
+                                     `${isActive && "text-primary/20"} transition duration-300 active:scale-90 hover:text-primary/90 text-sm uppercase tracking-wide`
+                                 }>
+                            Stylist
                         </NavLink>
+                        {user && (
+                            <NavLink to="/wardrobe"
+                                     className={({ isActive }) =>
+                                         `${isActive && "text-primary/20"} transition duration-300 active:scale-90 hover:text-primary/90 text-sm uppercase tracking-wide`
+                                     }>
+                                Wardrobe
+                            </NavLink>
+                        )}
+                        <NavLink to="/showroom"
+                                 className={({ isActive }) =>
+                                     `${isActive && "text-primary/20"} transition duration-300 active:scale-90 hover:text-primary/90 text-sm uppercase tracking-wide`
+                                 }>
+                            Showroom
+                        </NavLink>
+                        {/*<Link to="/contact" className="hover:text-primary/90">Contact</Link>*/}
+                    </div>
+                    {/* User menu */}
+                    {user ? (
+                        <div className="flex items-center gap-4 z-40">
+                            <Link to="/profile">
+                                {user.displayName ? `Welcome, ${user.displayName} ` : 'Welcome to INDUMENTA'}
+                            </Link>
+                        </div>
+                    ) : (
+                        <div className="flex gap-4 z-40 font-light">
+                            <Link to="/authentication" className="hover:text-primary/80">Sign
+                                In</Link>
+                        </div>
                     )}
-                    <NavLink to="/showroom"
-                             className={({ isActive }) =>
-                                 `${isActive && "text-primary/20"} transition duration-300 active:scale-90 hover:text-primary/90 text-sm uppercase tracking-wide`
-                             }>
-                        Showroom
-                    </NavLink>
-                    {/*<Link to="/contact" className="hover:text-primary/90">Contact</Link>*/}
-                </div>
-                {/* User menu */}
-                {user ? (
-                    <div className="flex items-center gap-4 z-40">
-                        <Link to="/profile">
-                            {user.displayName ? `Welcome, ${user.displayName} ` : 'Welcome to INDUMENTA'}
-                        </Link>
-                    </div>
-                ) : (
-                    <div className="flex gap-4 z-40 font-light">
-                        <Link to="/authentication" className="hover:text-primary/80">Sign In</Link>
-                    </div>
-                )}
                 </>
             ) : (
-                // Hamburger Menu for Mobile
                 <button className="flex items-center z-40" onClick={toggleMenu}>
                     <div
                         className={`relative w-[30px] h-[20px] z-40 transform transition-transform duration-500 ease-in-out ${

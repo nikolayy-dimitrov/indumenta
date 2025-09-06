@@ -15,7 +15,6 @@ export const useEnterKey = (callback: () => void) => {
 
         window.addEventListener('keydown', handleEnterKey);
 
-        // Clean up the event listener on component unmount
         return () => {
             window.removeEventListener('keydown', handleEnterKey);
         };

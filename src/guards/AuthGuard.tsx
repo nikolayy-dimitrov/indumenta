@@ -7,16 +7,14 @@ const AuthGuard: React.FC = () => {
     const { user, isLoading } = useContext(AuthContext);
 
     if (isLoading) {
-        return <LoadingIndicator />;
+        return <LoadingIndicator/>;
     }
 
-    // If user is logged in, redirect to profile page
     if (user) {
-        return <Navigate to="/profile" replace />;
+        return <Navigate to="/profile" replace/>;
     }
 
-    // Otherwise, render the nested routes/components
-    return <Outlet />;
+    return <Outlet/>;
 };
 
 export default AuthGuard;

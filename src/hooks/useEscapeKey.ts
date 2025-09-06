@@ -15,7 +15,6 @@ export const useEscapeKey = (callback: () => void) => {
 
         window.addEventListener('keydown', handleEscKey);
 
-        // Clean up the event listener on component unmount
         return () => {
             window.removeEventListener('keydown', handleEscKey);
         };

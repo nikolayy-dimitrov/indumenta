@@ -11,7 +11,12 @@ interface LikeHandlerProps {
     title?: string;
 }
 
-export const LikeOutfitHandler = ({ outfit, currentUserId, title, className = "" }: LikeHandlerProps) => {
+export const LikeOutfitHandler = ({
+                                      outfit,
+                                      currentUserId,
+                                      title,
+                                      className = ""
+                                  }: LikeHandlerProps) => {
     const {
         isOutfitLiked,
         canLikeOutfit,
@@ -24,7 +29,6 @@ export const LikeOutfitHandler = ({ outfit, currentUserId, title, className = ""
 
         try {
             if (!canLikeOutfit(outfit.userId)) {
-                // Owner can't like their own outfit
                 return;
             }
 
@@ -35,7 +39,7 @@ export const LikeOutfitHandler = ({ outfit, currentUserId, title, className = ""
             }
         } catch (error) {
             console.error("Error toggling like:", error);
-            // Show error toast or message
+            // TODO: Show error toast or message
         }
     };
 

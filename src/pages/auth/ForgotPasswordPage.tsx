@@ -21,11 +21,8 @@ export const ForgotPasswordPage = () => {
 
         try {
             setLoading(true);
-            // The optional ActionCodeSettings parameter configures the reset link
             const actionCodeSettings = {
-                // URL you want to redirect to after password reset is complete
                 url: window.location.origin + '/authentication',
-                // This must be true for the link to work properly
                 handleCodeInApp: false
             };
 
@@ -39,7 +36,6 @@ export const ForgotPasswordPage = () => {
         }
     }
 
-    // If email was sent successfully, show a confirmation message
     if (emailSent) {
         return (
             <section
@@ -59,7 +55,8 @@ export const ForgotPasswordPage = () => {
                     <div className="text-center mb-4 space-y-2">
                         <h2 className="font-medium text-2xl">Check Your Email</h2>
                         <p className="font-light text-sm opacity-60">
-                            We've sent a password reset link to <span className="font-medium">{email}</span>.
+                            We've sent a password reset link to <span
+                            className="font-medium">{email}</span>.
                             The link will expire after 1 hour.
                         </p>
                     </div>
@@ -112,7 +109,8 @@ export const ForgotPasswordPage = () => {
                 </div>
                 <div className="mb-4 w-full space-y-4">
                     <div>
-                        <label htmlFor="email" className="block text-primary font-medium text-sm mb-2">
+                        <label htmlFor="email"
+                               className="block text-primary font-medium text-sm mb-2">
                             Email
                         </label>
                         <div className="relative">
@@ -147,7 +145,7 @@ export const ForgotPasswordPage = () => {
                     type="button"
                     onClick={() => navigate(-1)}
                 >
-                    <FontAwesomeIcon icon={faArrowLeft} />
+                    <FontAwesomeIcon icon={faArrowLeft}/>
                     <span className="transition duration-300 hover:underline">
                         Back
                     </span>

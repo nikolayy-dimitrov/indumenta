@@ -32,12 +32,11 @@ export const useSubscription = () => {
                 setPlanInterval(data.planInterval ?? null);
                 setPriceId(data.priceId ?? null);
 
-                // convert unix to readable time/date
                 const timestamp = data?.currentPeriodEnd;
                 if (timestamp) {
                     const date = new Date(timestamp * 1000);
                     // TODO: Fetch the real subscription end period
-                    date.setMonth(date.getMonth() + 1); // Add one month
+                    date.setMonth(date.getMonth() + 1);
                     const formattedDate = date.toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'long',

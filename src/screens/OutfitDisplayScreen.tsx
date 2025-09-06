@@ -32,7 +32,7 @@ export const OutfitDisplayScreen: React.FC<OutfitDisplayScreenProps> = ({
                                                                             onBack,
                                                                             onSaveOutfit,
                                                                             checkIfOutfitSaved,
-}) => {
+                                                                        }) => {
     const [currentOutfitIndex, setCurrentOutfitIndex] = useState(0);
     const currentOutfit = outfit[currentOutfitIndex];
     const [isSaving, setIsSaving] = useState(false);
@@ -40,7 +40,6 @@ export const OutfitDisplayScreen: React.FC<OutfitDisplayScreenProps> = ({
     const [selectedImage, setSelectedImage] = useState<ClothingItem | null>(null);
     const [isColorPickerOpen, setIsColorPickerOpen] = useState<boolean>(false);
 
-    // Callback to close the modal
     const handleCloseModal = useCallback(() => {
         setSelectedImage(null);
     }, []);
@@ -88,7 +87,6 @@ export const OutfitDisplayScreen: React.FC<OutfitDisplayScreenProps> = ({
         }
     };
 
-    // Function to fetch a clothing item by its image URL
     const fetchClothingItemByImageUrl = async (imageUrl: string) => {
         try {
             const clothesRef = collection(db, "clothes");
@@ -109,7 +107,6 @@ export const OutfitDisplayScreen: React.FC<OutfitDisplayScreenProps> = ({
         }
     };
 
-    // Handle clicking on an outfit piece
     const handlePieceClick = async (imageUrl: string) => {
         const item = await fetchClothingItemByImageUrl(imageUrl);
         if (item) {
@@ -125,7 +122,8 @@ export const OutfitDisplayScreen: React.FC<OutfitDisplayScreenProps> = ({
 
     if (!currentOutfit) {
         return (
-            <div className="max-w-2xl mx-auto space-y-6 bg-white p-6 rounded-lg shadow-lg font-Josefin mt-20">
+            <div
+                className="max-w-2xl mx-auto space-y-6 bg-white p-6 rounded-lg shadow-lg font-Josefin mt-20">
                 <h2 className="text-2xl font-bold mb-4">No outfits generated</h2>
                 <button
                     onClick={onBack}
@@ -139,7 +137,8 @@ export const OutfitDisplayScreen: React.FC<OutfitDisplayScreenProps> = ({
 
     return (
         <>
-            <section className="h-[90vh] container relative max-w-2xl mx-auto space-y-6 font-Josefin">
+            <section
+                className="h-[90vh] container relative max-w-2xl mx-auto space-y-6 font-Josefin">
                 <div className="flex flex-col justify-center h-full max-md:w-10/12 max-md:mx-auto">
                     <div className="flex flex-col justify-between items-center py-2">
                         <h2 className="text-3xl font-bold">{currentOutfit.outfit_id}</h2>
@@ -151,7 +150,8 @@ export const OutfitDisplayScreen: React.FC<OutfitDisplayScreenProps> = ({
                     <div className="space-y-4 mx-auto">
                         <div className="grid grid-cols-1 gap-4">
                             {Object.entries(currentOutfit.outfit_pieces).map(([pieceType, itemId]) => (
-                                <div key={`${currentOutfit.outfit_id}-${pieceType}`} className="flex flex-col items-center gap-4 py-2">
+                                <div key={`${currentOutfit.outfit_id}-${pieceType}`}
+                                     className="flex flex-col items-center gap-4 py-2">
                                     <img
                                         src={itemId}
                                         alt={pieceType}
@@ -174,7 +174,7 @@ export const OutfitDisplayScreen: React.FC<OutfitDisplayScreenProps> = ({
                             p-2 rounded"
                             disabled={outfit.length <= 1}
                         >
-                            <FontAwesomeIcon icon={faArrowLeft} />
+                            <FontAwesomeIcon icon={faArrowLeft}/>
                         </button>
                         <button
                             onClick={handleNext}
@@ -182,7 +182,7 @@ export const OutfitDisplayScreen: React.FC<OutfitDisplayScreenProps> = ({
                             p-2 rounded"
                             disabled={outfit.length <= 1}
                         >
-                            <FontAwesomeIcon icon={faArrowRight} />
+                            <FontAwesomeIcon icon={faArrowRight}/>
                         </button>
                     </div>
 
@@ -209,7 +209,7 @@ export const OutfitDisplayScreen: React.FC<OutfitDisplayScreenProps> = ({
                 </div>
             </section>
 
-            {createPortal (
+            {createPortal(
                 <ClothesModal
                     isColorPickerOpen={isColorPickerOpen}
                     setIsColorPickerOpen={setIsColorPickerOpen}

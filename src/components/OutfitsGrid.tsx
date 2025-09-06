@@ -27,7 +27,6 @@ export const OutfitsGrid = ({
                             }: OutfitsGridProps) => {
     const { user } = useContext(AuthContext);
 
-    // Extract all user IDs from outfits
     const userIds = useMemo(() => {
         return outfits.map(outfit => outfit.userId).filter(Boolean) as string[]
     }, [outfits]);
@@ -41,9 +40,9 @@ export const OutfitsGrid = ({
 
     if (outfits.length === 0) {
         return (
-            <div className="flex justify-center items-center text-center h-[500px] font-Josefin">
+            <div className="flex items-center justify-center text-center h-[500px] font-Josefin">
                 <p className="text-primary/90">
-                    You have no saved outfits. <br />
+                    You have no saved outfits. <br/>
                     <Link to="/stylist" className="font-semibold">
                         Start by creating an outfit!
                     </Link>
@@ -58,7 +57,7 @@ export const OutfitsGrid = ({
                 <motion.div
                     key={item.id}
                     onClick={() => onSelectOutfit(item)}
-                    className="overflow-hidden cursor-pointer rounded-lg border border-gray-200 hover:border-primary/50 transition-all shadow-sm"
+                    className="cursor-pointer overflow-hidden rounded-lg border border-gray-200 shadow-sm transition-all hover:border-primary/50"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     whileHover={{ scale: 1.02, transition: { stiffness: 300, damping: 20 } }}
@@ -66,27 +65,27 @@ export const OutfitsGrid = ({
                 >
                     {/* Outfit Images Layout */}
                     <div className="relative aspect-square">
-                        <div className="w-full h-full flex gap-1 overflow-hidden">
-                            <div className="w-1/3 h-full">
+                        <div className="flex h-full w-full gap-1 overflow-hidden">
+                            <div className="h-full w-1/3">
                                 <img
                                     src={item.outfitPieces.Top}
                                     alt="Top"
-                                    className="w-full h-full object-cover"
+                                    className="h-full w-full object-cover"
                                 />
                             </div>
-                            <div className="w-2/3 h-full flex flex-col gap-1">
-                                <div className="w-full h-1/2">
+                            <div className="flex h-full w-2/3 flex-col gap-1">
+                                <div className="h-1/2 w-full">
                                     <img
                                         src={item.outfitPieces.Bottom}
                                         alt="Bottom"
-                                        className="w-full h-full object-cover"
+                                        className="h-full w-full object-cover"
                                     />
                                 </div>
-                                <div className="w-full h-1/2">
+                                <div className="h-1/2 w-full">
                                     <img
                                         src={item.outfitPieces.Shoes}
                                         alt="Shoes"
-                                        className="w-full h-full object-cover"
+                                        className="h-full w-full object-cover"
                                     />
                                 </div>
                             </div>
@@ -107,9 +106,9 @@ export const OutfitsGrid = ({
                                                 e.stopPropagation();
                                                 handleDelete(item.id);
                                             }}
-                                            className="absolute right-2 top-2 h-8 w-8 rounded-full bg-white/50 backdrop-blur-sm flex items-center justify-center text-red-600 hover:bg-white/70 transition-colors"
+                                            className="absolute top-2 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-white/50 text-red-600 backdrop-blur-sm transition-colors hover:bg-white/70"
                                         >
-                                            <FontAwesomeIcon icon={faX} className="h-3 w-3" />
+                                            <FontAwesomeIcon icon={faX} className="h-3 w-3"/>
                                         </button>
                                     )}
                                 </DeleteHandler>
@@ -117,8 +116,8 @@ export const OutfitsGrid = ({
                         ) : (
                             <>
                                 {/* Like/Save button */}
-                                <div className="absolute right-2 top-2">
-                                    <LikeOutfitHandler outfit={item} currentUserId={user?.uid} />
+                                <div className="absolute top-2 right-2">
+                                    <LikeOutfitHandler outfit={item} currentUserId={user?.uid}/>
                                 </div>
                             </>
                         )}
@@ -131,17 +130,20 @@ export const OutfitsGrid = ({
                         {/* Tags */}
                         <div className="mt-1 flex flex-wrap gap-1">
                             {item.match && (
-                                <span className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800 font-medium">
+                                <span
+                                    className="rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-800">
                                     {item.match}
                                 </span>
                             )}
                             {item.stylePreferences.occasion && (
-                                <span className="px-2 py-1 text-xs capitalize rounded-full bg-gray-100 text-gray-800 font-medium">
+                                <span
+                                    className="rounded-full bg-gray-100 px-2 py-1 text-xs font-medium capitalize text-gray-800">
                                     {item.stylePreferences.occasion}
                                 </span>
                             )}
                             {item.stylePreferences.color && (
-                                <span className="px-2 py-1 text-xs capitalize rounded-full bg-gray-100 text-gray-800 font-medium">
+                                <span
+                                    className="rounded-full bg-gray-100 px-2 py-1 text-xs font-medium capitalize text-gray-800">
                                     {item.stylePreferences.color}
                                 </span>
                             )}
@@ -169,15 +171,16 @@ export const OutfitsGrid = ({
                                 </>
                             ) : (
                                 <div className="flex items-center">
-                                    <div className="w-6 h-6 rounded-full bg-gray-200 overflow-hidden mr-2">
+                                    <div
+                                        className="mr-2 h-6 w-6 overflow-hidden rounded-full bg-gray-200">
                                         {item.userId && userPhotos[item.userId] ? (
                                             <img
                                                 src={userPhotos[item.userId]}
                                                 alt="User"
-                                                className="w-full h-full object-cover"
+                                                className="h-full w-full object-cover"
                                             />
                                         ) : (
-                                            <div className="w-full h-full bg-gray-300"/>
+                                            <div className="h-full w-full bg-gray-300"/>
                                         )}
                                     </div>
                                     <span
@@ -195,31 +198,31 @@ export const OutfitsGrid = ({
                 <motion.div
                     key={item.id}
                     onClick={() => onSelectOutfit(item)}
-                    className="overflow-hidden cursor-pointer rounded-lg border border-gray-200 hover:border-primary/50 transition-all shadow-sm"
+                    className="cursor-pointer overflow-hidden rounded-lg border border-gray-200 shadow-sm transition-all hover:border-primary/50"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.1 }}
                 >
                     <div className="flex">
                         {/* Left side outfit preview */}
-                        <div className="h-24 w-24 flex-shrink-0 relative">
-                            <div className="w-full h-full flex gap-0.5 overflow-hidden">
-                                <div className="w-1/3 h-full">
+                        <div className="relative h-24 w-24 flex-shrink-0">
+                            <div className="flex h-full w-full overflow-hidden gap-0.5">
+                                <div className="h-full w-1/3">
                                     <img
                                         src={item.outfitPieces.Top}
                                         alt="Top"
                                         className="h-full w-full object-cover"
                                     />
                                 </div>
-                                <div className="w-2/3 h-full flex flex-col gap-0.5">
-                                    <div className="w-full h-1/2">
+                                <div className="flex h-full w-2/3 flex-col gap-0.5">
+                                    <div className="h-1/2 w-full">
                                         <img
                                             src={item.outfitPieces.Bottom}
                                             alt="Bottom"
                                             className="h-full w-full object-cover"
                                         />
                                     </div>
-                                    <div className="w-full h-1/2">
+                                    <div className="h-1/2 w-full">
                                         <img
                                             src={item.outfitPieces.Shoes}
                                             alt="Shoes"
@@ -236,24 +239,27 @@ export const OutfitsGrid = ({
                                 <h3 className="font-medium">{item.label || "Untitled Outfit"}</h3>
                                 <div className="mt-1 flex flex-wrap gap-1">
                                     {item.match && (
-                                        <span className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800 font-medium">
+                                        <span
+                                            className="rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-800">
                                             {item.match}
                                         </span>
                                     )}
                                     {item.stylePreferences.occasion && (
-                                        <span className="px-2 py-1 text-xs capitalize rounded-full bg-gray-100 text-gray-800 font-medium">
+                                        <span
+                                            className="rounded-full bg-gray-100 px-2 py-1 text-xs font-medium capitalize text-gray-800">
                                             {item.stylePreferences.occasion}
                                         </span>
                                     )}
                                     {item.stylePreferences.color && (
-                                        <span className="px-2 py-1 text-xs capitalize rounded-full bg-gray-100 text-gray-800 font-medium">
+                                        <span
+                                            className="rounded-full bg-gray-100 px-2 py-1 text-xs font-medium capitalize text-gray-800">
                                             {item.stylePreferences.color}
                                         </span>
                                     )}
                                 </div>
                             </div>
 
-                            <div className="max-md:hidden md:flex items-center gap-2">
+                            <div className="max-md:hidden items-center gap-2 md:flex">
                                 {outfitFilter === 'owned' ? (
                                     <>
                                         {/* Item circles display */}
@@ -276,7 +282,8 @@ export const OutfitsGrid = ({
                                                         )
                                                 )}
                                             {Object.keys(item.outfitPieces).length > 3 && (
-                                                <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-gray-200 text-xs">
+                                                <div
+                                                    className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-gray-200 text-xs">
                                                     +{Object.keys(item.outfitPieces).length - 3}
                                                 </div>
                                             )}
@@ -286,15 +293,16 @@ export const OutfitsGrid = ({
                                     <div className="flex items-center gap-2">
                                         <span
                                             className="text-sm text-gray-600">{item.userId?.slice(0, 8) || "User"}</span>
-                                        <div className="w-6 h-6 rounded-full bg-gray-200 overflow-hidden mr-2">
+                                        <div
+                                            className="mr-2 h-6 w-6 overflow-hidden rounded-full bg-gray-200">
                                             {item.userId && userPhotos[item.userId] ? (
                                                 <img
                                                     src={userPhotos[item.userId]}
                                                     alt="User"
-                                                    className="w-full h-full object-cover"
+                                                    className="h-full w-full object-cover"
                                                 />
                                             ) : (
-                                                <div className="w-full h-full bg-gray-300"/>
+                                                <div className="h-full w-full bg-gray-300"/>
                                             )}
                                         </div>
                                     </div>
@@ -315,9 +323,10 @@ export const OutfitsGrid = ({
                                                         e.stopPropagation();
                                                         handleDelete(item.id);
                                                     }}
-                                                    className="h-8 w-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-red-600 transition-colors"
+                                                    className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-red-600 transition-colors hover:bg-gray-200"
                                                 >
-                                                    <FontAwesomeIcon icon={faX} className="h-3 w-3" />
+                                                    <FontAwesomeIcon icon={faX}
+                                                                     className="h-3 w-3"/>
                                                 </button>
                                             )}
                                         </DeleteHandler>
@@ -325,7 +334,7 @@ export const OutfitsGrid = ({
                                 ) : (
                                     <>
                                         {/* Like/Save button */}
-                                        <LikeOutfitHandler outfit={item} currentUserId={user?.uid} />
+                                        <LikeOutfitHandler outfit={item} currentUserId={user?.uid}/>
                                     </>
                                 )}
                             </div>

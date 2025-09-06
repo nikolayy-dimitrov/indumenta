@@ -8,8 +8,8 @@ type AuthProviderProps = {
 }
 
 interface AuthContextType {
-    user: User | null;              // Firebase user
-    profile: { subscriptionStatus?: string } | null; // Additional profile data
+    user: User | null;
+    profile: { subscriptionStatus?: string } | null;
     isLoading: boolean;
 }
 
