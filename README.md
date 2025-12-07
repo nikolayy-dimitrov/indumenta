@@ -30,5 +30,6 @@ By combining machine learning with a user-friendly interface, Indumenta offers a
 
 - Frontend: React, TypeScript, Vite, Tailwind CSS.
 - Backend: Node.js, Firebase Functions, and REST APIs.
-- AI Tools: Dragoneye API and OpenAI API for intelligent outfit generation.
-- Storage and Authentication: Firebase Storage and Firestore.
+- AI Tools: OpenAI API for intelligent outfit generation.
+- Storage and Authentication: Firebase.
+

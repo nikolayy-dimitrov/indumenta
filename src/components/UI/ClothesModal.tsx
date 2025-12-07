@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { ClothingItem } from "../../types/wardrobe.ts";
+import { OptimizedImage } from "../OptimizedImage";
 import { ColorPicker } from "./ColorPicker.tsx";
 import { DeleteHandler } from "./DeleteHandler.tsx";
 
@@ -57,10 +58,13 @@ export const ClothesModal = ({
                     {/* Left Side - Image */}
                     <div
                         className="relative rounded-lg overflow-hidden bg-primary dark:bg-secondary">
-                        <img
-                            src={selectedImage.imageUrl}
-                            alt="Clothing item full view"
-                            className="w-full h-[300px] object-contain max-h-[60vh]"
+                        <OptimizedImage
+                            src={selectedImage.thumbnailUrl || selectedImage.imageUrl}
+                            alt={selectedImage.analysis?.category || "Clothing item"}
+                            className="h-full w-full object-cover"
+                            width={96}
+                            height={96}
+                            loading={"eager"}
                         />
                     </div>
 

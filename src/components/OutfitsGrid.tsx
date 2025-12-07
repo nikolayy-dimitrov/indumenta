@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 
 import { OutfitFilter, OutfitItem, ViewMode } from "../types/wardrobe.ts";
 import { AuthContext } from "../context/AuthContext.tsx";
+import { OptimizedImage } from "./OptimizedImage";
 import { DeleteHandler } from "./UI/DeleteHandler.tsx";
 import { LikeOutfitHandler } from "./UI/LikeOutfitHandler.tsx";
 import { useUserPhotos } from "../hooks/useWardrobe.ts";
@@ -61,31 +62,42 @@ export const OutfitsGrid = ({
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     whileHover={{ scale: 1.02, transition: { stiffness: 300, damping: 20 } }}
-                    transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.2 }}
+                    transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.1 }}
                 >
                     {/* Outfit Images Layout */}
                     <div className="relative aspect-square">
                         <div className="flex h-full w-full gap-1 overflow-hidden">
+                            {/* Top - 1/3 width */}
                             <div className="h-full w-1/3">
-                                <img
+                                <OptimizedImage
                                     src={item.outfitPieces.Top}
                                     alt="Top"
                                     className="h-full w-full object-cover"
+                                    width={200}
+                                    height={600}
+                                    loading={index < 4 ? "eager" : "lazy"}
                                 />
                             </div>
+                            {/* Bottom & Shoes - 2/3 width */}
                             <div className="flex h-full w-2/3 flex-col gap-1">
                                 <div className="h-1/2 w-full">
-                                    <img
+                                    <OptimizedImage
                                         src={item.outfitPieces.Bottom}
                                         alt="Bottom"
                                         className="h-full w-full object-cover"
+                                        width={400}
+                                        height={300}
+                                        loading={index < 4 ? "eager" : "lazy"}
                                     />
                                 </div>
                                 <div className="h-1/2 w-full">
-                                    <img
+                                    <OptimizedImage
                                         src={item.outfitPieces.Shoes}
                                         alt="Shoes"
                                         className="h-full w-full object-cover"
+                                        width={400}
+                                        height={300}
+                                        loading={index < 4 ? "eager" : "lazy"}
                                     />
                                 </div>
                             </div>
@@ -125,7 +137,7 @@ export const OutfitsGrid = ({
 
                     {/* Outfit Info */}
                     <div className="p-4">
-                        <h3 className="text-lg font-medium">{item.label || "Untitled Outfit"}</h3>
+                        <h3 className="text-lg font-medium">{item.label ?? `${item.stylePreferences.color} ${item.stylePreferences.occasion}`}</h3>
 
                         {/* Tags */}
                         <div className="mt-1 flex flex-wrap gap-1">
@@ -160,10 +172,13 @@ export const OutfitsGrid = ({
                                                     key={`${item.id}-${pieceType}`}
                                                     className="h-10 w-10 overflow-hidden rounded-full border-2 border-white"
                                                 >
-                                                    <img
+                                                    <OptimizedImage
                                                         src={imageUrl}
                                                         alt={pieceType}
                                                         className="h-full w-full object-cover"
+                                                        width={40}
+                                                        height={40}
+                                                        loading="lazy"
                                                     />
                                                 </div>
                                             )
@@ -174,10 +189,13 @@ export const OutfitsGrid = ({
                                     <div
                                         className="mr-2 h-6 w-6 overflow-hidden rounded-full bg-gray-200">
                                         {item.userId && userPhotos[item.userId] ? (
-                                            <img
+                                            <OptimizedImage
                                                 src={userPhotos[item.userId]}
                                                 alt="User"
                                                 className="h-full w-full object-cover"
+                                                width={24}
+                                                height={24}
+                                                loading="lazy"
                                             />
                                         ) : (
                                             <div className="h-full w-full bg-gray-300"/>
@@ -201,32 +219,41 @@ export const OutfitsGrid = ({
                     className="cursor-pointer overflow-hidden rounded-lg border border-gray-200 shadow-sm transition-all hover:border-primary/50"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.1 }}
+                    transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.05 }}
                 >
                     <div className="flex">
                         {/* Left side outfit preview */}
                         <div className="relative h-24 w-24 flex-shrink-0">
                             <div className="flex h-full w-full overflow-hidden gap-0.5">
                                 <div className="h-full w-1/3">
-                                    <img
+                                    <OptimizedImage
                                         src={item.outfitPieces.Top}
                                         alt="Top"
                                         className="h-full w-full object-cover"
+                                        width={32}
+                                        height={96}
+                                        loading={index < 8 ? "eager" : "lazy"}
                                     />
                                 </div>
                                 <div className="flex h-full w-2/3 flex-col gap-0.5">
                                     <div className="h-1/2 w-full">
-                                        <img
+                                        <OptimizedImage
                                             src={item.outfitPieces.Bottom}
                                             alt="Bottom"
                                             className="h-full w-full object-cover"
+                                            width={64}
+                                            height={48}
+                                            loading={index < 8 ? "eager" : "lazy"}
                                         />
                                     </div>
                                     <div className="h-1/2 w-full">
-                                        <img
+                                        <OptimizedImage
                                             src={item.outfitPieces.Shoes}
                                             alt="Shoes"
                                             className="h-full w-full object-cover"
+                                            width={64}
+                                            height={48}
+                                            loading={index < 8 ? "eager" : "lazy"}
                                         />
                                     </div>
                                 </div>
@@ -236,7 +263,7 @@ export const OutfitsGrid = ({
                         {/* Right side content */}
                         <div className="flex flex-1 items-center p-4">
                             <div className="flex-1">
-                                <h3 className="font-medium">{item.label || "Untitled Outfit"}</h3>
+                                <h3 className="font-medium">{item.label ?? `${item.stylePreferences.color} ${item.stylePreferences.occasion}`}</h3>
                                 <div className="mt-1 flex flex-wrap gap-1">
                                     {item.match && (
                                         <span
@@ -273,10 +300,13 @@ export const OutfitsGrid = ({
                                                                 key={`${item.id}-${pieceType}`}
                                                                 className="h-8 w-8 overflow-hidden rounded-full border-2 border-white"
                                                             >
-                                                                <img
+                                                                <OptimizedImage
                                                                     src={imageUrl}
                                                                     alt={pieceType}
                                                                     className="h-full w-full object-cover"
+                                                                    width={32}
+                                                                    height={32}
+                                                                    loading="lazy"
                                                                 />
                                                             </div>
                                                         )
@@ -296,10 +326,13 @@ export const OutfitsGrid = ({
                                         <div
                                             className="mr-2 h-6 w-6 overflow-hidden rounded-full bg-gray-200">
                                             {item.userId && userPhotos[item.userId] ? (
-                                                <img
+                                                <OptimizedImage
                                                     src={userPhotos[item.userId]}
                                                     alt="User"
                                                     className="h-full w-full object-cover"
+                                                    width={24}
+                                                    height={24}
+                                                    loading="lazy"
                                                 />
                                             ) : (
                                                 <div className="h-full w-full bg-gray-300"/>
