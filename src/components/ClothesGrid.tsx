@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 
 import { ClothingItem, SortOption, ViewMode } from "../types/wardrobe.ts";
+import { OptimizedImage } from "./OptimizedImage";
 import { ColorPicker } from "./UI/ColorPicker.tsx";
 import { DeleteHandler } from "./UI/DeleteHandler.tsx";
 
@@ -73,10 +74,13 @@ export const ClothesGrid = ({
                     transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.2 }}
                 >
                     <div className="relative aspect-square">
-                        <img
-                            src={item.imageUrl}
-                            alt="Clothing item"
+                        <OptimizedImage
+                            src={item.thumbnailUrl || item.imageUrl}
+                            alt={item.analysis?.category || "Clothing item"}
                             className="w-full h-full object-cover"
+                            width={400}
+                            height={400}
+                            loading={index < 6 ? "eager" : "lazy"}
                         />
                         <DeleteHandler
                             itemId={item.id}
@@ -140,10 +144,13 @@ export const ClothesGrid = ({
                 >
                     <div className="flex">
                         <div className="h-24 w-24 flex-shrink-0 relative">
-                            <img
-                                src={item.imageUrl}
-                                alt="Clothing item"
+                            <OptimizedImage
+                                src={item.thumbnailUrl || item.imageUrl}
+                                alt={item.analysis?.category || "Clothing item"}
                                 className="h-full w-full object-cover"
+                                width={96}
+                                height={96}
+                                loading={index < 10 ? "eager" : "lazy"}
                             />
                         </div>
 

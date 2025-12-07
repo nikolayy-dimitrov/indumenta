@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import { OutfitItem } from "../../types/wardrobe.ts";
 import { db } from "../../config/firebaseConfig.ts";
 import { AuthContext } from "../../context/AuthContext.tsx";
+import { OptimizedImage } from "../OptimizedImage";
 import { DeleteHandler } from "./DeleteHandler.tsx";
 import { LikeOutfitHandler } from "./LikeOutfitHandler.tsx";
 
@@ -192,25 +193,25 @@ export const OutfitModal = ({ outfit, onClose, isOwner = false, onDelete }: Outf
                         <div
                             className="md:w-11/12 max-md:w-8/12 h-full flex flex-col md:flex-row mx-auto gap-2">
                             <div className="w-full md:w-1/3 aspect-square md:h-auto">
-                                <img
-                                    src={outfit.outfitPieces.Top}
-                                    alt="Top item"
+                                <OptimizedImage
+                                    src={outfit.outfitPieces.Top} alt="Top"
                                     className="w-full h-full object-cover rounded-lg"
+                                    loading="lazy"
                                 />
                             </div>
                             <div className="w-full md:w-2/3 flex flex-row md:flex-col gap-2">
                                 <div className="w-1/2 md:w-full aspect-square md:h-1/2">
-                                    <img
-                                        src={outfit.outfitPieces.Bottom}
-                                        alt="Bottom item"
+                                    <OptimizedImage
+                                        src={outfit.outfitPieces.Bottom} alt="Bottom"
                                         className="w-full h-full object-cover rounded-lg"
+                                        loading="lazy"
                                     />
                                 </div>
                                 <div className="w-1/2 md:w-full aspect-square md:h-1/2">
-                                    <img
-                                        src={outfit.outfitPieces.Shoes}
-                                        alt="Shoes item"
+                                    <OptimizedImage
+                                        src={outfit.outfitPieces.Shoes} alt="Shoes"
                                         className="w-full h-full object-cover rounded-lg"
+                                        loading="lazy"
                                     />
                                 </div>
                             </div>
