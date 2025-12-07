@@ -9,6 +9,10 @@ export type ShowMode = "trending" | "community" | "following";
 export interface ClothingImage {
     userId: string;
     imageUrl: string;
+    thumbnailUrl: string;
+    mediumUrl: string;
+    largeUrl: string;
+    originalUrl?: string;
     uploadedAt: Timestamp;
     status: string;
 }

@@ -59,7 +59,7 @@ export const Navbar = ({ onMenuToggle }: NavbarProps) => {
                                     Home
                                 </NavLink>
                             )}
-                        <NavLink to="/stylist"
+                        <NavLink to="/stylist" onMouseEnter={() => import("../pages/StylistPage")}
                                  className={({ isActive }) =>
                                      `${isActive && "text-primary/20"} transition duration-300 active:scale-90 hover:text-primary/90 text-sm uppercase tracking-wide`
                                  }>
@@ -67,6 +67,7 @@ export const Navbar = ({ onMenuToggle }: NavbarProps) => {
                         </NavLink>
                         {user && (
                             <NavLink to="/wardrobe"
+                                     onMouseEnter={() => import("../pages/WardrobePage")}
                                      className={({ isActive }) =>
                                          `${isActive && "text-primary/20"} transition duration-300 active:scale-90 hover:text-primary/90 text-sm uppercase tracking-wide`
                                      }>
@@ -74,6 +75,7 @@ export const Navbar = ({ onMenuToggle }: NavbarProps) => {
                             </NavLink>
                         )}
                         <NavLink to="/showroom"
+                                 onMouseEnter={() => import("../pages/ShowroomPage")}
                                  className={({ isActive }) =>
                                      `${isActive && "text-primary/20"} transition duration-300 active:scale-90 hover:text-primary/90 text-sm uppercase tracking-wide`
                                  }>
@@ -139,17 +141,20 @@ export const Navbar = ({ onMenuToggle }: NavbarProps) => {
                                     Home
                                 </button>
                             </Link>
-                            <Link to="/stylist">
+                            <Link to="/stylist"
+                                  onMouseEnter={() => import("../pages/StylistPage.tsx")}>
                                 <button onClick={toggleMenu}>
                                     Stylist
                                 </button>
                             </Link>
-                            <Link to="/showroom">
+                            <Link to="/showroom"
+                                  onMouseEnter={() => import("../pages/ShowroomPage.tsx")}>
                                 <button onClick={toggleMenu}>
                                     Showroom
                                 </button>
                             </Link>
-                            <Link to="/wardrobe">
+                            <Link to="/wardrobe"
+                                  onMouseEnter={() => import("../pages/WardrobePage.tsx")}>
                                 <button onClick={toggleMenu}>
                                     Wardrobe
                                 </button>
