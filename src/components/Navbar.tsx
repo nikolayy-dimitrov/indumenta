@@ -1,6 +1,7 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+
 import { AuthContext } from "../context/AuthContext";
 
 import Logo from "../assets/indumenta-logo-primary.png";
@@ -17,11 +18,20 @@ export const Navbar = ({ onMenuToggle }: NavbarProps) => {
 
     const [isMenuToggled, setIsMenuToggled] = useState<boolean>(false)
 
+    useEffect(() => {
+        document.body.style.overflow = isMenuToggled ? 'hidden' : 'unset';
+
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isMenuToggled]);
+
     const toggleMenu = () => {
         const menuState = !isMenuToggled;
         setIsMenuToggled(menuState);
 
         onMenuToggle(menuState);
+        console.log(menuState);
 
         // Lock scroll when open, unlock when closed
         if (menuState) {
