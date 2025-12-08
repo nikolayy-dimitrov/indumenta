@@ -153,12 +153,6 @@ export const Navbar = ({ onMenuToggle }: NavbarProps) => {
                                     Showroom
                                 </button>
                             </Link>
-                            <Link to="/wardrobe"
-                                  onMouseEnter={() => import("../pages/WardrobePage.tsx")}>
-                                <button onClick={toggleMenu}>
-                                    Wardrobe
-                                </button>
-                            </Link>
                             {!user ? (
                                 <Link to="/authentication">
                                     <button onClick={toggleMenu}>
@@ -166,13 +160,21 @@ export const Navbar = ({ onMenuToggle }: NavbarProps) => {
                                     </button>
                                 </Link>
                             ) : (
-                                <Link
-                                    to="/profile"
-                                    className="text-content"
-                                    onClick={toggleMenu}
-                                >
-                                    Profile
-                                </Link>
+                                <>
+                                    <Link to="/wardrobe"
+                                          onMouseEnter={() => import("../pages/WardrobePage.tsx")}>
+                                        <button onClick={toggleMenu}>
+                                            Wardrobe
+                                        </button>
+                                    </Link>
+                                    <Link
+                                        to="/profile"
+                                        className="text-content"
+                                        onClick={toggleMenu}
+                                    >
+                                        Profile
+                                    </Link>
+                                </>
                             )}
                         </div>
                     </motion.div>
