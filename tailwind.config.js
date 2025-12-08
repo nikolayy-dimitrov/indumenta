@@ -1,31 +1,33 @@
+import defaultTheme from 'tailwindcss/defaultTheme';
+
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{html,js,ts,jsx,tsx}",
-    "./node_modules/swiper/swiper.esm.js",
-  ],
-  theme: {
-    extend: {
-      colors: {
-        "primary": "#F8E9D5",
-        "secondary": "#181819",
-        "content": "#B5FED9",
-        "primary-green": "#4CAF50",
-        "primary-blue": "#45B6FE",
-        "primary-yellow": "#FFC107",
-      },
+    content: [
+        "./index.html",
+        "./src/**/*.{html,js,ts,jsx,tsx}",
+        "./node_modules/swiper/swiper.esm.js",
+    ],
+    theme: {
+        extend: {
+            colors: {
+                "primary": "#F8E9D5",
+                "secondary": "#181819",
+                "content": "#B5FED9",
+                "primary-green": "#4CAF50",
+                "primary-blue": "#45B6FE",
+                "primary-yellow": "#FFC107",
+            },
+        },
+        fontFamily: {
+            Josefin: ['"Josefin Sans"', ...defaultTheme.fontFamily.sans],
+        },
+        screens: {
+            sm: "640px",
+            md: "768px",
+            lg: "1024px",
+            xl: "1280px",
+        },
     },
-    fontFamily: {
-      Josefin: ["Josefin Sans", "sans-serif"],
-    },
-    screens: {
-      sm: "640px",
-      md: "768px",
-      lg: "1024px",
-      xl: "1280px",
-    },
-  },
-  plugins: [],
+    plugins: [],
 }
 
