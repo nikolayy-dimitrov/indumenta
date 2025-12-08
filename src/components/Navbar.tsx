@@ -31,7 +31,6 @@ export const Navbar = ({ onMenuToggle }: NavbarProps) => {
         setIsMenuToggled(menuState);
 
         onMenuToggle(menuState);
-        console.log(menuState);
 
         // Lock scroll when open, unlock when closed
         if (menuState) {
