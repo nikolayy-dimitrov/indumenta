@@ -1,6 +1,7 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+
 import { AuthContext } from "../context/AuthContext";
 
 import Logo from "../assets/indumenta-logo-primary.png";
@@ -16,6 +17,14 @@ export const Navbar = ({ onMenuToggle }: NavbarProps) => {
     const isAboveMediumScreens = useMediaQuery("(min-width: 1060px)");
 
     const [isMenuToggled, setIsMenuToggled] = useState<boolean>(false)
+
+    useEffect(() => {
+        document.body.style.overflow = isMenuToggled ? 'hidden' : 'unset';
+
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isMenuToggled]);
 
     const toggleMenu = () => {
         const menuState = !isMenuToggled;
@@ -153,12 +162,6 @@ export const Navbar = ({ onMenuToggle }: NavbarProps) => {
                                     Showroom
                                 </button>
                             </Link>
-                            <Link to="/wardrobe"
-                                  onMouseEnter={() => import("../pages/WardrobePage.tsx")}>
-                                <button onClick={toggleMenu}>
-                                    Wardrobe
-                                </button>
-                            </Link>
                             {!user ? (
                                 <Link to="/authentication">
                                     <button onClick={toggleMenu}>
@@ -166,13 +169,21 @@ export const Navbar = ({ onMenuToggle }: NavbarProps) => {
                                     </button>
                                 </Link>
                             ) : (
-                                <Link
-                                    to="/profile"
-                                    className="text-content"
-                                    onClick={toggleMenu}
-                                >
-                                    Profile
-                                </Link>
+                                <>
+                                    <Link to="/wardrobe"
+                                          onMouseEnter={() => import("../pages/WardrobePage.tsx")}>
+                                        <button onClick={toggleMenu}>
+                                            Wardrobe
+                                        </button>
+                                    </Link>
+                                    <Link
+                                        to="/profile"
+                                        className="text-content"
+                                        onClick={toggleMenu}
+                                    >
+                                        Profile
+                                    </Link>
+                                </>
                             )}
                         </div>
                     </motion.div>
