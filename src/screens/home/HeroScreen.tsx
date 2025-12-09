@@ -6,7 +6,8 @@ import { buttonVariants, containerVariants, textVariants } from "../../utils/fra
 import { AuthContext } from "../../context/AuthContext.tsx";
 
 import AppMockUpLeft from "../../assets/HomePage/Indumenta-Home screen-clean-left-dark.png";
-import AppMockUpInverted from "../../assets/HomePage/Indumenta-Home screen-clean-left-dark-inverted.png";
+import AppMockUpInverted
+    from "../../assets/HomePage/Indumenta-Home screen-clean-left-dark-inverted.png";
 import AppMockupCentral from "../../assets/HomePage/Indumenta-Home screen-clean-portrait-dark.png"
 
 export const HeroScreen = () => {
@@ -19,7 +20,8 @@ export const HeroScreen = () => {
     const { user } = useContext(AuthContext);
 
     return (
-        <section id="hero-screen" className="h-screen flex items-center justify-center font-Josefin bg-gradient-to-b from-secondary to-[#0f0f10] px-6">
+        <section id="hero-screen"
+                 className="h-screen flex items-center justify-center font-Josefin bg-gradient-to-b from-secondary to-[#0f0f10] px-6">
             <motion.div
                 className="flex flex-col md:flex-row items-center justify-center text-center relative w-10/12 max-w-5xl mx-auto"
                 variants={containerVariants}
@@ -58,10 +60,11 @@ export const HeroScreen = () => {
                     INDUMENTA
                 </motion.h1>
                 <motion.img
-                    style={{y: yOffset}}
+                    style={{ y: yOffset }}
                     alt="App Mockup"
                     src={AppMockupCentral}
                     className="z-20 md:absolute md:w-[30%] max-md:w-[80%] top-0"
+                    fetchPriority="high"
                 />
                 {/* Mockup Images */}
                 <motion.div
@@ -74,12 +77,14 @@ export const HeroScreen = () => {
                             alt="App Mockup Left Profile"
                             src={AppMockUpInverted}
                             className="z-[-10] md:w-1/3 max-md:hidden"
+                            fetchPriority="high"
                         />
                         <motion.img
                             style={{ x: xOffsetRight }}
                             alt="App Mockup Left Profile"
                             src={AppMockUpLeft}
                             className="z-[-10] md:w-1/3 max-md:hidden"
+                            fetchPriority="high"
                         />
                     </div>
                 </motion.div>
