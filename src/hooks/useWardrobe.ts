@@ -2,7 +2,6 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
     collection,
     doc,
-    getDoc,
     getDocs,
     setDoc,
     updateDoc,
@@ -12,7 +11,8 @@ import {
     orderBy,
     query,
     where,
-    Timestamp
+    Timestamp,
+    documentId
 } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
@@ -118,17 +118,23 @@ export const useSavedOutfits = (userId: string | undefined) => {
                 where("userId", "==", userId)
             );
             const likesSnapshot = await getDocs(likesQuery);
-            const likedIds = likesSnapshot.docs.map(doc => doc.data().outfitId);
+            const likedIds = likesSnapshot.docs.map(doc => doc.data().outfitId as string);
 
             if (likedIds.length === 0) return [];
 
-            const outfitPromises = likedIds.map(async (outfitId: string) => {
-                const outfitRef = doc(db, "outfits", outfitId);
-                const outfitDoc = await getDoc(outfitRef);
-                if (outfitDoc.exists()) {
-                    const data = outfitDoc.data();
+            const chunks: string[][] = [];
+            for (let i = 0; i < likedIds.length; i += 30) {
+                chunks.push(likedIds.slice(i, i + 30));
+            }
+
+            const outfitsRef = collection(db, "outfits");
+            const chunkPromises = chunks.map(async (chunk) => {
+                const q = query(outfitsRef, where(documentId(), "in", chunk));
+                const snapshot = await getDocs(q);
+                return snapshot.docs.map((doc) => {
+                    const data = doc.data();
                     return {
-                        id: outfitDoc.id,
+                        id: doc.id,
                         outfitPieces: data.outfit_pieces,
                         createdAt: data.createdAt,
                         match: data.match,
@@ -137,12 +143,11 @@ export const useSavedOutfits = (userId: string | undefined) => {
                         userId: data.userId,
                         likesCount: data.likesCount || 0
                     } as OutfitItem;
-                }
-                return null;
+                });
             });
 
-            const resolvedOutfits = (await Promise.all(outfitPromises)).filter((o): o is OutfitItem => o !== null);
-            return resolvedOutfits;
+            const resolvedChunks = await Promise.all(chunkPromises);
+            return resolvedChunks.flat();
         },
         enabled: !!userId,
     });
