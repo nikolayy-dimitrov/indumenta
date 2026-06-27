@@ -96,6 +96,10 @@ body,
 }
 
 @layer base {
+    button, [role="button"] {
+        cursor: pointer;
+    }
+
     input[type="date"]::-webkit-calendar-picker-indicator {
         filter: invert(1);
         opacity: 0.8;

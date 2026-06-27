@@ -44,9 +44,9 @@ export const useOutfits = (userId: string | undefined, filter: OutfitFilter = 'o
 
     const setOutfits = (newData: OutfitItem[] | ((prev: OutfitItem[]) => OutfitItem[])) => {
         if (filter === 'saved') {
-             queryClient.setQueryData(['savedOutfits', userId], newData);
+            queryClient.setQueryData(['savedOutfits', userId], newData);
         } else {
-             queryClient.setQueryData(['outfits', userId, filter], newData);
+            queryClient.setQueryData(['outfits', userId, filter], newData);
         }
     };
 
@@ -124,7 +124,10 @@ export const useOutfitLikes = (currentUserId: string | undefined | null): UseOut
     });
 
     const likeMutation = useMutation({
-        mutationFn: async ({ outfitId, outfitOwnerId }: { outfitId: string, outfitOwnerId: string }) => {
+        mutationFn: async ({ outfitId, outfitOwnerId }: {
+            outfitId: string,
+            outfitOwnerId: string
+        }) => {
             if (!currentUserId) throw new Error("User must be logged in");
             if (outfitOwnerId === currentUserId) throw new Error("Cannot like own outfit");
             if (likedOutfitIds.includes(outfitId)) throw new Error("Already liked");
@@ -136,7 +139,7 @@ export const useOutfitLikes = (currentUserId: string | undefined | null): UseOut
             queryClient.setQueryData(['likedOutfits', currentUserId], [...previousLikes, outfitId]);
             return { previousLikes };
         },
-        onError: (err, variables, context) => {
+        onError: (err, _variables, context) => {
             if (context?.previousLikes) {
                 queryClient.setQueryData(['likedOutfits', currentUserId], context.previousLikes);
             }
@@ -162,7 +165,7 @@ export const useOutfitLikes = (currentUserId: string | undefined | null): UseOut
             queryClient.setQueryData(['likedOutfits', currentUserId], previousLikes.filter(id => id !== outfitId));
             return { previousLikes };
         },
-        onError: (err, variables, context) => {
+        onError: (err, _variables, context) => {
             if (context?.previousLikes) {
                 queryClient.setQueryData(['likedOutfits', currentUserId], context.previousLikes);
             }
@@ -188,8 +191,12 @@ export const useOutfitLikes = (currentUserId: string | undefined | null): UseOut
         likedOutfitIds,
         isLoading,
         error: error as Error | null,
-        likeOutfit: async (outfitId: string, outfitOwnerId: string) => { await likeMutation.mutateAsync({ outfitId, outfitOwnerId }); },
-        unlikeOutfit: async (outfitId: string) => { await unlikeMutation.mutateAsync({ outfitId }); },
+        likeOutfit: async (outfitId: string, outfitOwnerId: string) => {
+            await likeMutation.mutateAsync({ outfitId, outfitOwnerId });
+        },
+        unlikeOutfit: async (outfitId: string) => {
+            await unlikeMutation.mutateAsync({ outfitId });
+        },
         isOutfitLiked,
         canLikeOutfit
     };

@@ -20,6 +20,9 @@ import CameraAnimatedIcon from "../../../assets/camera-animated-lottie.json";
 
 export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
     const [image, setImage] = useState<File | null>(null);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [dominantColor, setDominantColor] = useState<string[]>([]);
     const [clothesCount, setClothesCount] = useState<number>(0);
     const [uploadProgress, setUploadProgress] = useState<string>("");
@@ -67,7 +70,7 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
     };
 
     const uploadImage = async () => {
-        if (!image || !dominantColor.length) return;
+        if (!image) return;
 
         setIsLoading(true);
         setUploadProgress("Uploading image and analyzing with AI...");
