@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { collection, getDocs, query, where } from "firebase/firestore";
@@ -103,7 +103,7 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
         }
     };
 
-    const randomRotation = Math.floor(Math.random() * 10) - 5;
+    const randomRotation = useMemo(() => Math.floor(Math.random() * 10) - 5, []);
 
     return (
         <section id="upload"
