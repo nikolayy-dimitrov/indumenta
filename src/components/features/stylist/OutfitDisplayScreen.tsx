@@ -54,16 +54,18 @@ export const OutfitDisplayScreen: React.FC<OutfitDisplayScreenProps> = ({
         setCurrentOutfitIndex((prev) => (prev - 1 + outfit.length) % outfit.length);
     };
 
-    useEffect(() => {
-        checkCurrentOutfitSaved();
-    }, [currentOutfitIndex]);
-
     const checkCurrentOutfitSaved = async () => {
         if (currentOutfit) {
             const saved = await checkIfOutfitSaved(currentOutfit.outfit_id);
             setIsOutfitSaved(saved);
         }
     };
+
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        checkCurrentOutfitSaved();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentOutfitIndex]);
 
     const handleSaveOutfit = async () => {
         try {

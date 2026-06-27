@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useRef, useEffect } from 'react';
 import { WardrobeContext } from "../../../context/WardrobeContext.tsx";
 
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
@@ -23,14 +23,19 @@ const Wardrobe = () => {
     const handlesTexture = useLoader(TextureLoader, handlesTextureUrl);
     const backTexture = useLoader(TextureLoader, backTextureUrl);
 
-    backTexture.wrapS = backTexture.wrapT = THREE.RepeatWrapping;
-    backTexture.repeat.set(1, 1);
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/immutability
+        backTexture.wrapS = backTexture.wrapT = THREE.RepeatWrapping;
+        backTexture.repeat.set(1, 1);
 
-    doorTexture.wrapS = doorTexture.wrapT = THREE.RepeatWrapping;
-    doorTexture.repeat.set(-1, 1);
+        // eslint-disable-next-line react-hooks/immutability
+        doorTexture.wrapS = doorTexture.wrapT = THREE.RepeatWrapping;
+        doorTexture.repeat.set(-1, 1);
 
-    handlesTexture.wrapS = handlesTexture.wrapT = THREE.RepeatWrapping;
-    handlesTexture.repeat.set(1, 1);
+        // eslint-disable-next-line react-hooks/immutability
+        handlesTexture.wrapS = handlesTexture.wrapT = THREE.RepeatWrapping;
+        handlesTexture.repeat.set(1, 1);
+    }, [backTexture, doorTexture, handlesTexture]);
 
     useFrame(() => {
         const leftDoor = leftDoorRef.current;

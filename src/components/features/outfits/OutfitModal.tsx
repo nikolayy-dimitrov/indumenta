@@ -36,6 +36,7 @@ export const OutfitModal = ({ outfit, onClose, isOwner = false, onDelete }: Outf
 
     useEffect(() => {
         if (outfit) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setNewLabel(outfit.label || "");
         }
     }, [outfit]);

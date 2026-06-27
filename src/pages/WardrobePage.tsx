@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import { useCallback, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 

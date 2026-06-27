@@ -103,6 +103,7 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
         }
     };
 
+    // eslint-disable-next-line react-hooks/purity
     const randomRotation = useMemo(() => Math.floor(Math.random() * 10) - 5, []);
 
     return (

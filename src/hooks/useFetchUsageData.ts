@@ -51,9 +51,13 @@ export const useFetchUsageData = () => {
                 const data = await response.json();
                 setUsageStats(data);
                 setError(null);
-            } catch (error: any) {
+            } catch (error: unknown) {
                 console.error('Error fetching usage data:', error);
-                setError(error.message || 'Failed to load usage data');
+                if (error instanceof Error) {
+                    setError(error.message || 'Failed to load usage data');
+                } else {
+                    setError('Failed to load usage data');
+                }
                 setUsageStats(null);
             } finally {
                 setLoading(false);

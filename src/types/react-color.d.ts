@@ -28,7 +28,7 @@ declare module "react-color" {
         onChange?: (color: ColorResult, event: React.ChangeEvent<HTMLInputElement>) => void;
         onChangeComplete?: (color: ColorResult, event: React.ChangeEvent<HTMLInputElement>) => void;
         disableAlpha?: boolean;
-        [key: string]: any;
+        [key: string]: unknown;
     }
 
     export class ChromePicker extends React.Component<ChromePickerProps> {}
