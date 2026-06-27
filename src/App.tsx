@@ -1,7 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
-import { LoadingIndicator } from "./components/UI/LoadingIndicator";
+import { LoadingIndicator } from "./components/ui/feedback/LoadingIndicator";
 
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { WardrobeProvider } from "./context/WardrobeContext.tsx";

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { doc, onSnapshot } from 'firebase/firestore';
-import { db } from '../config/firebaseConfig';
+import { db } from '../lib/config/firebaseConfig';
 import { AuthContext } from "../context/AuthContext.tsx";
 
 export const useSubscription = () => {

@@ -3,12 +3,12 @@ import { AuthContext } from "../context/AuthContext";
 import { WardrobeContext } from "../context/WardrobeContext.tsx";
 
 import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
-import { db } from "../config/firebaseConfig";
+import { db } from "../lib/config/firebaseConfig";
 
-import { Upload } from "../screens/UploadScreen";
-import { StyleSelectionScreen } from "../screens/StyleSelectionScreen";
-import { OutfitDisplayScreen } from "../screens/OutfitDisplayScreen";
-import InteractiveWardrobe from "../components/InteractiveWardrobe.tsx";
+import { Upload } from "../components/features/stylist/UploadScreen";
+import { StyleSelectionScreen } from "../components/features/stylist/StyleSelectionScreen";
+import { OutfitDisplayScreen } from "../components/features/stylist/OutfitDisplayScreen";
+import InteractiveWardrobe from "../components/features/wardrobe/InteractiveWardrobe.tsx";
 
 interface StylePreferences {
     color: string;

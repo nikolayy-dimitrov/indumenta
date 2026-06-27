@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../config/firebaseConfig';
+import { db } from '../lib/config/firebaseConfig';
 import { AuthContext } from '../context/AuthContext';
 
 /**

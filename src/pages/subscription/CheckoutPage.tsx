@@ -1,8 +1,8 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { Elements } from '@stripe/react-stripe-js';
 
-import { stripePromise } from '../../config/stripe.ts';
-import { PaymentForm } from '../../components/subscription/PaymentForm.tsx';
+import { stripePromise } from '../../lib/config/stripe.ts';
+import { PaymentForm } from '../../components/features/subscription/PaymentForm.tsx';
 
 export const CheckoutPage = () => {
     const {

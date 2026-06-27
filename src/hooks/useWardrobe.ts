@@ -17,7 +17,7 @@ import {
 import { doc as firestoreDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
-import { db } from "../config/firebaseConfig";
+import { db } from "../lib/config/firebaseConfig";
 import {
     ClothingItem,
     LikedOutfitsState,

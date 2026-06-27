@@ -1,9 +1,9 @@
-import { HeroScreen } from "../screens/home/HeroScreen.tsx";
-import { Features } from "../screens/home/FeaturesScreen.tsx";
-import { HowItWorksScreen } from "../screens/home/HowItWorksScreen.tsx";
-import { FaqScreen } from "../screens/home/FaqScreen.tsx";
+import { HeroScreen } from "../components/features/home/HeroScreen.tsx";
+import { Features } from "../components/features/home/FeaturesScreen.tsx";
+import { HowItWorksScreen } from "../components/features/home/HowItWorksScreen.tsx";
+import { FaqScreen } from "../components/features/home/FaqScreen.tsx";
 
-import { Footer } from "../components/Footer.tsx";
+import { Footer } from "../components/features/navigation/Footer.tsx";
 
 export const Home = () => {
     return (

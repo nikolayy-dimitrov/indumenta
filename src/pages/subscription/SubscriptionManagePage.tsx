@@ -2,8 +2,8 @@ import { useContext } from "react";
 
 import { AuthContext } from "../../context/AuthContext.tsx";
 import { useSubscription } from "../../hooks/useSubscription.ts";
-import { SubscriptionPlans } from "../../components/subscription/SubscriptionPlans.tsx";
-import { UsageDisplay } from "../../components/UsageDisplay.tsx";
+import { SubscriptionPlans } from "../../components/features/subscription/SubscriptionPlans.tsx";
+import { UsageDisplay } from "../../components/features/wardrobe/UsageDisplay.tsx";
 
 export const SubscriptionManagePage = () => {
     const { user } = useContext(AuthContext);

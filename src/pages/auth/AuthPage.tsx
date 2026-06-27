@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faApple, faGoogle } from "@fortawesome/free-brands-svg-icons";
 
-import { handleGoogleLogin } from "../../utils/handleLogin.ts";
-import { EmailSignIn } from "../../components/EmailSignIn.tsx";
-import { EmailSignUp } from "../../components/EmailSignUp.tsx";
+import { handleGoogleLogin } from "../../lib/utils/handleLogin.ts";
+import { EmailSignIn } from "../../components/features/auth/EmailSignIn.tsx";
+import { EmailSignUp } from "../../components/features/auth/EmailSignUp.tsx";
 
 type AuthMode = 'login' | 'register';
 

@@ -3,7 +3,7 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faLock } from "@fortawesome/free-solid-svg-icons";
 import { confirmPasswordReset, verifyPasswordResetCode } from "firebase/auth";
-import { auth } from "../../config/firebaseConfig.ts";
+import { auth } from "../../lib/config/firebaseConfig.ts";
 
 export const ResetPasswordPage = () => {
     const [newPassword, setNewPassword] = useState<string>('');

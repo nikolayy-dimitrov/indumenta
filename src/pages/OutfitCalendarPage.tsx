@@ -7,7 +7,7 @@ import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-sol
 import { OutfitItem } from "../types/wardrobe.ts";
 import { AuthContext } from "../context/AuthContext.tsx";
 import { useScheduledOutfits } from "../hooks/useWardrobe.ts";
-import { OutfitModal } from "../components/UI/OutfitModal.tsx";
+import { OutfitModal } from "../components/features/outfits/OutfitModal.tsx";
 
 export const OutfitCalendar = () => {
     const [currentDate, setCurrentDate] = useState(new Date());

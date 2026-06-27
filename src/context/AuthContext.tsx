@@ -1,7 +1,7 @@
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 
-import { getUserProfile } from "../services/user.service.ts";
+import { getUserProfile } from "../lib/api/user.service.ts";
 
 type AuthProviderProps = {
     children: ReactNode;

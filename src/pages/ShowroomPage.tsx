@@ -7,9 +7,9 @@ import { AuthContext } from "../context/AuthContext";
 import { OutfitItem, ShowMode, ViewMode } from "../types/wardrobe.ts";
 import { useOutfits, useTrendingOutfits } from "../hooks/useWardrobe.ts";
 import { useEscapeKey } from "../hooks/useEscapeKey.ts";
-import { LoadingIndicator } from "../components/UI/LoadingIndicator.tsx";
-import { OutfitModal } from "../components/UI/OutfitModal.tsx";
-import { OutfitsGrid } from "../components/OutfitsGrid.tsx";
+import { LoadingIndicator } from "../components/ui/feedback/LoadingIndicator.tsx";
+import { OutfitModal } from "../components/features/outfits/OutfitModal.tsx";
+import { OutfitsGrid } from "../components/features/outfits/OutfitsGrid.tsx";
 
 export const ShowroomPage = () => {
     const { user } = useContext(AuthContext);

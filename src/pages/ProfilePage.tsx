@@ -14,11 +14,11 @@ import {
     faStar
 } from "@fortawesome/free-solid-svg-icons";
 
-import { auth } from "../config/firebaseConfig.ts";
+import { auth } from "../lib/config/firebaseConfig.ts";
 import { AuthContext } from "../context/AuthContext.tsx";
 import { useSubscription } from "../hooks/useSubscription.ts";
 
-import { SubscriptionPlans } from "../components/subscription/SubscriptionPlans.tsx";
+import { SubscriptionPlans } from "../components/features/subscription/SubscriptionPlans.tsx";
 
 export const Profile: React.FC = () => {
     const { user } = useContext(AuthContext);

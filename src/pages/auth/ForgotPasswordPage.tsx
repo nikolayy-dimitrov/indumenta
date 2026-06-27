@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { sendPasswordResetEmail } from "firebase/auth"
-import { auth } from "../../config/firebaseConfig.ts";
+import { auth } from "../../lib/config/firebaseConfig.ts";
 
 export const ForgotPasswordPage = () => {
     const [email, setEmail] = useState<string>('');

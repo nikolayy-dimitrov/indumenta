@@ -5,12 +5,12 @@ import { AuthContext } from "../context/AuthContext";
 import { OutfitFilter, OutfitItem, ClothingItem, SortOption, ActiveCollection, ViewMode } from "../types/wardrobe.ts";
 import { useClothes, useOutfits } from "../hooks/useWardrobe.ts";
 import { useEscapeKey } from "../hooks/useEscapeKey.ts";
-import { LoadingIndicator } from "../components/UI/LoadingIndicator.tsx";
-import { OutfitModal } from "../components/UI/OutfitModal.tsx";
-import { ClothesModal } from "../components/UI/ClothesModal.tsx";
-import { OutfitsGrid } from "../components/OutfitsGrid.tsx";
-import { WardrobeControls } from "../components/WardrobeControls.tsx";
-import { ClothesGrid } from "../components/ClothesGrid.tsx";
+import { LoadingIndicator } from "../components/ui/feedback/LoadingIndicator.tsx";
+import { OutfitModal } from "../components/features/outfits/OutfitModal.tsx";
+import { ClothesModal } from "../components/features/wardrobe/ClothesModal.tsx";
+import { OutfitsGrid } from "../components/features/outfits/OutfitsGrid.tsx";
+import { WardrobeControls } from "../components/features/wardrobe/WardrobeControls.tsx";
+import { ClothesGrid } from "../components/features/wardrobe/ClothesGrid.tsx";
 
 // TODO: Add total outfits and clothes count
 export const WardrobePage = () => {

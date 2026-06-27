@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { containerVariants, textVariants } from "../utils/framerMotionUtils.ts";
+import { containerVariants, textVariants } from "../lib/utils/framerMotionUtils.ts";
 import { toast } from "react-toastify";
 
 export const ContactPage = () => {

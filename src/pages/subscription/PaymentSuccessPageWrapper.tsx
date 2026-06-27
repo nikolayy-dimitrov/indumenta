@@ -1,6 +1,6 @@
 import { Elements } from '@stripe/react-stripe-js';
 import { PaymentSuccessPage } from "./PaymentSuccessPage.tsx";
-import { stripePromise } from "../../config/stripe.ts";
+import { stripePromise } from "../../lib/config/stripe.ts";
 
 export const PaymentSuccessPageWrapper = () => {
     const clientSecret = new URLSearchParams(window.location.search)
