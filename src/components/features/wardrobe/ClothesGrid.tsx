@@ -4,7 +4,7 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 
-import { ClothingItem, SortOption, ViewMode } from "../../types/wardrobe.ts";
+import { ClothingItem, SortOption, ViewMode } from "../../../types/wardrobe.ts";
 import { OptimizedImage } from "../../ui/media/OptimizedImage";
 import { ColorPicker } from "./ColorPicker.tsx";
 import { DeleteHandler } from "./DeleteHandler.tsx";

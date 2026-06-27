@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { faqData } from "./HomePageData.ts";
-import { FaqScreenProps } from "../../../data/interfaces/screens/FaqScreen.ts";
+import { FaqScreenProps } from "./FaqScreen.types.ts";
 import { motion, useInView } from "framer-motion";
 
 export const FaqScreen = () => {

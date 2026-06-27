@@ -1,5 +1,5 @@
 import React, { useContext, useRef } from 'react';
-import { WardrobeContext } from "../../context/WardrobeContext.tsx";
+import { WardrobeContext } from "../../../context/WardrobeContext.tsx";
 
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { PerspectiveCamera } from '@react-three/drei';

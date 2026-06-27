@@ -1,19 +1,19 @@
-import { CardData } from "./interfaces/common/CardData.ts";
-import { HowItWorksScreen } from "./interfaces/screens/HowItWorksScreen.ts";
+import { CardData } from "./CardData.types.ts";
+import { HowItWorksScreen } from "./HowItWorksScreen.types.ts";
 
 import { faShirt } from "@fortawesome/free-solid-svg-icons/faShirt";
 import { faSquareCaretUp, faWandMagicSparkles } from "@fortawesome/free-solid-svg-icons";
 
-import UploadScreen from "../stylist/assets/HomePage/UploadScreenDarkNewCenter.png";
-import WardrobeImage from "../stylist/assets/HomePage/WardrobeClothesDarkCenter.png";
-import OutfitDisplayScreen from "../stylist/assets/HomePage/OutfitDisplayDark-portrait.png";
+import UploadScreen from "../../../assets/HomePage/UploadScreenDarkNewCenter.png";
+import WardrobeImage from "../../../assets/HomePage/WardrobeClothesDarkCenter.png";
+import OutfitDisplayScreen from "../../../assets/HomePage/OutfitDisplayDark-portrait.png";
 
-import OrganizerImage from "../stylist/assets/HomePage/Organizer_Card.jpg";
-import OutfitRecipeImage from "../stylist/assets/HomePage/Outfit_recipe.jpg";
-import MatchingColorsImage from "../stylist/assets/HomePage/Matching_colors.jpg";
-import WardrobeRoomImage from "../stylist/assets/HomePage/Wardrobe_room.jpg";
-import PhoneAccessImage from "../stylist/assets/HomePage/Phone_access.jpg";
-import RobotStoreImage from "../stylist/assets/HomePage/Robot_store.jpeg";
+import OrganizerImage from "../../../assets/HomePage/Organizer_Card.jpg";
+import OutfitRecipeImage from "../../../assets/HomePage/Outfit_recipe.jpg";
+import MatchingColorsImage from "../../../assets/HomePage/Matching_colors.jpg";
+import WardrobeRoomImage from "../../../assets/HomePage/Wardrobe_room.jpg";
+import PhoneAccessImage from "../../../assets/HomePage/Phone_access.jpg";
+import RobotStoreImage from "../../../assets/HomePage/Robot_store.jpeg";
 
 export const featuresData: CardData[] = [
     {

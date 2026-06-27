@@ -1,10 +1,12 @@
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa';
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
     plugins: [
         react(),
+        tailwindcss(),
         VitePWA({
             registerType: 'autoUpdate',
             devOptions: {
@@ -95,9 +97,13 @@ export default defineConfig({
     build: {
         rollupOptions: {
             output: {
-                manualChunks: {
-                    'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-                    'vendor-firebase': ['firebase/app', 'firebase/auth', 'firebase/storage', 'firebase/firestore'],
+                manualChunks(id) {
+                    if (id.includes('node_modules/react')) {
+                        return 'vendor-react';
+                    }
+                    if (id.includes('node_modules/firebase')) {
+                        return 'vendor-firebase';
+                    }
                 },
                 assetFileNames: (assetInfo) => {
                     const info = assetInfo.name!.split('.');

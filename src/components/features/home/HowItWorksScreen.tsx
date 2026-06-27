@@ -1,7 +1,8 @@
 import { useRef, useMemo } from "react";
 import { motion, useScroll, useTransform, useInView, MotionValue } from "framer-motion";
 import { containerVariants } from "../../../lib/utils/framerMotionUtils";
-import { howItWorksData } from "../../../data/HomePageData";
+import { howItWorksData } from "./HomePageData";
+import type { HowItWorksScreen as HowItWorksStep } from "./HowItWorksScreen.types.ts";
 
 const useStepAnimation = (scrollYProgress: MotionValue<number>, index: number, totalSteps: number) => {
     const stepProgress = useTransform(
@@ -49,7 +50,7 @@ export const HowItWorksScreen = () => {
                 ref={containerRef}
                 className="relative w-11/12 mx-auto"
             >
-                {howItWorksData.map((step, index) => (
+                {howItWorksData.map((step: HowItWorksStep, index: number) => (
                     <motion.div
                         key={index}
                         className="pt-4"

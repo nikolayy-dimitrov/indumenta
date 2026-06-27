@@ -54,9 +54,17 @@
     font-display: swap;
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #F8E9D5;
+  --color-secondary: #181819;
+  --color-content: #B5FED9;
+  --color-primary-green: #4CAF50;
+  --color-primary-blue: #45B6FE;
+  --color-primary-yellow: #FFC107;
+  --font-Josefin: "Josefin Sans", sans-serif;
+}
 
 html,
 body,

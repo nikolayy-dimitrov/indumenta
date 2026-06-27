@@ -8,7 +8,8 @@ import { db } from "../lib/config/firebaseConfig";
 import { Upload } from "../components/features/stylist/UploadScreen";
 import { StyleSelectionScreen } from "../components/features/stylist/StyleSelectionScreen";
 import { OutfitDisplayScreen } from "../components/features/stylist/OutfitDisplayScreen";
-import InteractiveWardrobe from "../components/features/wardrobe/InteractiveWardrobe.tsx";
+
+// import InteractiveWardrobe from "../components/features/wardrobe/InteractiveWardrobe.tsx";
 
 interface StylePreferences {
     color: string;
@@ -156,9 +157,9 @@ export const StylistPage = () => {
 
     return (
         <section id="stylist" className="relative">
-            <div className="absolute w-full h-full">
-                <InteractiveWardrobe/>
-            </div>
+            {/*<div className="absolute w-full h-full">*/}
+            {/*    <InteractiveWardrobe/>*/}
+            {/*</div>*/}
             <div className={`z-20 relative ${isLoading ? 'hidden' : ''}`}>
                 {step === 'upload' ? (
                     <Upload onNext={() => setStep('style')}/>

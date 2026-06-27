@@ -1,4 +1,4 @@
-import { CardData } from "../stylist/common/CardData.ts";
+import { CardData } from "./CardData.types.ts";
 import { MotionValue } from "framer-motion";
 
 export interface FeatureScreenProps extends CardData {

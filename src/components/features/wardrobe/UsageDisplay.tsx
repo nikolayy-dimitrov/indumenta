@@ -1,4 +1,4 @@
-import { useFetchUsageData } from "../../hooks/useFetchUsageData.ts";
+import { useFetchUsageData } from "../../../hooks/useFetchUsageData.ts";
 import { CircleMeter } from "../../ui/feedback/CircleProgressMeter.tsx";
 
 export const UsageDisplay = () => {

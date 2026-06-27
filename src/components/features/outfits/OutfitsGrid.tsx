@@ -4,12 +4,12 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 
-import { OutfitFilter, OutfitItem, ViewMode } from "../../types/wardrobe.ts";
-import { AuthContext } from "../../context/AuthContext.tsx";
+import { OutfitFilter, OutfitItem, ViewMode } from "../../../types/wardrobe.ts";
+import { AuthContext } from "../../../context/AuthContext.tsx";
 import { OptimizedImage } from "../../ui/media/OptimizedImage";
 import { DeleteHandler } from "../wardrobe/DeleteHandler.tsx";
 import { LikeOutfitHandler } from "./LikeOutfitHandler.tsx";
-import { useUserPhotos } from "../../hooks/useWardrobe.ts";
+import { useUserPhotos } from "../../../hooks/useWardrobe.ts";
 
 interface OutfitsGridProps {
     outfits: OutfitItem[];
@@ -167,13 +167,13 @@ export const OutfitsGrid = ({
                                     {/* Item Thumbnails Circle Display */}
                                     {Object.entries(item.outfitPieces).map(
                                         ([pieceType, imageUrl]) =>
-                                            imageUrl && (
+                                            imageUrl ? (
                                                 <div
                                                     key={`${item.id}-${pieceType}`}
                                                     className="h-10 w-10 overflow-hidden rounded-full border-2 border-white"
                                                 >
                                                     <OptimizedImage
-                                                        src={imageUrl}
+                                                        src={imageUrl as string}
                                                         alt={pieceType}
                                                         className="h-full w-full object-cover"
                                                         width={40}
@@ -181,7 +181,7 @@ export const OutfitsGrid = ({
                                                         loading="lazy"
                                                     />
                                                 </div>
-                                            )
+                                            ) : null
                                     )}
                                 </>
                             ) : (
@@ -295,13 +295,13 @@ export const OutfitsGrid = ({
                                                 .slice(0, 3)
                                                 .map(
                                                     ([pieceType, imageUrl]) =>
-                                                        imageUrl && (
+                                                        imageUrl ? (
                                                             <div
                                                                 key={`${item.id}-${pieceType}`}
                                                                 className="h-8 w-8 overflow-hidden rounded-full border-2 border-white"
                                                             >
                                                                 <OptimizedImage
-                                                                    src={imageUrl}
+                                                                    src={imageUrl as string}
                                                                     alt={pieceType}
                                                                     className="h-full w-full object-cover"
                                                                     width={32}
@@ -309,7 +309,7 @@ export const OutfitsGrid = ({
                                                                     loading="lazy"
                                                                 />
                                                             </div>
-                                                        )
+                                                        ) : null
                                                 )}
                                             {Object.keys(item.outfitPieces).length > 3 && (
                                                 <div

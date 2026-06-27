@@ -3,7 +3,7 @@ import { faShirt } from "@fortawesome/free-solid-svg-icons/faShirt";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 
-import { ActiveCollection, OutfitFilter, SortOption, ViewMode } from "../../types/wardrobe.ts";
+import { ActiveCollection, OutfitFilter, SortOption, ViewMode } from "../../../types/wardrobe.ts";
 
 interface WardrobeControlsProps {
     activeCollection: ActiveCollection;

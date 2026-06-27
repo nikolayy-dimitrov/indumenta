@@ -1,4 +1,5 @@
-import ColorThief from "colorthief";
+import * as ColorThiefModule from "colorthief";
+const ColorThief = (ColorThiefModule as any).default || (ColorThiefModule as any).ColorThief || ColorThiefModule;
 
 export const getDominantColorFromImage = async (
     file: File,

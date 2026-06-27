@@ -4,7 +4,7 @@ import { getAuth, signInWithEmailAndPassword, UserCredential } from 'firebase/au
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 
-import { useEnterKey } from "../../hooks/useEnterKey.ts";
+import { useEnterKey } from "../../../hooks/useEnterKey.ts";
 
 export const EmailSignIn: React.FC = () => {
     const [email, setEmail] = useState<string>('');

@@ -5,7 +5,7 @@ export const containerVariants = {
         y: 0,
         transition: {
             duration: 0.8,
-            ease: "easeOut",
+            ease: "easeOut" as const,
         },
     },
 };
@@ -18,7 +18,7 @@ export const textVariants = {
         transition: {
             delay: 0.3,
             duration: 0.8,
-            ease: "easeOut",
+            ease: "easeOut" as const,
         },
     },
 };
@@ -32,7 +32,7 @@ export const buttonVariants = {
         transition: {
             delay: 0.1,
             duration: 0.6,
-            ease: "easeOut",
+            ease: "easeOut" as const,
         },
     },
 };
@@ -45,7 +45,7 @@ export const imageVariants = {
         transition: {
             delay: 0.4,
             duration: 0.8,
-            ease: "easeOut",
+            ease: "easeOut" as const,
         },
     },
 };
@@ -55,7 +55,7 @@ export const scaleUpVariants = {
     visible: {
         opacity: 1,
         scale: 1,
-        transition: { duration: 0.7, ease: "easeOut" },
+        transition: { duration: 0.7, ease: "easeOut" as const },
     },
 };
 
@@ -64,7 +64,7 @@ export const maskVariants = {
     visible: {
         opacity: 1,
         clipPath: "inset(0 0 0 0)",
-        transition: { duration: 0.8, ease: "easeOut" },
+        transition: { duration: 0.8, ease: "easeOut" as const },
     },
 };
 

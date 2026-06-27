@@ -3,7 +3,7 @@ import React, { useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { featuresData } from "./HomePageData.ts";
-import { FeatureScreenProps } from "../../../data/interfaces/screens/FeatureScreen.ts";
+import { FeatureScreenProps } from "./FeatureScreen.types.ts";
 import useMediaQuery from "../../../hooks/useMediaQuery.ts";
 
 const FeatureCard: React.FC<FeatureScreenProps> = ({ card, index, scrollY }) => {

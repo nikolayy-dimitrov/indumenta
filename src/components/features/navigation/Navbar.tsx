@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../../context/AuthContext";
 
 import Logo from "../../../assets/indumenta-logo-primary.png";
 import useMediaQuery from "../../../hooks/useMediaQuery.ts";
@@ -68,7 +68,7 @@ export const Navbar = ({ onMenuToggle }: NavbarProps) => {
                                     Home
                                 </NavLink>
                             )}
-                        <NavLink to="/stylist" onMouseEnter={() => import("../../pages/StylistPage")}
+                        <NavLink to="/stylist" onMouseEnter={() => import("../../../pages/StylistPage")}
                                  className={({ isActive }) =>
                                      `${isActive && "text-primary/20"} transition duration-300 active:scale-90 hover:text-primary/90 text-sm uppercase tracking-wide`
                                  }>
@@ -76,7 +76,7 @@ export const Navbar = ({ onMenuToggle }: NavbarProps) => {
                         </NavLink>
                         {user && (
                             <NavLink to="/wardrobe"
-                                     onMouseEnter={() => import("../../pages/WardrobePage")}
+                                     onMouseEnter={() => import("../../../pages/WardrobePage")}
                                      className={({ isActive }) =>
                                          `${isActive && "text-primary/20"} transition duration-300 active:scale-90 hover:text-primary/90 text-sm uppercase tracking-wide`
                                      }>
@@ -84,7 +84,7 @@ export const Navbar = ({ onMenuToggle }: NavbarProps) => {
                             </NavLink>
                         )}
                         <NavLink to="/showroom"
-                                 onMouseEnter={() => import("../../pages/ShowroomPage")}
+                                 onMouseEnter={() => import("../../../pages/ShowroomPage")}
                                  className={({ isActive }) =>
                                      `${isActive && "text-primary/20"} transition duration-300 active:scale-90 hover:text-primary/90 text-sm uppercase tracking-wide`
                                  }>
@@ -151,13 +151,13 @@ export const Navbar = ({ onMenuToggle }: NavbarProps) => {
                                 </button>
                             </Link>
                             <Link to="/stylist"
-                                  onMouseEnter={() => import("../../pages/StylistPage.tsx")}>
+                                  onMouseEnter={() => import("../../../pages/StylistPage.tsx")}>
                                 <button onClick={toggleMenu}>
                                     Stylist
                                 </button>
                             </Link>
                             <Link to="/showroom"
-                                  onMouseEnter={() => import("../../pages/ShowroomPage.tsx")}>
+                                  onMouseEnter={() => import("../../../pages/ShowroomPage.tsx")}>
                                 <button onClick={toggleMenu}>
                                     Showroom
                                 </button>
@@ -171,7 +171,7 @@ export const Navbar = ({ onMenuToggle }: NavbarProps) => {
                             ) : (
                                 <>
                                     <Link to="/wardrobe"
-                                          onMouseEnter={() => import("../../pages/WardrobePage.tsx")}>
+                                          onMouseEnter={() => import("../../../pages/WardrobePage.tsx")}>
                                         <button onClick={toggleMenu}>
                                             Wardrobe
                                         </button>
