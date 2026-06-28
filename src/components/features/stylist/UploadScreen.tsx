@@ -2,9 +2,9 @@ import React, { useContext, useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "@tanstack/react-query";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 import { AuthContext } from "../../../context/AuthContext";
 import { WardrobeContext } from "../../../context/WardrobeContext.tsx";
@@ -123,9 +123,10 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
                     {clothesCount >= 3 ? (
                         <button
                             onClick={handleNext}
-                            className="lowercase text-lg m-6 text-primary font-light py-3 px-8 transition duration-300 active:scale-90"
+                            className="group flex items-center gap-3 text-sm md:text-base m-4 text-primary bg-secondary/80 border border-primary/30 hover:border-primary/60 hover:bg-secondary rounded-full py-2.5 px-6 transition-all duration-300 active:scale-95 shadow-sm"
                         >
-                            Select Style Preferences
+                            <span>Continue to Style Preferences</span>
+                            <FontAwesomeIcon icon={faArrowRight} className="transition-transform duration-300 group-hover:translate-x-1" />
                         </button>
                     ) : (
                         <div className="mt-4 w-10/12 text-center">
