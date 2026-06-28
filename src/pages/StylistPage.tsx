@@ -64,10 +64,12 @@ export const StylistPage = () => {
             wardrobeMap.set(doc.id, {
                 id: doc.id,
                 imageUrl: data.imageUrl,
-                dominantColor: data.analysis?.color || "Unknown",
                 category: data.analysis?.category || "Unknown",
-                vibe: data.analysis?.vibe || "Unknown",
-                season: data.analysis?.season || "Unknown",
+                subCategory: data.analysis?.subCategory || "Unknown",
+                color: data.analysis?.color || "Unknown",
+                secondaryColor: data.analysis?.secondaryColor || "Unknown",
+                occasion: data.analysis?.occasion || [],
+                season: data.analysis?.season || [],
             });
         });
 
