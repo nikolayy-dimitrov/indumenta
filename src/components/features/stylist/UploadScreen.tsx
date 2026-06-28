@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { AuthContext } from "../../../context/AuthContext";
 import { WardrobeContext } from "../../../context/WardrobeContext.tsx";
@@ -29,6 +30,7 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
 
     const { user } = useContext(AuthContext);
     const { isLoading, setIsLoading } = useContext(WardrobeContext);
+    const queryClient = useQueryClient();
 
     const isAboveMediumScreens = useMediaQuery("(min-width: 1060px)");
 
@@ -61,6 +63,9 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
         setDominantColor([]);
         setIsLoading(false);
         setUploadProgress("");
+        if (user) {
+            await queryClient.invalidateQueries({ queryKey: ['clothes', user.uid] });
+        }
     };
 
     const handleUploadError = (error: Error) => {
