@@ -8,6 +8,7 @@ import { db } from "../lib/config/firebaseConfig";
 import { Upload } from "../components/features/stylist/UploadScreen";
 import { StyleSelectionScreen } from "../components/features/stylist/StyleSelectionScreen";
 import { OutfitDisplayScreen } from "../components/features/stylist/OutfitDisplayScreen";
+import { LoadingOverlay } from "../components/ui/feedback/LoadingOverlay";
 
 // import InteractiveWardrobe from "../components/features/wardrobe/InteractiveWardrobe.tsx";
 
@@ -28,7 +29,7 @@ interface OutfitRecommendation {
 
 export const StylistPage = () => {
     const { user } = useContext(AuthContext);
-    const { isLoading, setIsLoading } = useContext(WardrobeContext);
+    const { isLoading, setIsLoading, loadingMessage, setLoadingMessage } = useContext(WardrobeContext);
 
     const [step, setStep] = useState<'upload' | 'style' | 'outfit'>('upload');
     const [stylePreferences, setStylePreferences] = useState<StylePreferences>({
@@ -52,6 +53,7 @@ export const StylistPage = () => {
     const generateOutfit = async () => {
         if (!user) return;
 
+        setLoadingMessage("Generating your perfect outfit...");
         setIsLoading(true);
 
         const clothesRef = collection(db, "clothes");
@@ -108,6 +110,7 @@ export const StylistPage = () => {
             console.error(error);
         } finally {
             setIsLoading(false);
+            setLoadingMessage("");
         }
     };
 
@@ -158,11 +161,9 @@ export const StylistPage = () => {
     };
 
     return (
-        <section id="stylist" className="relative">
-            {/*<div className="absolute w-full h-full">*/}
-            {/*    <InteractiveWardrobe/>*/}
-            {/*</div>*/}
-            <div className={`z-20 relative ${isLoading ? 'hidden' : ''}`}>
+        <section id="stylist" className="relative min-h-[80vh]">
+            <LoadingOverlay isLoading={isLoading} message={loadingMessage} />
+            <div className={`z-20 relative transition-opacity duration-300 ${isLoading ? 'opacity-30 pointer-events-none' : ''}`}>
                 {step === 'upload' ? (
                     <Upload onNext={() => setStep('style')}/>
                 ) : step === 'style' ? (

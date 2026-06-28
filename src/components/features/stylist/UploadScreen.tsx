@@ -26,10 +26,8 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [dominantColor, setDominantColor] = useState<string[]>([]);
     const [clothesCount, setClothesCount] = useState<number>(0);
-    const [uploadProgress, setUploadProgress] = useState<string>("");
-
     const { user } = useContext(AuthContext);
-    const { isLoading, setIsLoading } = useContext(WardrobeContext);
+    const { isLoading, setIsLoading, setLoadingMessage } = useContext(WardrobeContext);
     const queryClient = useQueryClient();
 
     const isAboveMediumScreens = useMediaQuery("(min-width: 1060px)");
@@ -43,9 +41,9 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
             const file = e.target.files[0];
             setImage(file);
             try {
-                setUploadProgress("Analyzing image colors...");
+                setLoadingMessage("Analyzing image colors...");
+                setIsLoading(true);
                 await getDominantColorFromImage(file, setDominantColor);
-                setUploadProgress("");
             } catch (error) {
                 console.error("Error processing image:", error);
                 toast.error("Error analyzing image colors. Please try another image.", {
@@ -53,7 +51,9 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
                     closeOnClick: true,
                     theme: "dark",
                 });
-                setUploadProgress("");
+            } finally {
+                setLoadingMessage("");
+                setIsLoading(false);
             }
         }
     };
@@ -62,7 +62,7 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
         setImage(null);
         setDominantColor([]);
         setIsLoading(false);
-        setUploadProgress("");
+        setLoadingMessage("");
         if (user) {
             await queryClient.invalidateQueries({ queryKey: ['clothes', user.uid] });
         }
@@ -71,14 +71,14 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
     const handleUploadError = (error: Error) => {
         console.error(error);
         setIsLoading(false);
-        setUploadProgress("");
+        setLoadingMessage("");
     };
 
     const uploadImage = async () => {
         if (!image) return;
 
+        setLoadingMessage("Uploading image and analyzing with AI...");
         setIsLoading(true);
-        setUploadProgress("Uploading image and analyzing with AI...");
 
         try {
             await handleUpload([image], user, handleUploadSuccess, handleUploadError);
@@ -86,7 +86,7 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
         } catch (error) {
             console.error("Error during upload:", error);
             setIsLoading(false);
-            setUploadProgress("");
+            setLoadingMessage("");
         } finally {
             setLoadingWithDelay(false, 3000);
         }
@@ -213,13 +213,6 @@ export const Upload: React.FC<{ onNext: () => void }> = ({ onNext }) => {
                                 )}
                             </label>
                         </div>
-
-                        {uploadProgress && (
-                            <div className="mt-2 text-primary flex items-center">
-                                <FontAwesomeIcon icon={faSpinner} spin className="mr-2"/>
-                                <span>{uploadProgress}</span>
-                            </div>
-                        )}
 
                         <button
                             onClick={uploadImage}
