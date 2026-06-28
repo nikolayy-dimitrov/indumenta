@@ -1,3 +1,4 @@
+// @ts-ignore - colorthief v3 exports getColor but TS doesn't resolve it properly here
 import { getColor } from "colorthief";
 
 export const getDominantColorFromImage = async (
