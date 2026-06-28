@@ -15,6 +15,7 @@ import { LoadingOverlay } from "../components/ui/feedback/LoadingOverlay";
 interface StylePreferences {
     color: string;
     occasion: string;
+    season: string;
 }
 
 interface OutfitRecommendation {
@@ -34,7 +35,8 @@ export const StylistPage = () => {
     const [step, setStep] = useState<'upload' | 'style' | 'outfit'>('upload');
     const [stylePreferences, setStylePreferences] = useState<StylePreferences>({
         color: '',
-        occasion: ''
+        occasion: '',
+        season: ''
     });
     const [outfit, setOutfit] = useState<OutfitRecommendation[]>([]);
 
@@ -150,6 +152,7 @@ export const StylistPage = () => {
                 stylePreferences: {
                     color: stylePreferences.color,
                     occasion: stylePreferences.occasion,
+                    season: stylePreferences.season,
                 }
             };
 
