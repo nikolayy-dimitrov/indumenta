@@ -42,7 +42,7 @@ export const ClothesGrid = ({
                 );
             case "color":
                 return [...items].sort((a, b) =>
-                    (a.analysis!.color || "").localeCompare(b.analysis!.color || "")
+                    (a.analysis?.color || "").localeCompare(b.analysis?.color || "")
                 );
             default:
                 return items;
@@ -103,12 +103,16 @@ export const ClothesGrid = ({
 
                         <div
                             className="absolute bottom-0 left-0 right-0 flex items-center justify-between p-2 bg-black/60 text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                            <ColorPicker
-                                itemId={item.id}
-                                initialColor={item.analysis!.color}
-                                isOpen={isColorPickerOpen}
-                                setIsOpen={setIsColorPickerOpen}
-                            />
+                            {item.analysis?.color ? (
+                                <ColorPicker
+                                    itemId={item.id}
+                                    initialColor={item.analysis.color}
+                                    isOpen={isColorPickerOpen}
+                                    setIsOpen={setIsColorPickerOpen}
+                                />
+                            ) : (
+                                <div />
+                            )}
                             <span className={`text-xs ${isColorPickerOpen && "hidden"}`}>
                                 {item.uploadedAt.toDate().toLocaleDateString()}
                             </span>
@@ -117,7 +121,7 @@ export const ClothesGrid = ({
 
                     <div className="p-3">
                         <h3 className="truncate text-sm font-medium">
-                            {item.analysis!.category || "Untitled Item"}
+                            {item.status === 'pending' ? 'Processing...' : (item.analysis?.category || "Untitled Item")}
                         </h3>
                         {item.analysis?.subCategory && (
                             <div className="mt-1 flex flex-wrap gap-1">
@@ -156,7 +160,7 @@ export const ClothesGrid = ({
 
                         <div className="flex flex-1 items-center justify-between p-4">
                             <div>
-                                <h3 className="font-medium">{item.analysis!.category || "Untitled Item"}</h3>
+                                <h3 className="font-medium">{item.status === 'pending' ? 'Processing...' : (item.analysis?.category || "Untitled Item")}</h3>
                                 <div className="mt-1 flex flex-wrap gap-1">
                                     {item.analysis?.subCategory && (
                                         <span

@@ -38,7 +38,7 @@ export const ClothesModal = ({
                 {/* Header with Close Button */}
                 <div className="flex items-center justify-between p-4">
                     <h2 className="text-xl font-semibold">
-                        {selectedImage.analysis!.category || "Clothing Item"}
+                        {selectedImage.status === 'pending' ? 'Processing...' : (selectedImage.analysis?.category || "Clothing Item")}
                         {selectedImage.analysis?.subCategory &&
                             <span
                                 className="text-secondary/70 dark:text-primary/60 ml-2">| {selectedImage.analysis.subCategory}</span>
@@ -82,7 +82,7 @@ export const ClothesModal = ({
                                     <span className="font-medium">Category</span>
                                     <span
                                         className="px-2 py-1 rounded-full text-xs text-secondary dark:text-primary border border-primary">
-                                        {selectedImage.analysis!.category}
+                                        {selectedImage.status === 'pending' ? 'Processing...' : (selectedImage.analysis?.category || 'Unknown')}
                                     </span>
                                 </div>
 
@@ -99,12 +99,16 @@ export const ClothesModal = ({
                                 <div className="flex justify-between items-center">
                                     <span className="font-medium">Color</span>
                                     <div className="flex items-center gap-2">
-                                        <ColorPicker
-                                            itemId={selectedImage.id}
-                                            initialColor={selectedImage.analysis!.color}
-                                            isOpen={isColorPickerOpen}
-                                            setIsOpen={setIsColorPickerOpen}
-                                        />
+                                        {selectedImage.analysis?.color ? (
+                                            <ColorPicker
+                                                itemId={selectedImage.id}
+                                                initialColor={selectedImage.analysis.color}
+                                                isOpen={isColorPickerOpen}
+                                                setIsOpen={setIsColorPickerOpen}
+                                            />
+                                        ) : (
+                                            <span className="text-sm text-gray-500">Processing...</span>
+                                        )}
                                     </div>
                                 </div>
 
