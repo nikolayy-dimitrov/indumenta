@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import {
     faCircleCheck,
-    faCalendarAlt,
     faTags,
     faPencilAlt
 } from "@fortawesome/free-solid-svg-icons";
@@ -11,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GlassModal } from "../../ui/modals/GlassModal.tsx";
 import { EditorialLabel } from "../../ui/typography/EditorialLabel.tsx";
 import { DangerButton } from "../../ui/buttons/DangerButton.tsx";
+import { DatePicker } from "../../ui/forms/DatePicker.tsx";
 import { toast } from "react-toastify";
 
 import { OutfitItem } from "../../../types/wardrobe.ts";
@@ -38,6 +38,7 @@ export const OutfitModal = ({ outfit, onClose, isOwner = false, onDelete }: Outf
 
     useEffect(() => {
         if (outfit) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setNewLabel(outfit.label || "");
         }
     }, [outfit]);
@@ -61,8 +62,7 @@ export const OutfitModal = ({ outfit, onClose, isOwner = false, onDelete }: Outf
         fetchScheduledDate();
     }, [outfit]);
 
-    const onDateChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newDate = new Date(e.target.value);
+    const onDateChange = async (newDate: Date) => {
         setDate(newDate);
 
         if (outfit) {
@@ -202,17 +202,8 @@ export const OutfitModal = ({ outfit, onClose, isOwner = false, onDelete }: Outf
                                     <EditorialLabel>Schedule</EditorialLabel>
 
                                     <div className="flex flex-col gap-1">
-                                        <div
-                                            className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3">
-                                            <FontAwesomeIcon icon={faCalendarAlt}
-                                                             className="text-primary/40"/>
-                                            <input
-                                                id="scheduledDate"
-                                                type="date"
-                                                value={date.toISOString().slice(0, 10)}
-                                                onChange={onDateChange}
-                                                className="bg-transparent border-none text-primary focus:outline-none w-full cursor-pointer"
-                                            />
+                                        <div className="flex flex-col gap-1 w-full relative">
+                                            <DatePicker date={date} onChange={onDateChange} />
                                         </div>
                                     </div>
                                 </div>
