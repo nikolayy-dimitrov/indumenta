@@ -165,8 +165,7 @@ export const OptimizedImage = memo(({
             {/* Blur placeholder */}
             {!isLoaded && (
                 <div
-                    className="absolute inset-0 bg-gray-200 animate-pulse"
-                    style={{ width, height }}
+                    className="absolute inset-0 bg-gray-200 animate-pulse rounded-[inherit]"
                 />
             )}
 

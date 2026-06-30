@@ -1,5 +1,6 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faX } from "@fortawesome/free-solid-svg-icons";
+import { GlassModal } from "../../ui/modals/GlassModal.tsx";
+import { EditorialLabel } from "../../ui/typography/EditorialLabel.tsx";
+import { DangerButton } from "../../ui/buttons/DangerButton.tsx";
 import { ClothingItem } from "../../../types/wardrobe.ts";
 import { OptimizedImage } from "../../ui/media/OptimizedImage";
 import { ColorPicker } from "./ColorPicker.tsx";
@@ -24,130 +25,102 @@ export const ClothesModal = ({
         onClose();
     };
 
-    if (!selectedImage) return null;
+    // No early return for null selectedImage so AnimatePresence can animate the exit
 
     return (
-        <div
-            className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
-            onClick={onClose}
-        >
-            <div
-                className="bg-primary dark:bg-secondary rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl"
-                onClick={(e) => e.stopPropagation()}
-            >
-                {/* Header with Close Button */}
-                <div className="flex items-center justify-between p-4">
-                    <h2 className="text-xl font-semibold">
-                        {selectedImage.status === 'pending' ? 'Processing...' : (selectedImage.analysis?.category || "Clothing Item")}
-                        {selectedImage.analysis?.subCategory &&
-                            <span
-                                className="text-secondary/70 dark:text-primary/60 ml-2">| {selectedImage.analysis.subCategory}</span>
-                        }
-                    </h2>
-                    <button
-                        className="text-secondary/80 hover:text-secondary/60 dark:text-primary/80 dark:hover:text-primary/60 transition-colors"
-                        onClick={onClose}
-                    >
-                        <FontAwesomeIcon icon={faX}/>
-                    </button>
+        <GlassModal isOpen={!!selectedImage} onClose={onClose}>
+            {selectedImage && (
+                <>
+                    {/* Left Side - Full Bleed Image */}
+                <div className="relative w-full md:w-1/2 h-64 md:h-auto min-h-[300px] bg-black/50">
+                    <OptimizedImage
+                        src={selectedImage.largeUrl || selectedImage.mediumUrl || selectedImage.imageUrl}
+                        alt={selectedImage.analysis?.category || "Clothing item"}
+                        className="absolute inset-0 w-full h-full object-cover"
+                        width={800}
+                        height={800}
+                        loading={"eager"}
+                    />
+                    {/* Subtle gradient overlay at the bottom to blend with content on mobile if needed */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 to-transparent md:hidden" />
                 </div>
 
-                {/* Content Grid */}
-                <div
-                    className="grid md:grid-cols-2 gap-6 p-4 max-h-[calc(90vh-70px)] overflow-y-auto">
-                    {/* Left Side - Image */}
-                    <div
-                        className="relative rounded-lg overflow-hidden bg-primary dark:bg-secondary">
-                        <OptimizedImage
-                            src={selectedImage.thumbnailUrl || selectedImage.imageUrl}
-                            alt={selectedImage.analysis?.category || "Clothing item"}
-                            className="h-full w-full object-cover"
-                            width={96}
-                            height={96}
-                            loading={"eager"}
-                        />
+                {/* Right Side - Details & Actions */}
+                <div className="relative w-full md:w-1/2 flex flex-col p-6 md:p-10 max-h-[85vh] overflow-y-auto">
+                    
+                    <div className="mb-8">
+                        <h2 className="text-3xl font-light tracking-wide mb-1">
+                            {selectedImage.status === 'pending' ? 'Processing...' : (selectedImage.analysis?.category || "Item")}
+                        </h2>
+                        {selectedImage.analysis?.subCategory && (
+                            <p className="text-primary/50 tracking-[0.2em] uppercase text-xs font-medium">
+                                {selectedImage.analysis.subCategory}
+                            </p>
+                        )}
                     </div>
 
-                    {/* Right Side - Details */}
-                    <div className="space-y-6">
-                        {/* Details Section */}
-                        <div>
-                            <h3 className="text-sm uppercase tracking-wider text-secondary/80 dark:text-primary/80 font-medium mb-2">
-                                Details
-                            </h3>
-                            <div className="h-px bg-secondary/50 dark:bg-primary/50 mb-4"></div>
+                    {/* Metadata List */}
+                    <div className="flex flex-col gap-6 flex-1">
+                        <div className="flex flex-col gap-1">
+                            <EditorialLabel>Category</EditorialLabel>
+                            <span className="text-lg font-light">
+                                {selectedImage.status === 'pending' ? 'Processing...' : (selectedImage.analysis?.category || 'Unknown')}
+                            </span>
+                        </div>
 
-                            <div className="space-y-3">
-                                <div className="flex justify-between items-center">
-                                    <span className="font-medium">Category</span>
-                                    <span
-                                        className="px-2 py-1 rounded-full text-xs text-secondary dark:text-primary border border-primary">
-                                        {selectedImage.status === 'pending' ? 'Processing...' : (selectedImage.analysis?.category || 'Unknown')}
-                                    </span>
-                                </div>
-
-                                {selectedImage.analysis?.subCategory && (
-                                    <div className="flex justify-between items-center">
-                                        <span className="font-medium">Type</span>
-                                        <span
-                                            className="px-2 py-1 rounded-full text-xs text-secondary dark:text-primary border border-primary">
-                                            {selectedImage.analysis.subCategory}
-                                        </span>
-                                    </div>
-                                )}
-
-                                <div className="flex justify-between items-center">
-                                    <span className="font-medium">Color</span>
-                                    <div className="flex items-center gap-2">
-                                        {selectedImage.analysis?.color ? (
-                                            <ColorPicker
-                                                itemId={selectedImage.id}
-                                                initialColor={selectedImage.analysis.color}
-                                                isOpen={isColorPickerOpen}
-                                                setIsOpen={setIsColorPickerOpen}
-                                            />
-                                        ) : (
-                                            <span className="text-sm text-gray-500">Processing...</span>
-                                        )}
-                                    </div>
-                                </div>
-
-                                {selectedImage.uploadedAt && (
-                                    <div className="flex justify-between items-center">
-                                        <span className="font-medium">Added</span>
-                                        <span>{selectedImage.uploadedAt.toDate().toLocaleDateString()}</span>
-                                    </div>
+                        <div className="flex flex-col gap-1">
+                            <EditorialLabel>Color</EditorialLabel>
+                            <div className="pt-1">
+                                {selectedImage.analysis?.color ? (
+                                    <ColorPicker
+                                        itemId={selectedImage.id}
+                                        initialColor={selectedImage.analysis.color}
+                                        isOpen={isColorPickerOpen}
+                                        setIsOpen={setIsColorPickerOpen}
+                                    />
+                                ) : (
+                                    <span className="text-lg font-light text-primary/50">Processing...</span>
                                 )}
                             </div>
                         </div>
 
-                        {/* Action Buttons */}
-                        <div className="flex gap-3 pt-2">
-                            <DeleteHandler
-                                itemId={selectedImage.id}
-                                collectionName="clothes"
-                                onSuccessfulDelete={handleSuccessfulDelete}
-                                confirmMessage="Are you sure you want to delete this item?"
-                            >
-                                {(handleDelete) => (
-                                    <button
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleDelete(selectedImage.id);
-                                        }}
-                                        className="flex w-full"
-                                    >
-                                                <span
-                                                    className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-md transition-colors">
-                                                    Remove
-                                                </span>
-                                    </button>
-                                )}
-                            </DeleteHandler>
-                        </div>
+                        {selectedImage.uploadedAt && (
+                            <div className="flex flex-col gap-1">
+                                <EditorialLabel>Added On</EditorialLabel>
+                                <span className="text-lg font-light">
+                                    {selectedImage.uploadedAt.toDate().toLocaleDateString(undefined, { 
+                                        year: 'numeric', 
+                                        month: 'long', 
+                                        day: 'numeric' 
+                                    })}
+                                </span>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Action Bottom */}
+                    <div className="pt-8 mt-8 border-t border-white/5">
+                        <DeleteHandler
+                            itemId={selectedImage.id}
+                            collectionName="clothes"
+                            onSuccessfulDelete={handleSuccessfulDelete}
+                            confirmMessage="Are you sure you want to remove this item from your wardrobe?"
+                        >
+                            {(handleDelete) => (
+                                <DangerButton
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleDelete(selectedImage.id);
+                                    }}
+                                >
+                                    Remove Item
+                                </DangerButton>
+                            )}
+                        </DeleteHandler>
                     </div>
                 </div>
-            </div>
-        </div>
+                </>
+            )}
+        </GlassModal>
     );
 };

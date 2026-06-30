@@ -2,13 +2,15 @@ import React, { useState, useEffect, useContext } from "react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import {
     faCircleCheck,
-    faX,
     faCalendarAlt,
     faTags,
     faPencilAlt
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { motion } from "framer-motion";
+
+import { GlassModal } from "../../ui/modals/GlassModal.tsx";
+import { EditorialLabel } from "../../ui/typography/EditorialLabel.tsx";
+import { DangerButton } from "../../ui/buttons/DangerButton.tsx";
 import { toast } from "react-toastify";
 
 import { OutfitItem } from "../../../types/wardrobe.ts";
@@ -36,23 +38,9 @@ export const OutfitModal = ({ outfit, onClose, isOwner = false, onDelete }: Outf
 
     useEffect(() => {
         if (outfit) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
             setNewLabel(outfit.label || "");
         }
     }, [outfit]);
-
-    useEffect(() => {
-        const handleEscKey = (event: KeyboardEvent) => {
-            if (event.key === 'Escape') {
-                onClose();
-            }
-        };
-
-        window.addEventListener('keydown', handleEscKey);
-        return () => {
-            window.removeEventListener('keydown', handleEscKey);
-        };
-    }, [onClose]);
 
     useEffect(() => {
         const fetchScheduledDate = async () => {
@@ -134,191 +122,165 @@ export const OutfitModal = ({ outfit, onClose, isOwner = false, onDelete }: Outf
         onClose();
     };
 
-    if (!outfit) return null;
-
     return (
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
-            onClick={onClose}
-        >
-            <div
-                className="bg-primary dark:bg-secondary rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl"
-                onClick={(e) => e.stopPropagation()}
-            >
-                {/* Header with Close Button */}
-                <div className="flex items-center justify-between p-4">
-                    <h2 className="text-xl font-semibold flex items-center">
-                        {!editLabel ? (
-                            <div className="flex items-center">
-                                <span>{outfit.label || 'OUTFIT'}</span>
-                                <button
-                                    onClick={toggleEditLabel}
-                                    className="ml-2 text-secondary/70 dark:text-primary/60 hover:text-secondary/90 dark:hover:text-primary/80"
-                                >
-                                    <FontAwesomeIcon icon={faPencilAlt} size="sm"/>
-                                </button>
-                            </div>
-                        ) : (
-                            <div className="flex items-center gap-2">
-                                <input
-                                    value={newLabel}
-                                    onChange={(e) => setNewLabel(e.target.value)}
-                                    className="border border-secondary/40 dark:border-primary/40 rounded px-2 py-0.5 text-primary dark:text-primary/80 dark:bg-secondary"
-                                    autoFocus
-                                />
-                                <button
-                                    onClick={handleLabelChange}
-                                    className="flex items-center text-primary-green/80 hover:text-primary-green dark:text-primary/80 dark:hover:text-primary"
-                                >
-                                    <FontAwesomeIcon icon={faCircleCheck}/>
-                                </button>
-                            </div>
-                        )}
-                    </h2>
-                    <button
-                        className="text-secondary/80 hover:text-secondary/60 dark:text-primary/80 dark:hover:text-primary/60 transition-colors"
-                        onClick={onClose}
-                    >
-                        <FontAwesomeIcon icon={faX}/>
-                    </button>
-                </div>
-
-                {/* Content */}
-                <div className="grid md:grid-cols-5 gap-4 p-4">
-                    {/* Images Display - 3/5 of width */}
+        <GlassModal isOpen={!!outfit} onClose={onClose}>
+            {outfit && (
+                <>
                     <div
-                        className="md:col-span-3 rounded-lg overflow-hidden bg-primary dark:bg-secondary">
-                        <div
-                            className="md:w-11/12 max-md:w-8/12 h-full flex flex-col md:flex-row mx-auto gap-2">
-                            <div className="w-full md:w-1/3 aspect-square md:h-auto">
-                                <OptimizedImage
-                                    src={outfit.outfitPieces.Top} alt="Top"
-                                    className="w-full h-full object-cover rounded-lg"
-                                    loading="lazy"
-                                />
-                            </div>
-                            <div className="w-full md:w-2/3 flex flex-row md:flex-col gap-2">
-                                <div className="w-1/2 md:w-full aspect-square md:h-1/2">
-                                    <OptimizedImage
-                                        src={outfit.outfitPieces.Bottom} alt="Bottom"
-                                        className="w-full h-full object-cover rounded-lg"
-                                        loading="lazy"
-                                    />
-                                </div>
-                                <div className="w-1/2 md:w-full aspect-square md:h-1/2">
-                                    <OptimizedImage
-                                        src={outfit.outfitPieces.Shoes} alt="Shoes"
-                                        className="w-full h-full object-cover rounded-lg"
-                                        loading="lazy"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        className="relative w-full flex flex-col p-6 md:p-10 max-h-[85vh] overflow-y-auto">
 
-                    {/* Details Section - 2/5 of width */}
-                    <div className="md:col-span-2 space-y-6 flex flex-col">
-                        {/* Schedule Section */}
-                        <div>
-                            <h3 className="text-sm uppercase tracking-wider text-secondary/80 dark:text-primary/80 font-medium mb-2">
-                                Schedule
-                            </h3>
-                            <div className="h-px bg-secondary/50 dark:bg-primary/50 mb-4"></div>
-                            <div className="space-y-4">
+                        {/* Header: Title Editing */}
+                        <div className="mb-8 flex items-center gap-4">
+                            {!editLabel ? (
+                                <>
+                                    <h2 className="text-3xl font-light tracking-wide">{outfit.label || 'OUTFIT'}</h2>
+                                    <button
+                                        onClick={toggleEditLabel}
+                                        className="text-primary/40 hover:text-primary transition-colors"
+                                    >
+                                        <FontAwesomeIcon icon={faPencilAlt} size="sm"/>
+                                    </button>
+                                </>
+                            ) : (
                                 <div className="flex items-center gap-3">
-                                    <div className="flex-1">
-                                        <label htmlFor="scheduledDate"
-                                               className="block text-center text-sm text-secondary/80 dark:text-primary/80 mb-1">
-                                            Scheduled Date
-                                        </label>
-                                        <div className="flex items-center justify-center gap-2">
+                                    <input
+                                        value={newLabel}
+                                        onChange={(e) => setNewLabel(e.target.value)}
+                                        className="bg-transparent border-b border-primary/20 text-3xl font-light tracking-wide text-primary focus:outline-none focus:border-primary px-1 py-0.5 w-full md:w-64"
+                                        autoFocus
+                                    />
+                                    <button
+                                        onClick={handleLabelChange}
+                                        className="text-primary-green/80 hover:text-primary-green transition-colors"
+                                    >
+                                        <FontAwesomeIcon icon={faCircleCheck} size="lg"/>
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Content */}
+                        <div className="grid md:grid-cols-5 gap-8">
+                            {/* Images Display - 3/5 of width */}
+                            <div className="md:col-span-3">
+                                <div
+                                    className="w-full h-full flex flex-col md:flex-row gap-2 relative rounded-2xl overflow-hidden">
+                                    <div className="w-full md:w-1/2 aspect-square md:h-[400px]">
+                                        <OptimizedImage
+                                            src={outfit.outfitPieces.Top} alt="Top"
+                                            className="w-full h-full object-cover"
+                                            loading="lazy"
+                                        />
+                                    </div>
+                                    <div
+                                        className="w-full md:w-1/2 flex flex-row md:flex-col gap-2">
+                                        <div className="w-1/2 md:w-full aspect-square md:h-[196px]">
+                                            <OptimizedImage
+                                                src={outfit.outfitPieces.Bottom} alt="Bottom"
+                                                className="w-full h-full object-cover"
+                                                loading="lazy"
+                                            />
+                                        </div>
+                                        <div className="w-1/2 md:w-full aspect-square md:h-[196px]">
+                                            <OptimizedImage
+                                                src={outfit.outfitPieces.Shoes} alt="Shoes"
+                                                className="w-full h-full object-cover"
+                                                loading="lazy"
+                                            />
+                                        </div>
+                                    </div>
+                                    {/* Subtle dark gradient overlay to blend corners nicely */}
+                                    <div
+                                        className="absolute inset-0 border border-white/5 rounded-2xl pointer-events-none"/>
+                                </div>
+                            </div>
+
+                            {/* Details Section - 2/5 of width */}
+                            <div className="md:col-span-2 flex flex-col gap-8">
+                                {/* Schedule Section */}
+                                <div className="flex flex-col gap-3">
+                                    <EditorialLabel>Schedule</EditorialLabel>
+
+                                    <div className="flex flex-col gap-1">
+                                        <div
+                                            className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3">
                                             <FontAwesomeIcon icon={faCalendarAlt}
-                                                             className="text-primary/80"/>
+                                                             className="text-primary/40"/>
                                             <input
                                                 id="scheduledDate"
                                                 type="date"
                                                 value={date.toISOString().slice(0, 10)}
                                                 onChange={onDateChange}
-                                                className="border border-secondary/60 dark:border-primary/60 rounded-md
-                                                w-1/2 px-3 py-2 text-secondary bg-primary dark:text-primary dark:bg-secondary"
+                                                className="bg-transparent border-none text-primary focus:outline-none w-full cursor-pointer"
                                             />
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        {/* Info Section */}
-                        <div>
-                            <h3 className="text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400 font-medium mb-2">
-                                Details
-                            </h3>
-                            <div className="h-px bg-gray-200 dark:bg-gray-700 mb-4"></div>
+                                {/* Info Section */}
+                                <div className="flex flex-col gap-4">
+                                    <EditorialLabel>Details</EditorialLabel>
 
-                            {isOwner && (
-                                <div className="flex items-center justify-between mb-3">
-                                    <div className="flex items-center gap-2">
-                                        <FontAwesomeIcon icon={faTags} className="text-gray-400"/>
-                                        <span
-                                            className="text-gray-600 dark:text-gray-300">Created</span>
-                                    </div>
-                                    <span
-                                        className="text-gray-800 dark:text-gray-200">{outfit.createdAt.toDate().toLocaleDateString()}</span>
-                                </div>
-                            )}
-
-                            {/* Additional outfit details */}
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2">
-                                    <FontAwesomeIcon icon={faTags} className="text-gray-400"/>
-                                    <span className="text-gray-600 dark:text-gray-300">Items</span>
-                                </div>
-                                <span className="text-gray-800 dark:text-gray-200">3 pieces</span>
-                            </div>
-                        </div>
-
-                        {/* Action Buttons */}
-                        <div className="flex-1 gap-3 mt-auto pt-4">
-                            {isOwner && (
-                                <div className="flex">
-                                    <DeleteHandler
-                                        itemId={outfit.id}
-                                        collectionName="clothes"
-                                        onSuccessfulDelete={handleSuccessfulDelete}
-                                        confirmMessage="Are you sure you want to delete this item?"
-                                    >
-                                        {(handleDelete) => (
-                                            <button
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    handleDelete(outfit.id);
-                                                }}
-                                                className="flex w-full"
-                                            >
+                                    {isOwner && (
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center gap-2">
+                                                <FontAwesomeIcon icon={faTags}
+                                                                 className="text-primary/40 text-xs"/>
                                                 <span
-                                                    className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-md transition-colors">
-                                                    Remove
-                                                </span>
-                                            </button>
-                                        )}
-                                    </DeleteHandler>
+                                                    className="text-sm font-light text-primary/80">Created</span>
+                                            </div>
+                                            <span
+                                                className="text-sm font-medium">{outfit.createdAt.toDate().toLocaleDateString()}</span>
+                                        </div>
+                                    )}
+
+                                    {/* Additional outfit details */}
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-2">
+                                            <FontAwesomeIcon icon={faTags}
+                                                             className="text-primary/40 text-xs"/>
+                                            <span
+                                                className="text-sm font-light text-primary/80">Items</span>
+                                        </div>
+                                        <span className="text-sm font-medium">3 pieces</span>
+                                    </div>
                                 </div>
-                            )}
-                            {!isOwner && (
-                                <LikeOutfitHandler
-                                    outfit={outfit}
-                                    currentUserId={user?.uid}
-                                    title={'Save Outfit'}
-                                    className="mx-auto w-full"
-                                />
-                            )}
+
+                                {/* Action Buttons */}
+                                <div className="mt-auto pt-8 border-t border-white/5">
+                                    {isOwner && (
+                                        <DeleteHandler
+                                            itemId={outfit.id}
+                                            collectionName="outfits"
+                                            onSuccessfulDelete={handleSuccessfulDelete}
+                                            confirmMessage="Are you sure you want to remove this outfit?"
+                                        >
+                                            {(handleDelete) => (
+                                                <DangerButton
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleDelete(outfit.id);
+                                                    }}
+                                                >
+                                                    Remove Outfit
+                                                </DangerButton>
+                                            )}
+                                        </DeleteHandler>
+                                    )}
+                                    {!isOwner && (
+                                        <LikeOutfitHandler
+                                            outfit={outfit}
+                                            currentUserId={user?.uid}
+                                            title={'Save Outfit'}
+                                            className="w-full bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 rounded-xl transition-all"
+                                        />
+                                    )}
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </motion.div>
+                </>
+            )}
+        </GlassModal>
     );
 };
