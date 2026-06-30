@@ -3,7 +3,14 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { AuthContext } from "../context/AuthContext";
-import { OutfitFilter, OutfitItem, ClothingItem, SortOption, ActiveCollection, ViewMode } from "../types/wardrobe.ts";
+import {
+    OutfitFilter,
+    OutfitItem,
+    ClothingItem,
+    SortOption,
+    ActiveCollection,
+    ViewMode
+} from "../types/wardrobe.ts";
 import { useClothes, useOutfits } from "../hooks/useWardrobe.ts";
 import { useEscapeKey } from "../hooks/useEscapeKey.ts";
 import { LoadingIndicator } from "../components/ui/feedback/LoadingIndicator.tsx";
@@ -29,7 +36,11 @@ export const WardrobePage = () => {
     const [outfitFilter, _setOutfitFilter] = useState<OutfitFilter>("owned");
 
     const { clothes, isLoading: isClothesLoading, setClothes } = useClothes(user?.uid);
-    const { outfits, isLoading: isOutfitsLoading, setOutfits } = useOutfits(user?.uid, outfitFilter);
+    const {
+        outfits,
+        isLoading: isOutfitsLoading,
+        setOutfits
+    } = useOutfits(user?.uid, outfitFilter);
 
     const isOwner = user?.uid === selectedOutfit?.userId;
 
@@ -84,11 +95,11 @@ export const WardrobePage = () => {
     }
 
     if (isOutfitsLoading || isClothesLoading) {
-        return <LoadingIndicator />
+        return <LoadingIndicator/>
     }
 
     return (
-        <section className="w-11/12 mx-auto px-6 py-8 font-Josefin">
+        <section className="md:w-11/12 mx-auto px-3 md:px-2 py-8 font-Josefin">
             <WardrobeControls
                 activeCollection={activeCollection}
                 viewMode={viewMode}
