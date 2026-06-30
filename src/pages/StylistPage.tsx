@@ -12,21 +12,7 @@ import { LoadingOverlay } from "../components/ui/feedback/LoadingOverlay";
 
 // import InteractiveWardrobe from "../components/features/wardrobe/InteractiveWardrobe.tsx";
 
-interface StylePreferences {
-    color: string;
-    occasion: string;
-    season: string;
-}
-
-interface OutfitRecommendation {
-    outfit_id: string;
-    outfit_pieces: {
-        Top: string;
-        Bottom: string;
-        Shoes: string;
-    };
-    match: number;
-}
+import { StylePreferences, OutfitRecommendation } from "../types/wardrobe.ts";
 
 export const StylistPage = () => {
     const { user } = useContext(AuthContext);

@@ -19,11 +19,7 @@ import {
     faSeedling,
 } from '@fortawesome/free-solid-svg-icons';
 
-interface StylePreferences {
-    color: string;
-    occasion: string;
-    season: string;
-}
+import { StylePreferences } from "../../../types/wardrobe.ts";
 
 interface StyleSelectionScreenProps {
     stylePreferences: StylePreferences;

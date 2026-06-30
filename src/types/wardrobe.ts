@@ -29,13 +29,31 @@ export interface ClothingItem extends ClothingImage {
     }
 }
 
+export interface StylePreferences {
+    color: string;
+    occasion: string;
+    season: string;
+}
+
+export interface OutfitPieces {
+    Top: string;
+    Bottom: string;
+    Shoes: string;
+}
+
+export interface OutfitRecommendation {
+    outfit_id: string;
+    outfit_pieces: OutfitPieces;
+    match: number;
+}
+
 export interface OutfitItem {
     id: string;
     label: string;
-    outfitPieces: { Top: string; Bottom: string; Shoes: string };
+    outfitPieces: OutfitPieces;
     createdAt: Timestamp;
     match: number;
-    stylePreferences: { color: string; occasion: string };
+    stylePreferences: StylePreferences;
     userId: string;
     likesCount?: number;
     scheduledDate?: Timestamp;

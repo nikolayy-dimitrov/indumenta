@@ -10,15 +10,7 @@ import { ClothingItem } from "../../../types/wardrobe.ts";
 import { useEscapeKey } from "../../../hooks/useEscapeKey.ts";
 import { ClothesModal } from "../wardrobe/ClothesModal.tsx";
 
-interface OutfitRecommendation {
-    outfit_id: string;
-    outfit_pieces: {
-        Top: string;
-        Bottom: string;
-        Shoes: string;
-    };
-    match: number;
-}
+import { OutfitRecommendation } from "../../../types/wardrobe.ts";
 
 interface OutfitDisplayScreenProps {
     outfit: OutfitRecommendation[];

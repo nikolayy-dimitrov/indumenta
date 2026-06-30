@@ -137,7 +137,7 @@ export const OutfitsGrid = ({
 
                     {/* Outfit Info */}
                     <div className="p-4">
-                        <h3 className="text-lg font-medium">{item.label ?? `${item.stylePreferences.color} ${item.stylePreferences.occasion}`}</h3>
+                        <h3 className="text-lg font-medium">{item.label ?? `${item.stylePreferences.season} ${item.stylePreferences.occasion}`}</h3>
 
                         {/* Tags */}
                         <div className="mt-1 flex flex-wrap gap-1">
@@ -157,6 +157,12 @@ export const OutfitsGrid = ({
                                 <span
                                     className="rounded-full bg-gray-100 px-2 py-1 text-xs font-medium capitalize text-gray-800">
                                     {item.stylePreferences.color}
+                                </span>
+                            )}
+                            {item.stylePreferences.season && (
+                                <span
+                                    className="rounded-full bg-gray-100 px-2 py-1 text-xs font-medium capitalize text-gray-800">
+                                    {item.stylePreferences.season}
                                 </span>
                             )}
                         </div>
