@@ -73,7 +73,18 @@ body,
     height: 100%;
     width: 100%;
     background-color: #181819;
-    @apply text-primary scrollbar-hide;
+    @apply text-primary;
+    
+    /* Hide scrollbar globally */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+#root::-webkit-scrollbar,
+.app::-webkit-scrollbar {
+    display: none;
 }
 
 @layer utilities {
