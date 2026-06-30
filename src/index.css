@@ -73,7 +73,7 @@ body,
     height: 100%;
     width: 100%;
     background-color: #181819;
-    @apply text-primary;
+    @apply text-primary scrollbar-hide;
 }
 
 @layer utilities {
@@ -92,6 +92,14 @@ body,
 
     .swiper-hidden-cards .swiper-slide-active {
         @apply opacity-100 scale-100 pointer-events-auto;
+    }
+
+    .scrollbar-hide {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none; /* Chrome, Safari and Opera */
     }
 }
 

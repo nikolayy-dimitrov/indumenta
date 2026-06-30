@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import {
     faCircleCheck,
@@ -127,7 +127,7 @@ export const OutfitModal = ({ outfit, onClose, isOwner = false, onDelete }: Outf
             {outfit && (
                 <>
                     <div
-                        className="relative w-full flex flex-col p-6 md:p-10 max-h-[85vh] overflow-y-auto">
+                        className="relative w-full flex flex-col p-6 md:p-10 max-h-[85vh] overflow-y-auto scrollbar-hide">
 
                         {/* Header: Title Editing */}
                         <div className="mb-8 flex items-center gap-4">

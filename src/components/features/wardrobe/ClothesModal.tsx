@@ -46,7 +46,7 @@ export const ClothesModal = ({
                 </div>
 
                 {/* Right Side - Details & Actions */}
-                <div className="relative w-full md:w-1/2 flex flex-col p-6 md:p-10 max-h-[85vh] overflow-y-auto">
+                <div className="relative w-full md:w-1/2 flex flex-col p-6 md:p-10 max-h-[85vh] overflow-y-auto scrollbar-hide">
                     
                     <div className="mb-8">
                         <h2 className="text-3xl font-light tracking-wide mb-1">
